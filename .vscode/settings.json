@@ -1,0 +1,5 @@
+{
+    // VS Code で所望の Flutter SDK バージョンを選択するための設定
+    "dart.flutterSdkPaths": [".fvm/"],
+    "dart.flutterSdkPath": "/Users/kosukesaigusa/fvm/versions/2.0.3"
+}
