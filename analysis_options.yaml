@@ -1,6 +1,8 @@
 include: ./flutter_samples_analysis_options.yaml
 
 analyzer:
+  exclude:
+    - lib/models/models.g.dart
   errors:
     missing_required_param: warning
     missing_return: warning
