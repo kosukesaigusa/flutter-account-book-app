@@ -34,7 +34,7 @@ class TableExpense extends SqfEntityTableBase {
     fields = [
       SqfEntityFieldBase('note', DbType.text, isNotNull: false),
       SqfEntityFieldRelationshipBase(
-          TableExpensecategory.getInstance, DeleteRule.NO_ACTION,
+          TableExpenseCategory.getInstance, DeleteRule.NO_ACTION,
           relationType: RelationType.ONE_TO_MANY,
           fieldName: 'expense_category_id',
           isNotNull: false),
@@ -69,7 +69,7 @@ class TableIncome extends SqfEntityTableBase {
     fields = [
       SqfEntityFieldBase('note', DbType.text, isNotNull: false),
       SqfEntityFieldRelationshipBase(
-          TableIncomecategory.getInstance, DeleteRule.NO_ACTION,
+          TableIncomeCategory.getInstance, DeleteRule.NO_ACTION,
           relationType: RelationType.ONE_TO_MANY,
           fieldName: 'income_category_id',
           isNotNull: false),
@@ -88,9 +88,9 @@ class TableIncome extends SqfEntityTableBase {
   }
 }
 
-// Expensecategory TABLE
-class TableExpensecategory extends SqfEntityTableBase {
-  TableExpensecategory() {
+// ExpenseCategory TABLE
+class TableExpenseCategory extends SqfEntityTableBase {
+  TableExpenseCategory() {
     // declare properties of EntityTable
     tableName = 'expensecategory';
     primaryKeyName = 'expense_category_id';
@@ -104,7 +104,7 @@ class TableExpensecategory extends SqfEntityTableBase {
       SqfEntityFieldBase('budget', DbType.integer, isNotNull: false),
       SqfEntityFieldBase('priority', DbType.integer, isNotNull: false),
       SqfEntityFieldRelationshipBase(
-          TableIcon.getInstance, DeleteRule.NO_ACTION,
+          TableAppIcon.getInstance, DeleteRule.NO_ACTION,
           relationType: RelationType.ONE_TO_MANY,
           fieldName: 'icon_id',
           isNotNull: false),
@@ -115,13 +115,13 @@ class TableExpensecategory extends SqfEntityTableBase {
   }
   static SqfEntityTableBase _instance;
   static SqfEntityTableBase get getInstance {
-    return _instance = _instance ?? TableExpensecategory();
+    return _instance = _instance ?? TableExpenseCategory();
   }
 }
 
-// Incomecategory TABLE
-class TableIncomecategory extends SqfEntityTableBase {
-  TableIncomecategory() {
+// IncomeCategory TABLE
+class TableIncomeCategory extends SqfEntityTableBase {
+  TableIncomeCategory() {
     // declare properties of EntityTable
     tableName = 'incomecategory';
     primaryKeyName = 'income_category_id';
@@ -134,7 +134,7 @@ class TableIncomecategory extends SqfEntityTableBase {
       SqfEntityFieldBase('name', DbType.text, isNotNull: false),
       SqfEntityFieldBase('priority', DbType.integer, isNotNull: false),
       SqfEntityFieldRelationshipBase(
-          TableIcon.getInstance, DeleteRule.NO_ACTION,
+          TableAppIcon.getInstance, DeleteRule.NO_ACTION,
           relationType: RelationType.ONE_TO_MANY,
           fieldName: 'icon_id',
           isNotNull: false),
@@ -145,13 +145,13 @@ class TableIncomecategory extends SqfEntityTableBase {
   }
   static SqfEntityTableBase _instance;
   static SqfEntityTableBase get getInstance {
-    return _instance = _instance ?? TableIncomecategory();
+    return _instance = _instance ?? TableIncomeCategory();
   }
 }
 
-// Fixedfee TABLE
-class TableFixedfee extends SqfEntityTableBase {
-  TableFixedfee() {
+// FixedFee TABLE
+class TableFixedFee extends SqfEntityTableBase {
+  TableFixedFee() {
     // declare properties of EntityTable
     tableName = 'fixedfee';
     primaryKeyName = 'fixed_fee_id';
@@ -163,12 +163,13 @@ class TableFixedfee extends SqfEntityTableBase {
     fields = [
       SqfEntityFieldBase('name', DbType.text, isNotNull: false),
       SqfEntityFieldBase('price', DbType.integer, isNotNull: false),
-      SqfEntityFieldBase('payment_cycle_id', DbType.integer, isNotNull: false),
       SqfEntityFieldRelationshipBase(
-          TablePaymentcycle.getInstance, DeleteRule.NO_ACTION,
+          TablePaymentCycle.getInstance, DeleteRule.NO_ACTION,
           relationType: RelationType.ONE_TO_MANY,
           fieldName: 'payment_cycle_id',
           isNotNull: false),
+      SqfEntityFieldBase('note', DbType.text, isNotNull: false),
+      SqfEntityFieldBase('priority', DbType.integer, isNotNull: false),
       SqfEntityFieldBase('created_at', DbType.datetime,
           isNotNull: false, minValue: DateTime.parse('1900-01-01')),
     ];
@@ -176,13 +177,13 @@ class TableFixedfee extends SqfEntityTableBase {
   }
   static SqfEntityTableBase _instance;
   static SqfEntityTableBase get getInstance {
-    return _instance = _instance ?? TableFixedfee();
+    return _instance = _instance ?? TableFixedFee();
   }
 }
 
-// Icon TABLE
-class TableIcon extends SqfEntityTableBase {
-  TableIcon() {
+// AppIcon TABLE
+class TableAppIcon extends SqfEntityTableBase {
+  TableAppIcon() {
     // declare properties of EntityTable
     tableName = 'icon';
     primaryKeyName = 'icon_id';
@@ -199,13 +200,13 @@ class TableIcon extends SqfEntityTableBase {
   }
   static SqfEntityTableBase _instance;
   static SqfEntityTableBase get getInstance {
-    return _instance = _instance ?? TableIcon();
+    return _instance = _instance ?? TableAppIcon();
   }
 }
 
-// Paymentcycle TABLE
-class TablePaymentcycle extends SqfEntityTableBase {
-  TablePaymentcycle() {
+// PaymentCycle TABLE
+class TablePaymentCycle extends SqfEntityTableBase {
+  TablePaymentCycle() {
     // declare properties of EntityTable
     tableName = 'paymentcycle';
     primaryKeyName = 'payment_cycle_id';
@@ -222,7 +223,7 @@ class TablePaymentcycle extends SqfEntityTableBase {
   }
   static SqfEntityTableBase _instance;
   static SqfEntityTableBase get getInstance {
-    return _instance = _instance ?? TablePaymentcycle();
+    return _instance = _instance ?? TablePaymentCycle();
   }
 }
 // END TABLES
@@ -236,11 +237,11 @@ class DbModel extends SqfEntityModelProvider {
     databaseTables = [
       TableExpense.getInstance,
       TableIncome.getInstance,
-      TableExpensecategory.getInstance,
-      TableIncomecategory.getInstance,
-      TableFixedfee.getInstance,
-      TableIcon.getInstance,
-      TablePaymentcycle.getInstance,
+      TableExpenseCategory.getInstance,
+      TableIncomeCategory.getInstance,
+      TableFixedFee.getInstance,
+      TableAppIcon.getInstance,
+      TablePaymentCycle.getInstance,
     ];
 
     bundledDatabasePath = dbModel
@@ -331,8 +332,8 @@ class Expense {
         : null;
 
     // RELATIONSHIPS FromMAP
-    plExpensecategory = o['expensecategory'] != null
-        ? Expensecategory.fromMap(o['expensecategory'] as Map<String, dynamic>)
+    plExpenseCategory = o['expenseCategory'] != null
+        ? ExpenseCategory.fromMap(o['expenseCategory'] as Map<String, dynamic>)
         : null;
     // END RELATIONSHIPS FromMAP
   }
@@ -353,13 +354,13 @@ class Expense {
 
 // RELATIONSHIPS (Expense)
   /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
-  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plExpensecategory', 'plField2'..]) or so on..
-  Expensecategory plExpensecategory;
+  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plExpenseCategory', 'plField2'..]) or so on..
+  ExpenseCategory plExpenseCategory;
 
-  /// get Expensecategory By Expense_category_id
-  Future<Expensecategory> getExpensecategory(
+  /// get ExpenseCategory By Expense_category_id
+  Future<ExpenseCategory> getExpenseCategory(
       {bool loadParents = false, List<String> loadedFields}) async {
-    final _obj = await Expensecategory().getById(expense_category_id,
+    final _obj = await ExpenseCategory().getById(expense_category_id,
         loadParents: loadParents, loadedFields: loadedFields);
     return _obj;
   }
@@ -385,7 +386,7 @@ class Expense {
 
     if (expense_category_id != null) {
       map['expense_category_id'] =
-          forView ? plExpensecategory.name : expense_category_id;
+          forView ? plExpenseCategory.name : expense_category_id;
     }
 
     if (price != null) {
@@ -437,7 +438,7 @@ class Expense {
 
     if (expense_category_id != null) {
       map['expense_category_id'] =
-          forView ? plExpensecategory.name : expense_category_id;
+          forView ? plExpenseCategory.name : expense_category_id;
     }
 
     if (price != null) {
@@ -559,13 +560,13 @@ class Expense {
       // RELATIONSHIPS PRELOAD
       if (preload || loadParents) {
         loadedFields = loadedFields ?? [];
-        if (/*!_loadedFields.contains('expensecategory.plExpensecategory') && */ (preloadFields ==
+        if (/*!_loadedFields.contains('expensecategory.plExpenseCategory') && */ (preloadFields ==
                 null ||
             loadParents ||
-            preloadFields.contains('plExpensecategory'))) {
-          /*_loadedFields.add('expensecategory.plExpensecategory');*/
-          obj.plExpensecategory = obj.plExpensecategory ??
-              await obj.getExpensecategory(
+            preloadFields.contains('plExpenseCategory'))) {
+          /*_loadedFields.add('expensecategory.plExpenseCategory');*/
+          obj.plExpenseCategory = obj.plExpenseCategory ??
+              await obj.getExpenseCategory(
                   loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
       } // END RELATIONSHIPS PRELOAD
@@ -608,13 +609,13 @@ class Expense {
       // RELATIONSHIPS PRELOAD
       if (preload || loadParents) {
         loadedFields = loadedFields ?? [];
-        if (/*!_loadedFields.contains('expensecategory.plExpensecategory') && */ (preloadFields ==
+        if (/*!_loadedFields.contains('expensecategory.plExpenseCategory') && */ (preloadFields ==
                 null ||
             loadParents ||
-            preloadFields.contains('plExpensecategory'))) {
-          /*_loadedFields.add('expensecategory.plExpensecategory');*/
-          obj.plExpensecategory = obj.plExpensecategory ??
-              await obj.getExpensecategory(
+            preloadFields.contains('plExpenseCategory'))) {
+          /*_loadedFields.add('expensecategory.plExpenseCategory');*/
+          obj.plExpenseCategory = obj.plExpenseCategory ??
+              await obj.getExpenseCategory(
                   loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
       } // END RELATIONSHIPS PRELOAD
@@ -1390,13 +1391,13 @@ class ExpenseFilterBuilder extends SearchCriteria {
       // RELATIONSHIPS PRELOAD
       if (preload || loadParents) {
         loadedFields = loadedFields ?? [];
-        if (/*!_loadedFields.contains('expensecategory.plExpensecategory') && */ (preloadFields ==
+        if (/*!_loadedFields.contains('expensecategory.plExpenseCategory') && */ (preloadFields ==
                 null ||
             loadParents ||
-            preloadFields.contains('plExpensecategory'))) {
-          /*_loadedFields.add('expensecategory.plExpensecategory');*/
-          obj.plExpensecategory = obj.plExpensecategory ??
-              await obj.getExpensecategory(
+            preloadFields.contains('plExpenseCategory'))) {
+          /*_loadedFields.add('expensecategory.plExpenseCategory');*/
+          obj.plExpenseCategory = obj.plExpenseCategory ??
+              await obj.getExpenseCategory(
                   loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
       } // END RELATIONSHIPS PRELOAD
@@ -1683,8 +1684,8 @@ class Income {
         : null;
 
     // RELATIONSHIPS FromMAP
-    plIncomecategory = o['incomecategory'] != null
-        ? Incomecategory.fromMap(o['incomecategory'] as Map<String, dynamic>)
+    plIncomeCategory = o['incomeCategory'] != null
+        ? IncomeCategory.fromMap(o['incomeCategory'] as Map<String, dynamic>)
         : null;
     // END RELATIONSHIPS FromMAP
   }
@@ -1704,13 +1705,13 @@ class Income {
 
 // RELATIONSHIPS (Income)
   /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
-  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plIncomecategory', 'plField2'..]) or so on..
-  Incomecategory plIncomecategory;
+  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plIncomeCategory', 'plField2'..]) or so on..
+  IncomeCategory plIncomeCategory;
 
-  /// get Incomecategory By Income_category_id
-  Future<Incomecategory> getIncomecategory(
+  /// get IncomeCategory By Income_category_id
+  Future<IncomeCategory> getIncomeCategory(
       {bool loadParents = false, List<String> loadedFields}) async {
-    final _obj = await Incomecategory().getById(income_category_id,
+    final _obj = await IncomeCategory().getById(income_category_id,
         loadParents: loadParents, loadedFields: loadedFields);
     return _obj;
   }
@@ -1736,7 +1737,7 @@ class Income {
 
     if (income_category_id != null) {
       map['income_category_id'] =
-          forView ? plIncomecategory.name : income_category_id;
+          forView ? plIncomeCategory.name : income_category_id;
     }
 
     if (price != null) {
@@ -1784,7 +1785,7 @@ class Income {
 
     if (income_category_id != null) {
       map['income_category_id'] =
-          forView ? plIncomecategory.name : income_category_id;
+          forView ? plIncomeCategory.name : income_category_id;
     }
 
     if (price != null) {
@@ -1899,13 +1900,13 @@ class Income {
       // RELATIONSHIPS PRELOAD
       if (preload || loadParents) {
         loadedFields = loadedFields ?? [];
-        if (/*!_loadedFields.contains('incomecategory.plIncomecategory') && */ (preloadFields ==
+        if (/*!_loadedFields.contains('incomecategory.plIncomeCategory') && */ (preloadFields ==
                 null ||
             loadParents ||
-            preloadFields.contains('plIncomecategory'))) {
-          /*_loadedFields.add('incomecategory.plIncomecategory');*/
-          obj.plIncomecategory = obj.plIncomecategory ??
-              await obj.getIncomecategory(
+            preloadFields.contains('plIncomeCategory'))) {
+          /*_loadedFields.add('incomecategory.plIncomeCategory');*/
+          obj.plIncomeCategory = obj.plIncomeCategory ??
+              await obj.getIncomeCategory(
                   loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
       } // END RELATIONSHIPS PRELOAD
@@ -1948,13 +1949,13 @@ class Income {
       // RELATIONSHIPS PRELOAD
       if (preload || loadParents) {
         loadedFields = loadedFields ?? [];
-        if (/*!_loadedFields.contains('incomecategory.plIncomecategory') && */ (preloadFields ==
+        if (/*!_loadedFields.contains('incomecategory.plIncomeCategory') && */ (preloadFields ==
                 null ||
             loadParents ||
-            preloadFields.contains('plIncomecategory'))) {
-          /*_loadedFields.add('incomecategory.plIncomecategory');*/
-          obj.plIncomecategory = obj.plIncomecategory ??
-              await obj.getIncomecategory(
+            preloadFields.contains('plIncomeCategory'))) {
+          /*_loadedFields.add('incomecategory.plIncomeCategory');*/
+          obj.plIncomeCategory = obj.plIncomeCategory ??
+              await obj.getIncomeCategory(
                   loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
       } // END RELATIONSHIPS PRELOAD
@@ -2719,13 +2720,13 @@ class IncomeFilterBuilder extends SearchCriteria {
       // RELATIONSHIPS PRELOAD
       if (preload || loadParents) {
         loadedFields = loadedFields ?? [];
-        if (/*!_loadedFields.contains('incomecategory.plIncomecategory') && */ (preloadFields ==
+        if (/*!_loadedFields.contains('incomecategory.plIncomeCategory') && */ (preloadFields ==
                 null ||
             loadParents ||
-            preloadFields.contains('plIncomecategory'))) {
-          /*_loadedFields.add('incomecategory.plIncomecategory');*/
-          obj.plIncomecategory = obj.plIncomecategory ??
-              await obj.getIncomecategory(
+            preloadFields.contains('plIncomeCategory'))) {
+          /*_loadedFields.add('incomecategory.plIncomeCategory');*/
+          obj.plIncomeCategory = obj.plIncomeCategory ??
+              await obj.getIncomeCategory(
                   loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
       } // END RELATIONSHIPS PRELOAD
@@ -2951,9 +2952,9 @@ class IncomeManager extends SqfEntityProvider {
 }
 
 //endregion IncomeManager
-// region Expensecategory
-class Expensecategory {
-  Expensecategory(
+// region ExpenseCategory
+class ExpenseCategory {
+  ExpenseCategory(
       {this.expense_category_id,
       this.name,
       this.budget,
@@ -2963,15 +2964,15 @@ class Expensecategory {
       this.isDeleted}) {
     _setDefaultValues();
   }
-  Expensecategory.withFields(this.name, this.budget, this.priority,
+  ExpenseCategory.withFields(this.name, this.budget, this.priority,
       this.icon_id, this.created_at, this.isDeleted) {
     _setDefaultValues();
   }
-  Expensecategory.withId(this.expense_category_id, this.name, this.budget,
+  ExpenseCategory.withId(this.expense_category_id, this.name, this.budget,
       this.priority, this.icon_id, this.created_at, this.isDeleted) {
     _setDefaultValues();
   }
-  Expensecategory.fromMap(Map<String, dynamic> o,
+  ExpenseCategory.fromMap(Map<String, dynamic> o,
       {bool setDefaultValues = true}) {
     if (setDefaultValues) {
       _setDefaultValues();
@@ -2999,12 +3000,12 @@ class Expensecategory {
         : null;
 
     // RELATIONSHIPS FromMAP
-    plIcon = o['icon'] != null
-        ? Icon.fromMap(o['icon'] as Map<String, dynamic>)
+    plAppIcon = o['appIcon'] != null
+        ? AppIcon.fromMap(o['appIcon'] as Map<String, dynamic>)
         : null;
     // END RELATIONSHIPS FromMAP
   }
-  // FIELDS (Expensecategory)
+  // FIELDS (ExpenseCategory)
   int expense_category_id;
   String name;
   int budget;
@@ -3014,23 +3015,23 @@ class Expensecategory {
   bool isDeleted;
 
   BoolResult saveResult;
-  // end FIELDS (Expensecategory)
+  // end FIELDS (ExpenseCategory)
 
-// RELATIONSHIPS (Expensecategory)
+// RELATIONSHIPS (ExpenseCategory)
   /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
-  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plIcon', 'plField2'..]) or so on..
-  Icon plIcon;
+  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plAppIcon', 'plField2'..]) or so on..
+  AppIcon plAppIcon;
 
-  /// get Icon By Icon_id
-  Future<Icon> getIcon(
+  /// get AppIcon By Icon_id
+  Future<AppIcon> getAppIcon(
       {bool loadParents = false, List<String> loadedFields}) async {
-    final _obj = await Icon()
+    final _obj = await AppIcon()
         .getById(icon_id, loadParents: loadParents, loadedFields: loadedFields);
     return _obj;
   }
-  // END RELATIONSHIPS (Expensecategory)
+  // END RELATIONSHIPS (ExpenseCategory)
 
-// COLLECTIONS & VIRTUALS (Expensecategory)
+// COLLECTIONS & VIRTUALS (ExpenseCategory)
   /// to load children of items to this field, use preload parameter. Ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
   /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plExpenses', 'plField2'..]) or so on..
   List<Expense> plExpenses;
@@ -3048,14 +3049,14 @@ class Expensecategory {
         .and;
   }
 
-// END COLLECTIONS & VIRTUALS (Expensecategory)
+// END COLLECTIONS & VIRTUALS (ExpenseCategory)
 
   static const bool _softDeleteActivated = true;
-  ExpensecategoryManager __mnExpensecategory;
+  ExpenseCategoryManager __mnExpenseCategory;
 
-  ExpensecategoryManager get _mnExpensecategory {
-    return __mnExpensecategory =
-        __mnExpensecategory ?? ExpensecategoryManager();
+  ExpenseCategoryManager get _mnExpenseCategory {
+    return __mnExpenseCategory =
+        __mnExpenseCategory ?? ExpenseCategoryManager();
   }
 
   // METHODS
@@ -3078,7 +3079,7 @@ class Expensecategory {
     }
 
     if (icon_id != null) {
-      map['icon_id'] = forView ? plIcon.name : icon_id;
+      map['icon_id'] = forView ? plAppIcon.name : icon_id;
     }
 
     if (created_at != null) {
@@ -3117,7 +3118,7 @@ class Expensecategory {
     }
 
     if (icon_id != null) {
-      map['icon_id'] = forView ? plIcon.name : icon_id;
+      map['icon_id'] = forView ? plAppIcon.name : icon_id;
     }
 
     if (created_at != null) {
@@ -3132,21 +3133,21 @@ class Expensecategory {
       map['isDeleted'] = forQuery ? (isDeleted ? 1 : 0) : isDeleted;
     }
 
-// COLLECTIONS (Expensecategory)
+// COLLECTIONS (ExpenseCategory)
     if (!forQuery) {
       map['Expenses'] = await getExpenses().toMapList();
     }
-// END COLLECTIONS (Expensecategory)
+// END COLLECTIONS (ExpenseCategory)
 
     return map;
   }
 
-  /// This method returns Json String [Expensecategory]
+  /// This method returns Json String [ExpenseCategory]
   String toJson() {
     return json.encode(toMap(forJson: true));
   }
 
-  /// This method returns Json String [Expensecategory]
+  /// This method returns Json String [ExpenseCategory]
   Future<String> toJsonWithChilds() async {
     return json.encode(await toMapWithChildren(false, true));
   }
@@ -3174,14 +3175,14 @@ class Expensecategory {
     ];
   }
 
-  static Future<List<Expensecategory>> fromWebUrl(String url,
+  static Future<List<ExpenseCategory>> fromWebUrl(String url,
       {Map<String, String> headers}) async {
     try {
       final response = await http.get(url, headers: headers);
       return await fromJson(response.body);
     } catch (e) {
       print(
-          'SQFENTITY ERROR Expensecategory.fromWebUrl: ErrorMessage: ${e.toString()}');
+          'SQFENTITY ERROR ExpenseCategory.fromWebUrl: ErrorMessage: ${e.toString()}');
       return null;
     }
   }
@@ -3190,31 +3191,31 @@ class Expensecategory {
     return http.post(url, headers: headers, body: toJson());
   }
 
-  static Future<List<Expensecategory>> fromJson(String jsonBody) async {
+  static Future<List<ExpenseCategory>> fromJson(String jsonBody) async {
     final Iterable list = await json.decode(jsonBody) as Iterable;
-    var objList = <Expensecategory>[];
+    var objList = <ExpenseCategory>[];
     try {
       objList = list
           .map((expensecategory) =>
-              Expensecategory.fromMap(expensecategory as Map<String, dynamic>))
+              ExpenseCategory.fromMap(expensecategory as Map<String, dynamic>))
           .toList();
     } catch (e) {
       print(
-          'SQFENTITY ERROR Expensecategory.fromJson: ErrorMessage: ${e.toString()}');
+          'SQFENTITY ERROR ExpenseCategory.fromJson: ErrorMessage: ${e.toString()}');
     }
     return objList;
   }
 
-  static Future<List<Expensecategory>> fromMapList(List<dynamic> data,
+  static Future<List<ExpenseCategory>> fromMapList(List<dynamic> data,
       {bool preload = false,
       List<String> preloadFields,
       bool loadParents = false,
       List<String> loadedFields,
       bool setDefaultValues = true}) async {
-    final List<Expensecategory> objList = <Expensecategory>[];
+    final List<ExpenseCategory> objList = <ExpenseCategory>[];
     loadedFields = loadedFields ?? [];
     for (final map in data) {
-      final obj = Expensecategory.fromMap(map as Map<String, dynamic>,
+      final obj = ExpenseCategory.fromMap(map as Map<String, dynamic>,
           setDefaultValues: setDefaultValues);
       // final List<String> _loadedFields = List<String>.from(loadedFields);
 
@@ -3236,13 +3237,13 @@ class Expensecategory {
       // RELATIONSHIPS PRELOAD
       if (preload || loadParents) {
         loadedFields = loadedFields ?? [];
-        if (/*!_loadedFields.contains('icon.plIcon') && */ (preloadFields ==
+        if (/*!_loadedFields.contains('icon.plAppIcon') && */ (preloadFields ==
                 null ||
             loadParents ||
-            preloadFields.contains('plIcon'))) {
-          /*_loadedFields.add('icon.plIcon');*/
-          obj.plIcon = obj.plIcon ??
-              await obj.getIcon(
+            preloadFields.contains('plAppIcon'))) {
+          /*_loadedFields.add('icon.plAppIcon');*/
+          obj.plAppIcon = obj.plAppIcon ??
+              await obj.getAppIcon(
                   loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
       } // END RELATIONSHIPS PRELOAD
@@ -3252,7 +3253,7 @@ class Expensecategory {
     return objList;
   }
 
-  /// returns Expensecategory by ID if exist, otherwise returns null
+  /// returns ExpenseCategory by ID if exist, otherwise returns null
   ///
   /// Primary Keys: int expense_category_id
   ///
@@ -3267,8 +3268,8 @@ class Expensecategory {
   /// bool loadParents: if true, loads all parent objects until the object has no parent
 
   ///
-  /// <returns>returns Expensecategory if exist, otherwise returns null
-  Future<Expensecategory> getById(int expense_category_id,
+  /// <returns>returns ExpenseCategory if exist, otherwise returns null
+  Future<ExpenseCategory> getById(int expense_category_id,
       {bool preload = false,
       List<String> preloadFields,
       bool loadParents = false,
@@ -3276,10 +3277,10 @@ class Expensecategory {
     if (expense_category_id == null) {
       return null;
     }
-    Expensecategory obj;
-    final data = await _mnExpensecategory.getById([expense_category_id]);
+    ExpenseCategory obj;
+    final data = await _mnExpenseCategory.getById([expense_category_id]);
     if (data.length != 0) {
-      obj = Expensecategory.fromMap(data[0] as Map<String, dynamic>);
+      obj = ExpenseCategory.fromMap(data[0] as Map<String, dynamic>);
       // final List<String> _loadedFields = loadedFields ?? [];
 
       // RELATIONSHIPS PRELOAD CHILD
@@ -3300,13 +3301,13 @@ class Expensecategory {
       // RELATIONSHIPS PRELOAD
       if (preload || loadParents) {
         loadedFields = loadedFields ?? [];
-        if (/*!_loadedFields.contains('icon.plIcon') && */ (preloadFields ==
+        if (/*!_loadedFields.contains('icon.plAppIcon') && */ (preloadFields ==
                 null ||
             loadParents ||
-            preloadFields.contains('plIcon'))) {
-          /*_loadedFields.add('icon.plIcon');*/
-          obj.plIcon = obj.plIcon ??
-              await obj.getIcon(
+            preloadFields.contains('plAppIcon'))) {
+          /*_loadedFields.add('icon.plAppIcon');*/
+          obj.plAppIcon = obj.plAppIcon ??
+              await obj.getAppIcon(
                   loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
       } // END RELATIONSHIPS PRELOAD
@@ -3317,35 +3318,35 @@ class Expensecategory {
     return obj;
   }
 
-  /// Saves the (Expensecategory) object. If the expense_category_id field is null, saves as a new record and returns new expense_category_id, if expense_category_id is not null then updates record
+  /// Saves the (ExpenseCategory) object. If the expense_category_id field is null, saves as a new record and returns new expense_category_id, if expense_category_id is not null then updates record
 
   /// <returns>Returns expense_category_id
   Future<int> save() async {
     if (expense_category_id == null || expense_category_id == 0) {
-      expense_category_id = await _mnExpensecategory.insert(this);
+      expense_category_id = await _mnExpenseCategory.insert(this);
     } else {
       // expense_category_id= await _upsert(); // removed in sqfentity_gen 1.3.0+6
-      await _mnExpensecategory.update(this);
+      await _mnExpenseCategory.update(this);
     }
 
     return expense_category_id;
   }
 
-  /// saveAs Expensecategory. Returns a new Primary Key value of Expensecategory
+  /// saveAs ExpenseCategory. Returns a new Primary Key value of ExpenseCategory
 
-  /// <returns>Returns a new Primary Key value of Expensecategory
+  /// <returns>Returns a new Primary Key value of ExpenseCategory
   Future<int> saveAs() async {
     expense_category_id = null;
 
     return save();
   }
 
-  /// saveAll method saves the sent List<Expensecategory> as a bulk in one transaction
+  /// saveAll method saves the sent List<ExpenseCategory> as a bulk in one transaction
   ///
   /// Returns a <List<BoolResult>>
   static Future<List<dynamic>> saveAll(
-      List<Expensecategory> expensecategories) async {
-    // final results = _mnExpensecategory.saveAll('INSERT OR REPLACE INTO expensecategory (expense_category_id,name, budget, priority, icon_id, created_at,isDeleted)  VALUES (?,?,?,?,?,?,?)',expensecategories);
+      List<ExpenseCategory> expensecategories) async {
+    // final results = _mnExpenseCategory.saveAll('INSERT OR REPLACE INTO expensecategory (expense_category_id,name, budget, priority, icon_id, created_at,isDeleted)  VALUES (?,?,?,?,?,?,?)',expensecategories);
     // return results; removed in sqfentity_gen 1.3.0+6
     await DbModel().batchStart();
     for (final obj in expensecategories) {
@@ -3367,7 +3368,7 @@ class Expensecategory {
   /// <returns>Returns expense_category_id
   Future<int> upsert() async {
     try {
-      if (await _mnExpensecategory.rawInsert(
+      if (await _mnExpenseCategory.rawInsert(
               'INSERT OR REPLACE INTO expensecategory (expense_category_id,name, budget, priority, icon_id, created_at,isDeleted)  VALUES (?,?,?,?,?,?,?)',
               [
                 expense_category_id,
@@ -3382,41 +3383,41 @@ class Expensecategory {
         saveResult = BoolResult(
             success: true,
             successMessage:
-                'Expensecategory expense_category_id=$expense_category_id updated successfully');
+                'ExpenseCategory expense_category_id=$expense_category_id updated successfully');
       } else {
         saveResult = BoolResult(
             success: false,
             errorMessage:
-                'Expensecategory expense_category_id=$expense_category_id did not update');
+                'ExpenseCategory expense_category_id=$expense_category_id did not update');
       }
       return expense_category_id;
     } catch (e) {
       saveResult = BoolResult(
           success: false,
-          errorMessage: 'Expensecategory Save failed. Error: ${e.toString()}');
+          errorMessage: 'ExpenseCategory Save failed. Error: ${e.toString()}');
       return 0;
     }
   }
 
-  /// inserts or replaces the sent List<<Expensecategory>> as a bulk in one transaction.
+  /// inserts or replaces the sent List<<ExpenseCategory>> as a bulk in one transaction.
   ///
   /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
   ///
   /// Returns a BoolCommitResult
   Future<BoolCommitResult> upsertAll(
-      List<Expensecategory> expensecategories) async {
-    final results = await _mnExpensecategory.rawInsertAll(
+      List<ExpenseCategory> expensecategories) async {
+    final results = await _mnExpenseCategory.rawInsertAll(
         'INSERT OR REPLACE INTO expensecategory (expense_category_id,name, budget, priority, icon_id, created_at,isDeleted)  VALUES (?,?,?,?,?,?,?)',
         expensecategories);
     return results;
   }
 
-  /// Deletes Expensecategory
+  /// Deletes ExpenseCategory
 
   /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
   Future<BoolResult> delete([bool hardDelete = false]) async {
     print(
-        'SQFENTITIY: delete Expensecategory invoked (expense_category_id=$expense_category_id)');
+        'SQFENTITIY: delete ExpenseCategory invoked (expense_category_id=$expense_category_id)');
     if (await Expense()
             .select()
             .expense_category_id
@@ -3430,11 +3431,11 @@ class Expensecategory {
               'SQFENTITY ERROR: The DELETE statement conflicted with the REFERENCE RELATIONSHIP (Expense.expense_category_id)');
     }
     if (!_softDeleteActivated || hardDelete || isDeleted) {
-      return _mnExpensecategory.delete(QueryParams(
+      return _mnExpenseCategory.delete(QueryParams(
           whereString: 'expense_category_id=?',
           whereArguments: [expense_category_id]));
     } else {
-      return _mnExpensecategory.updateBatch(
+      return _mnExpenseCategory.updateBatch(
           QueryParams(
               whereString: 'expense_category_id=?',
               whereArguments: [expense_category_id]),
@@ -3442,14 +3443,14 @@ class Expensecategory {
     }
   }
 
-  /// Recover Expensecategory>
+  /// Recover ExpenseCategory>
 
   /// <returns>BoolResult res.success=Recovered, not res.success=Can not recovered
   Future<BoolResult> recover([bool recoverChilds = true]) async {
     print(
-        'SQFENTITIY: recover Expensecategory invoked (expense_category_id=$expense_category_id)');
+        'SQFENTITIY: recover ExpenseCategory invoked (expense_category_id=$expense_category_id)');
     {
-      return _mnExpensecategory.updateBatch(
+      return _mnExpenseCategory.updateBatch(
           QueryParams(
               whereString: 'expense_category_id=?',
               whereArguments: [expense_category_id]),
@@ -3457,16 +3458,16 @@ class Expensecategory {
     }
   }
 
-  ExpensecategoryFilterBuilder select(
+  ExpenseCategoryFilterBuilder select(
       {List<String> columnsToSelect, bool getIsDeleted}) {
-    return ExpensecategoryFilterBuilder(this)
+    return ExpenseCategoryFilterBuilder(this)
       .._getIsDeleted = getIsDeleted == true
       ..qparams.selectColumns = columnsToSelect;
   }
 
-  ExpensecategoryFilterBuilder distinct(
+  ExpenseCategoryFilterBuilder distinct(
       {List<String> columnsToSelect, bool getIsDeleted}) {
-    return ExpensecategoryFilterBuilder(this)
+    return ExpenseCategoryFilterBuilder(this)
       .._getIsDeleted = getIsDeleted == true
       ..qparams.selectColumns = columnsToSelect
       ..qparams.distinct = true;
@@ -3498,21 +3499,21 @@ class Expensecategory {
 }
 // endregion expensecategory
 
-// region ExpensecategoryField
-class ExpensecategoryField extends SearchCriteria {
-  ExpensecategoryField(this.expensecategoryFB) {
+// region ExpenseCategoryField
+class ExpenseCategoryField extends SearchCriteria {
+  ExpenseCategoryField(this.expensecategoryFB) {
     param = DbParameter();
   }
   DbParameter param;
   String _waitingNot = '';
-  ExpensecategoryFilterBuilder expensecategoryFB;
+  ExpenseCategoryFilterBuilder expensecategoryFB;
 
-  ExpensecategoryField get not {
+  ExpenseCategoryField get not {
     _waitingNot = ' NOT ';
     return this;
   }
 
-  ExpensecategoryFilterBuilder equals(dynamic pValue) {
+  ExpenseCategoryFilterBuilder equals(dynamic pValue) {
     param.expression = '=';
     expensecategoryFB._addedBlocks = _waitingNot == ''
         ? setCriteria(pValue, expensecategoryFB.parameters, param,
@@ -3525,7 +3526,7 @@ class ExpensecategoryField extends SearchCriteria {
     return expensecategoryFB;
   }
 
-  ExpensecategoryFilterBuilder equalsOrNull(dynamic pValue) {
+  ExpenseCategoryFilterBuilder equalsOrNull(dynamic pValue) {
     param.expression = '=';
     expensecategoryFB._addedBlocks = _waitingNot == ''
         ? setCriteria(pValue, expensecategoryFB.parameters, param,
@@ -3538,7 +3539,7 @@ class ExpensecategoryField extends SearchCriteria {
     return expensecategoryFB;
   }
 
-  ExpensecategoryFilterBuilder isNull() {
+  ExpenseCategoryFilterBuilder isNull() {
     expensecategoryFB._addedBlocks = setCriteria(
         0,
         expensecategoryFB.parameters,
@@ -3551,7 +3552,7 @@ class ExpensecategoryField extends SearchCriteria {
     return expensecategoryFB;
   }
 
-  ExpensecategoryFilterBuilder contains(dynamic pValue) {
+  ExpenseCategoryFilterBuilder contains(dynamic pValue) {
     if (pValue != null) {
       expensecategoryFB._addedBlocks = setCriteria(
           '%${pValue.toString()}%',
@@ -3567,7 +3568,7 @@ class ExpensecategoryField extends SearchCriteria {
     return expensecategoryFB;
   }
 
-  ExpensecategoryFilterBuilder startsWith(dynamic pValue) {
+  ExpenseCategoryFilterBuilder startsWith(dynamic pValue) {
     if (pValue != null) {
       expensecategoryFB._addedBlocks = setCriteria(
           '${pValue.toString()}%',
@@ -3586,7 +3587,7 @@ class ExpensecategoryField extends SearchCriteria {
     return expensecategoryFB;
   }
 
-  ExpensecategoryFilterBuilder endsWith(dynamic pValue) {
+  ExpenseCategoryFilterBuilder endsWith(dynamic pValue) {
     if (pValue != null) {
       expensecategoryFB._addedBlocks = setCriteria(
           '%${pValue.toString()}',
@@ -3602,7 +3603,7 @@ class ExpensecategoryField extends SearchCriteria {
     return expensecategoryFB;
   }
 
-  ExpensecategoryFilterBuilder between(dynamic pFirst, dynamic pLast) {
+  ExpenseCategoryFilterBuilder between(dynamic pFirst, dynamic pLast) {
     if (pFirst != null && pLast != null) {
       expensecategoryFB._addedBlocks = setCriteria(
           pFirst,
@@ -3650,7 +3651,7 @@ class ExpensecategoryField extends SearchCriteria {
     return expensecategoryFB;
   }
 
-  ExpensecategoryFilterBuilder greaterThan(dynamic pValue) {
+  ExpenseCategoryFilterBuilder greaterThan(dynamic pValue) {
     param.expression = '>';
     expensecategoryFB._addedBlocks = _waitingNot == ''
         ? setCriteria(pValue, expensecategoryFB.parameters, param,
@@ -3663,7 +3664,7 @@ class ExpensecategoryField extends SearchCriteria {
     return expensecategoryFB;
   }
 
-  ExpensecategoryFilterBuilder lessThan(dynamic pValue) {
+  ExpenseCategoryFilterBuilder lessThan(dynamic pValue) {
     param.expression = '<';
     expensecategoryFB._addedBlocks = _waitingNot == ''
         ? setCriteria(pValue, expensecategoryFB.parameters, param,
@@ -3676,7 +3677,7 @@ class ExpensecategoryField extends SearchCriteria {
     return expensecategoryFB;
   }
 
-  ExpensecategoryFilterBuilder greaterThanOrEquals(dynamic pValue) {
+  ExpenseCategoryFilterBuilder greaterThanOrEquals(dynamic pValue) {
     param.expression = '>=';
     expensecategoryFB._addedBlocks = _waitingNot == ''
         ? setCriteria(pValue, expensecategoryFB.parameters, param,
@@ -3689,7 +3690,7 @@ class ExpensecategoryField extends SearchCriteria {
     return expensecategoryFB;
   }
 
-  ExpensecategoryFilterBuilder lessThanOrEquals(dynamic pValue) {
+  ExpenseCategoryFilterBuilder lessThanOrEquals(dynamic pValue) {
     param.expression = '<=';
     expensecategoryFB._addedBlocks = _waitingNot == ''
         ? setCriteria(pValue, expensecategoryFB.parameters, param,
@@ -3702,7 +3703,7 @@ class ExpensecategoryField extends SearchCriteria {
     return expensecategoryFB;
   }
 
-  ExpensecategoryFilterBuilder inValues(dynamic pValue) {
+  ExpenseCategoryFilterBuilder inValues(dynamic pValue) {
     expensecategoryFB._addedBlocks = setCriteria(
         pValue,
         expensecategoryFB.parameters,
@@ -3715,11 +3716,11 @@ class ExpensecategoryField extends SearchCriteria {
     return expensecategoryFB;
   }
 }
-// endregion ExpensecategoryField
+// endregion ExpenseCategoryField
 
-// region ExpensecategoryFilterBuilder
-class ExpensecategoryFilterBuilder extends SearchCriteria {
-  ExpensecategoryFilterBuilder(Expensecategory obj) {
+// region ExpenseCategoryFilterBuilder
+class ExpenseCategoryFilterBuilder extends SearchCriteria {
+  ExpenseCategoryFilterBuilder(ExpenseCategory obj) {
     whereString = '';
     qparams = QueryParams();
     parameters = <DbParameter>[];
@@ -3736,13 +3737,13 @@ class ExpensecategoryFilterBuilder extends SearchCriteria {
   int _blockIndex = 0;
   List<DbParameter> parameters;
   List<String> orderByList;
-  Expensecategory _obj;
+  ExpenseCategory _obj;
   QueryParams qparams;
   int _pagesize;
   int _page;
 
   /// put the sql keyword 'AND'
-  ExpensecategoryFilterBuilder get and {
+  ExpenseCategoryFilterBuilder get and {
     if (parameters.isNotEmpty) {
       parameters[parameters.length - 1].wOperator = ' AND ';
     }
@@ -3750,7 +3751,7 @@ class ExpensecategoryFilterBuilder extends SearchCriteria {
   }
 
   /// put the sql keyword 'OR'
-  ExpensecategoryFilterBuilder get or {
+  ExpenseCategoryFilterBuilder get or {
     if (parameters.isNotEmpty) {
       parameters[parameters.length - 1].wOperator = ' OR ';
     }
@@ -3758,7 +3759,7 @@ class ExpensecategoryFilterBuilder extends SearchCriteria {
   }
 
   /// open parentheses
-  ExpensecategoryFilterBuilder get startBlock {
+  ExpenseCategoryFilterBuilder get startBlock {
     _addedBlocks.waitingStartBlock.add(true);
     _addedBlocks.needEndBlock.add(false);
     _blockIndex++;
@@ -3769,7 +3770,7 @@ class ExpensecategoryFilterBuilder extends SearchCriteria {
   }
 
   /// String whereCriteria, write raw query without 'where' keyword. Like this: 'field1 like 'test%' and field2 = 3'
-  ExpensecategoryFilterBuilder where(String whereCriteria,
+  ExpenseCategoryFilterBuilder where(String whereCriteria,
       {dynamic parameterValue}) {
     if (whereCriteria != null && whereCriteria != '') {
       final DbParameter param = DbParameter(
@@ -3785,7 +3786,7 @@ class ExpensecategoryFilterBuilder extends SearchCriteria {
   /// page = page number,
   ///
   /// pagesize = row(s) per page
-  ExpensecategoryFilterBuilder page(int page, int pagesize) {
+  ExpenseCategoryFilterBuilder page(int page, int pagesize) {
     if (page > 0) {
       _page = page;
     }
@@ -3796,7 +3797,7 @@ class ExpensecategoryFilterBuilder extends SearchCriteria {
   }
 
   /// int count = LIMIT
-  ExpensecategoryFilterBuilder top(int count) {
+  ExpenseCategoryFilterBuilder top(int count) {
     if (count > 0) {
       _pagesize = count;
     }
@@ -3804,7 +3805,7 @@ class ExpensecategoryFilterBuilder extends SearchCriteria {
   }
 
   /// close parentheses
-  ExpensecategoryFilterBuilder get endBlock {
+  ExpenseCategoryFilterBuilder get endBlock {
     if (_addedBlocks.needEndBlock[_blockIndex]) {
       parameters[parameters.length - 1].whereString += ' ) ';
     }
@@ -3819,7 +3820,7 @@ class ExpensecategoryFilterBuilder extends SearchCriteria {
   /// Example 1: argFields='name, date'
   ///
   /// Example 2: argFields = ['name', 'date']
-  ExpensecategoryFilterBuilder orderBy(dynamic argFields) {
+  ExpenseCategoryFilterBuilder orderBy(dynamic argFields) {
     if (argFields != null) {
       if (argFields is String) {
         orderByList.add(argFields);
@@ -3839,7 +3840,7 @@ class ExpensecategoryFilterBuilder extends SearchCriteria {
   /// Example 1: argFields='field1, field2'
   ///
   /// Example 2: argFields = ['field1', 'field2']
-  ExpensecategoryFilterBuilder orderByDesc(dynamic argFields) {
+  ExpenseCategoryFilterBuilder orderByDesc(dynamic argFields) {
     if (argFields != null) {
       if (argFields is String) {
         orderByList.add('$argFields desc ');
@@ -3859,7 +3860,7 @@ class ExpensecategoryFilterBuilder extends SearchCriteria {
   /// Example 1: argFields='field1, field2'
   ///
   /// Example 2: argFields = ['field1', 'field2']
-  ExpensecategoryFilterBuilder groupBy(dynamic argFields) {
+  ExpenseCategoryFilterBuilder groupBy(dynamic argFields) {
     if (argFields != null) {
       if (argFields is String) {
         groupByList.add(' $argFields ');
@@ -3879,7 +3880,7 @@ class ExpensecategoryFilterBuilder extends SearchCriteria {
   /// Example 1: argFields='name, date'
   ///
   /// Example 2: argFields = ['name', 'date']
-  ExpensecategoryFilterBuilder having(dynamic argFields) {
+  ExpenseCategoryFilterBuilder having(dynamic argFields) {
     if (argFields != null) {
       if (argFields is String) {
         havingList.add(argFields);
@@ -3894,48 +3895,48 @@ class ExpensecategoryFilterBuilder extends SearchCriteria {
     return this;
   }
 
-  ExpensecategoryField setField(
-      ExpensecategoryField field, String colName, DbType dbtype) {
-    return ExpensecategoryField(this)
+  ExpenseCategoryField setField(
+      ExpenseCategoryField field, String colName, DbType dbtype) {
+    return ExpenseCategoryField(this)
       ..param = DbParameter(
           dbType: dbtype,
           columnName: colName,
           wStartBlock: _addedBlocks.waitingStartBlock[_blockIndex]);
   }
 
-  ExpensecategoryField _expense_category_id;
-  ExpensecategoryField get expense_category_id {
+  ExpenseCategoryField _expense_category_id;
+  ExpenseCategoryField get expense_category_id {
     return _expense_category_id =
         setField(_expense_category_id, 'expense_category_id', DbType.integer);
   }
 
-  ExpensecategoryField _name;
-  ExpensecategoryField get name {
+  ExpenseCategoryField _name;
+  ExpenseCategoryField get name {
     return _name = setField(_name, 'name', DbType.text);
   }
 
-  ExpensecategoryField _budget;
-  ExpensecategoryField get budget {
+  ExpenseCategoryField _budget;
+  ExpenseCategoryField get budget {
     return _budget = setField(_budget, 'budget', DbType.integer);
   }
 
-  ExpensecategoryField _priority;
-  ExpensecategoryField get priority {
+  ExpenseCategoryField _priority;
+  ExpenseCategoryField get priority {
     return _priority = setField(_priority, 'priority', DbType.integer);
   }
 
-  ExpensecategoryField _icon_id;
-  ExpensecategoryField get icon_id {
+  ExpenseCategoryField _icon_id;
+  ExpenseCategoryField get icon_id {
     return _icon_id = setField(_icon_id, 'icon_id', DbType.integer);
   }
 
-  ExpensecategoryField _created_at;
-  ExpensecategoryField get created_at {
+  ExpenseCategoryField _created_at;
+  ExpenseCategoryField get created_at {
     return _created_at = setField(_created_at, 'created_at', DbType.datetime);
   }
 
-  ExpensecategoryField _isDeleted;
-  ExpensecategoryField get isDeleted {
+  ExpenseCategoryField _isDeleted;
+  ExpenseCategoryField get isDeleted {
     return _isDeleted = setField(_isDeleted, 'isDeleted', DbType.bool);
   }
 
@@ -4017,7 +4018,7 @@ class ExpensecategoryFilterBuilder extends SearchCriteria {
         whereString += param.whereString;
       }
     }
-    if (Expensecategory._softDeleteActivated) {
+    if (ExpenseCategory._softDeleteActivated) {
       if (whereString != '') {
         whereString =
             '${!_getIsDeleted ? 'ifnull(isDeleted,0)=0 AND' : ''} ($whereString)';
@@ -4036,7 +4037,7 @@ class ExpensecategoryFilterBuilder extends SearchCriteria {
       ..having = havingList.join(',');
   }
 
-  /// Deletes List<Expensecategory> bulk by query
+  /// Deletes List<ExpenseCategory> bulk by query
   ///
   /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
   Future<BoolResult> delete([bool hardDelete = false]) async {
@@ -4058,20 +4059,20 @@ class ExpensecategoryFilterBuilder extends SearchCriteria {
               'SQFENTITY ERROR: The DELETE statement conflicted with the REFERENCE RELATIONSHIP (Expense.expense_category_id)');
     }
 
-    if (Expensecategory._softDeleteActivated && !hardDelete) {
-      r = await _obj._mnExpensecategory.updateBatch(qparams, {'isDeleted': 1});
+    if (ExpenseCategory._softDeleteActivated && !hardDelete) {
+      r = await _obj._mnExpenseCategory.updateBatch(qparams, {'isDeleted': 1});
     } else {
-      r = await _obj._mnExpensecategory.delete(qparams);
+      r = await _obj._mnExpenseCategory.delete(qparams);
     }
     return r;
   }
 
-  /// Recover List<Expensecategory> bulk by query
+  /// Recover List<ExpenseCategory> bulk by query
   Future<BoolResult> recover() async {
     _getIsDeleted = true;
     _buildParameters();
-    print('SQFENTITIY: recover Expensecategory bulk invoked');
-    return _obj._mnExpensecategory.updateBatch(qparams, {'isDeleted': 0});
+    print('SQFENTITIY: recover ExpenseCategory bulk invoked');
+    return _obj._mnExpenseCategory.updateBatch(qparams, {'isDeleted': 0});
   }
 
   /// using:
@@ -4085,10 +4086,10 @@ class ExpensecategoryFilterBuilder extends SearchCriteria {
       qparams.whereString =
           'expense_category_id IN (SELECT expense_category_id from expensecategory ${qparams.whereString.isNotEmpty ? 'WHERE ${qparams.whereString}' : ''}${qparams.limit > 0 ? ' LIMIT ${qparams.limit}' : ''}${qparams.offset > 0 ? ' OFFSET ${qparams.offset}' : ''})';
     }
-    return _obj._mnExpensecategory.updateBatch(qparams, values);
+    return _obj._mnExpenseCategory.updateBatch(qparams, values);
   }
 
-  /// This method always returns Expensecategory Obj if exist, otherwise returns null
+  /// This method always returns ExpenseCategory Obj if exist, otherwise returns null
   ///
   /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
@@ -4101,19 +4102,19 @@ class ExpensecategoryFilterBuilder extends SearchCriteria {
   /// bool loadParents: if true, loads all parent objects until the object has no parent
 
   ///
-  /// <returns>List<Expensecategory>
-  Future<Expensecategory> toSingle(
+  /// <returns>List<ExpenseCategory>
+  Future<ExpenseCategory> toSingle(
       {bool preload = false,
       List<String> preloadFields,
       bool loadParents = false,
       List<String> loadedFields}) async {
     _pagesize = 1;
     _buildParameters();
-    final objFuture = _obj._mnExpensecategory.toList(qparams);
+    final objFuture = _obj._mnExpenseCategory.toList(qparams);
     final data = await objFuture;
-    Expensecategory obj;
+    ExpenseCategory obj;
     if (data.isNotEmpty) {
-      obj = Expensecategory.fromMap(data[0] as Map<String, dynamic>);
+      obj = ExpenseCategory.fromMap(data[0] as Map<String, dynamic>);
       // final List<String> _loadedFields = loadedFields ?? [];
 
       // RELATIONSHIPS PRELOAD CHILD
@@ -4134,13 +4135,13 @@ class ExpensecategoryFilterBuilder extends SearchCriteria {
       // RELATIONSHIPS PRELOAD
       if (preload || loadParents) {
         loadedFields = loadedFields ?? [];
-        if (/*!_loadedFields.contains('icon.plIcon') && */ (preloadFields ==
+        if (/*!_loadedFields.contains('icon.plAppIcon') && */ (preloadFields ==
                 null ||
             loadParents ||
-            preloadFields.contains('plIcon'))) {
-          /*_loadedFields.add('icon.plIcon');*/
-          obj.plIcon = obj.plIcon ??
-              await obj.getIcon(
+            preloadFields.contains('plAppIcon'))) {
+          /*_loadedFields.add('icon.plAppIcon');*/
+          obj.plAppIcon = obj.plAppIcon ??
+              await obj.getAppIcon(
                   loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
       } // END RELATIONSHIPS PRELOAD
@@ -4151,7 +4152,7 @@ class ExpensecategoryFilterBuilder extends SearchCriteria {
     return obj;
   }
 
-  /// This method returns int. [Expensecategory]
+  /// This method returns int. [ExpenseCategory]
   ///
   /// <returns>int
   Future<int> toCount(
@@ -4159,7 +4160,7 @@ class ExpensecategoryFilterBuilder extends SearchCriteria {
     _buildParameters();
     qparams.selectColumns = ['COUNT(1) AS CNT'];
     final expensecategoriesFuture =
-        await _obj._mnExpensecategory.toList(qparams);
+        await _obj._mnExpenseCategory.toList(qparams);
     final int count = expensecategoriesFuture[0]['CNT'] as int;
     if (expensecategoryCount != null) {
       expensecategoryCount(count);
@@ -4167,7 +4168,7 @@ class ExpensecategoryFilterBuilder extends SearchCriteria {
     return count;
   }
 
-  /// This method returns List<Expensecategory> [Expensecategory]
+  /// This method returns List<ExpenseCategory> [ExpenseCategory]
   ///
   /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
@@ -4180,15 +4181,15 @@ class ExpensecategoryFilterBuilder extends SearchCriteria {
   /// bool loadParents: if true, loads all parent objects until the object has no parent
 
   ///
-  /// <returns>List<Expensecategory>
-  Future<List<Expensecategory>> toList(
+  /// <returns>List<ExpenseCategory>
+  Future<List<ExpenseCategory>> toList(
       {bool preload = false,
       List<String> preloadFields,
       bool loadParents = false,
       List<String> loadedFields}) async {
     final data = await toMapList();
-    final List<Expensecategory> expensecategoriesData =
-        await Expensecategory.fromMapList(data,
+    final List<ExpenseCategory> expensecategoriesData =
+        await ExpenseCategory.fromMapList(data,
             preload: preload,
             preloadFields: preloadFields,
             loadParents: loadParents,
@@ -4197,7 +4198,7 @@ class ExpensecategoryFilterBuilder extends SearchCriteria {
     return expensecategoriesData;
   }
 
-  /// This method returns Json String [Expensecategory]
+  /// This method returns Json String [ExpenseCategory]
   Future<String> toJson() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -4207,7 +4208,7 @@ class ExpensecategoryFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method returns Json String. [Expensecategory]
+  /// This method returns Json String. [ExpenseCategory]
   Future<String> toJsonWithChilds() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -4217,15 +4218,15 @@ class ExpensecategoryFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method returns List<dynamic>. [Expensecategory]
+  /// This method returns List<dynamic>. [ExpenseCategory]
   ///
   /// <returns>List<dynamic>
   Future<List<dynamic>> toMapList() async {
     _buildParameters();
-    return await _obj._mnExpensecategory.toList(qparams);
+    return await _obj._mnExpenseCategory.toList(qparams);
   }
 
-  /// This method returns Primary Key List SQL and Parameters retVal = Map<String,dynamic>. [Expensecategory]
+  /// This method returns Primary Key List SQL and Parameters retVal = Map<String,dynamic>. [ExpenseCategory]
   ///
   /// retVal['sql'] = SQL statement string, retVal['args'] = whereArguments List<dynamic>;
   ///
@@ -4250,7 +4251,7 @@ class ExpensecategoryFilterBuilder extends SearchCriteria {
     final List<int> expense_category_idData = <int>[];
     qparams.selectColumns = ['expense_category_id'];
     final expense_category_idFuture =
-        await _obj._mnExpensecategory.toList(qparams);
+        await _obj._mnExpenseCategory.toList(qparams);
 
     final int count = expense_category_idFuture.length;
     for (int i = 0; i < count; i++) {
@@ -4260,13 +4261,13 @@ class ExpensecategoryFilterBuilder extends SearchCriteria {
     return expense_category_idData;
   }
 
-  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..  [Expensecategory]
+  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..  [ExpenseCategory]
   ///
   /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
   Future<List<dynamic>> toListObject() async {
     _buildParameters();
 
-    final objectFuture = _obj._mnExpensecategory.toList(qparams);
+    final objectFuture = _obj._mnExpenseCategory.toList(qparams);
 
     final List<dynamic> objectsData = <dynamic>[];
     final data = await objectFuture;
@@ -4279,12 +4280,12 @@ class ExpensecategoryFilterBuilder extends SearchCriteria {
 
   /// Returns List<String> for selected first column
   ///
-  /// Sample usage: await Expensecategory.select(columnsToSelect: ['columnName']).toListString()
+  /// Sample usage: await ExpenseCategory.select(columnsToSelect: ['columnName']).toListString()
   Future<List<String>> toListString(
       [VoidCallback Function(List<String> o) listString]) async {
     _buildParameters();
 
-    final objectFuture = _obj._mnExpensecategory.toList(qparams);
+    final objectFuture = _obj._mnExpenseCategory.toList(qparams);
 
     final List<String> objectsData = <String>[];
     final data = await objectFuture;
@@ -4298,10 +4299,10 @@ class ExpensecategoryFilterBuilder extends SearchCriteria {
     return objectsData;
   }
 }
-// endregion ExpensecategoryFilterBuilder
+// endregion ExpenseCategoryFilterBuilder
 
-// region ExpensecategoryFields
-class ExpensecategoryFields {
+// region ExpenseCategoryFields
+class ExpenseCategoryFields {
   static TableField _fExpense_category_id;
   static TableField get expense_category_id {
     return _fExpense_category_id = _fExpense_category_id ??
@@ -4344,11 +4345,11 @@ class ExpensecategoryFields {
         SqlSyntax.setField(_fIsDeleted, 'isDeleted', DbType.integer);
   }
 }
-// endregion ExpensecategoryFields
+// endregion ExpenseCategoryFields
 
-//region ExpensecategoryManager
-class ExpensecategoryManager extends SqfEntityProvider {
-  ExpensecategoryManager()
+//region ExpenseCategoryManager
+class ExpenseCategoryManager extends SqfEntityProvider {
+  ExpenseCategoryManager()
       : super(DbModel(),
             tableName: _tableName,
             primaryKeyList: _primaryKeyList,
@@ -4358,10 +4359,10 @@ class ExpensecategoryManager extends SqfEntityProvider {
   static final String _whereStr = 'expense_category_id=?';
 }
 
-//endregion ExpensecategoryManager
-// region Incomecategory
-class Incomecategory {
-  Incomecategory(
+//endregion ExpenseCategoryManager
+// region IncomeCategory
+class IncomeCategory {
+  IncomeCategory(
       {this.income_category_id,
       this.name,
       this.priority,
@@ -4370,15 +4371,15 @@ class Incomecategory {
       this.isDeleted}) {
     _setDefaultValues();
   }
-  Incomecategory.withFields(
+  IncomeCategory.withFields(
       this.name, this.priority, this.icon_id, this.created_at, this.isDeleted) {
     _setDefaultValues();
   }
-  Incomecategory.withId(this.income_category_id, this.name, this.priority,
+  IncomeCategory.withId(this.income_category_id, this.name, this.priority,
       this.icon_id, this.created_at, this.isDeleted) {
     _setDefaultValues();
   }
-  Incomecategory.fromMap(Map<String, dynamic> o,
+  IncomeCategory.fromMap(Map<String, dynamic> o,
       {bool setDefaultValues = true}) {
     if (setDefaultValues) {
       _setDefaultValues();
@@ -4403,12 +4404,12 @@ class Incomecategory {
         : null;
 
     // RELATIONSHIPS FromMAP
-    plIcon = o['icon'] != null
-        ? Icon.fromMap(o['icon'] as Map<String, dynamic>)
+    plAppIcon = o['appIcon'] != null
+        ? AppIcon.fromMap(o['appIcon'] as Map<String, dynamic>)
         : null;
     // END RELATIONSHIPS FromMAP
   }
-  // FIELDS (Incomecategory)
+  // FIELDS (IncomeCategory)
   int income_category_id;
   String name;
   int priority;
@@ -4417,23 +4418,23 @@ class Incomecategory {
   bool isDeleted;
 
   BoolResult saveResult;
-  // end FIELDS (Incomecategory)
+  // end FIELDS (IncomeCategory)
 
-// RELATIONSHIPS (Incomecategory)
+// RELATIONSHIPS (IncomeCategory)
   /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
-  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plIcon', 'plField2'..]) or so on..
-  Icon plIcon;
+  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plAppIcon', 'plField2'..]) or so on..
+  AppIcon plAppIcon;
 
-  /// get Icon By Icon_id
-  Future<Icon> getIcon(
+  /// get AppIcon By Icon_id
+  Future<AppIcon> getAppIcon(
       {bool loadParents = false, List<String> loadedFields}) async {
-    final _obj = await Icon()
+    final _obj = await AppIcon()
         .getById(icon_id, loadParents: loadParents, loadedFields: loadedFields);
     return _obj;
   }
-  // END RELATIONSHIPS (Incomecategory)
+  // END RELATIONSHIPS (IncomeCategory)
 
-// COLLECTIONS & VIRTUALS (Incomecategory)
+// COLLECTIONS & VIRTUALS (IncomeCategory)
   /// to load children of items to this field, use preload parameter. Ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
   /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plIncomes', 'plField2'..]) or so on..
   List<Income> plIncomes;
@@ -4451,13 +4452,13 @@ class Incomecategory {
         .and;
   }
 
-// END COLLECTIONS & VIRTUALS (Incomecategory)
+// END COLLECTIONS & VIRTUALS (IncomeCategory)
 
   static const bool _softDeleteActivated = true;
-  IncomecategoryManager __mnIncomecategory;
+  IncomeCategoryManager __mnIncomeCategory;
 
-  IncomecategoryManager get _mnIncomecategory {
-    return __mnIncomecategory = __mnIncomecategory ?? IncomecategoryManager();
+  IncomeCategoryManager get _mnIncomeCategory {
+    return __mnIncomeCategory = __mnIncomeCategory ?? IncomeCategoryManager();
   }
 
   // METHODS
@@ -4476,7 +4477,7 @@ class Incomecategory {
     }
 
     if (icon_id != null) {
-      map['icon_id'] = forView ? plIcon.name : icon_id;
+      map['icon_id'] = forView ? plAppIcon.name : icon_id;
     }
 
     if (created_at != null) {
@@ -4511,7 +4512,7 @@ class Incomecategory {
     }
 
     if (icon_id != null) {
-      map['icon_id'] = forView ? plIcon.name : icon_id;
+      map['icon_id'] = forView ? plAppIcon.name : icon_id;
     }
 
     if (created_at != null) {
@@ -4526,21 +4527,21 @@ class Incomecategory {
       map['isDeleted'] = forQuery ? (isDeleted ? 1 : 0) : isDeleted;
     }
 
-// COLLECTIONS (Incomecategory)
+// COLLECTIONS (IncomeCategory)
     if (!forQuery) {
       map['Incomes'] = await getIncomes().toMapList();
     }
-// END COLLECTIONS (Incomecategory)
+// END COLLECTIONS (IncomeCategory)
 
     return map;
   }
 
-  /// This method returns Json String [Incomecategory]
+  /// This method returns Json String [IncomeCategory]
   String toJson() {
     return json.encode(toMap(forJson: true));
   }
 
-  /// This method returns Json String [Incomecategory]
+  /// This method returns Json String [IncomeCategory]
   Future<String> toJsonWithChilds() async {
     return json.encode(await toMapWithChildren(false, true));
   }
@@ -4566,14 +4567,14 @@ class Incomecategory {
     ];
   }
 
-  static Future<List<Incomecategory>> fromWebUrl(String url,
+  static Future<List<IncomeCategory>> fromWebUrl(String url,
       {Map<String, String> headers}) async {
     try {
       final response = await http.get(url, headers: headers);
       return await fromJson(response.body);
     } catch (e) {
       print(
-          'SQFENTITY ERROR Incomecategory.fromWebUrl: ErrorMessage: ${e.toString()}');
+          'SQFENTITY ERROR IncomeCategory.fromWebUrl: ErrorMessage: ${e.toString()}');
       return null;
     }
   }
@@ -4582,31 +4583,31 @@ class Incomecategory {
     return http.post(url, headers: headers, body: toJson());
   }
 
-  static Future<List<Incomecategory>> fromJson(String jsonBody) async {
+  static Future<List<IncomeCategory>> fromJson(String jsonBody) async {
     final Iterable list = await json.decode(jsonBody) as Iterable;
-    var objList = <Incomecategory>[];
+    var objList = <IncomeCategory>[];
     try {
       objList = list
           .map((incomecategory) =>
-              Incomecategory.fromMap(incomecategory as Map<String, dynamic>))
+              IncomeCategory.fromMap(incomecategory as Map<String, dynamic>))
           .toList();
     } catch (e) {
       print(
-          'SQFENTITY ERROR Incomecategory.fromJson: ErrorMessage: ${e.toString()}');
+          'SQFENTITY ERROR IncomeCategory.fromJson: ErrorMessage: ${e.toString()}');
     }
     return objList;
   }
 
-  static Future<List<Incomecategory>> fromMapList(List<dynamic> data,
+  static Future<List<IncomeCategory>> fromMapList(List<dynamic> data,
       {bool preload = false,
       List<String> preloadFields,
       bool loadParents = false,
       List<String> loadedFields,
       bool setDefaultValues = true}) async {
-    final List<Incomecategory> objList = <Incomecategory>[];
+    final List<IncomeCategory> objList = <IncomeCategory>[];
     loadedFields = loadedFields ?? [];
     for (final map in data) {
-      final obj = Incomecategory.fromMap(map as Map<String, dynamic>,
+      final obj = IncomeCategory.fromMap(map as Map<String, dynamic>,
           setDefaultValues: setDefaultValues);
       // final List<String> _loadedFields = List<String>.from(loadedFields);
 
@@ -4628,13 +4629,13 @@ class Incomecategory {
       // RELATIONSHIPS PRELOAD
       if (preload || loadParents) {
         loadedFields = loadedFields ?? [];
-        if (/*!_loadedFields.contains('icon.plIcon') && */ (preloadFields ==
+        if (/*!_loadedFields.contains('icon.plAppIcon') && */ (preloadFields ==
                 null ||
             loadParents ||
-            preloadFields.contains('plIcon'))) {
-          /*_loadedFields.add('icon.plIcon');*/
-          obj.plIcon = obj.plIcon ??
-              await obj.getIcon(
+            preloadFields.contains('plAppIcon'))) {
+          /*_loadedFields.add('icon.plAppIcon');*/
+          obj.plAppIcon = obj.plAppIcon ??
+              await obj.getAppIcon(
                   loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
       } // END RELATIONSHIPS PRELOAD
@@ -4644,7 +4645,7 @@ class Incomecategory {
     return objList;
   }
 
-  /// returns Incomecategory by ID if exist, otherwise returns null
+  /// returns IncomeCategory by ID if exist, otherwise returns null
   ///
   /// Primary Keys: int income_category_id
   ///
@@ -4659,8 +4660,8 @@ class Incomecategory {
   /// bool loadParents: if true, loads all parent objects until the object has no parent
 
   ///
-  /// <returns>returns Incomecategory if exist, otherwise returns null
-  Future<Incomecategory> getById(int income_category_id,
+  /// <returns>returns IncomeCategory if exist, otherwise returns null
+  Future<IncomeCategory> getById(int income_category_id,
       {bool preload = false,
       List<String> preloadFields,
       bool loadParents = false,
@@ -4668,10 +4669,10 @@ class Incomecategory {
     if (income_category_id == null) {
       return null;
     }
-    Incomecategory obj;
-    final data = await _mnIncomecategory.getById([income_category_id]);
+    IncomeCategory obj;
+    final data = await _mnIncomeCategory.getById([income_category_id]);
     if (data.length != 0) {
-      obj = Incomecategory.fromMap(data[0] as Map<String, dynamic>);
+      obj = IncomeCategory.fromMap(data[0] as Map<String, dynamic>);
       // final List<String> _loadedFields = loadedFields ?? [];
 
       // RELATIONSHIPS PRELOAD CHILD
@@ -4692,13 +4693,13 @@ class Incomecategory {
       // RELATIONSHIPS PRELOAD
       if (preload || loadParents) {
         loadedFields = loadedFields ?? [];
-        if (/*!_loadedFields.contains('icon.plIcon') && */ (preloadFields ==
+        if (/*!_loadedFields.contains('icon.plAppIcon') && */ (preloadFields ==
                 null ||
             loadParents ||
-            preloadFields.contains('plIcon'))) {
-          /*_loadedFields.add('icon.plIcon');*/
-          obj.plIcon = obj.plIcon ??
-              await obj.getIcon(
+            preloadFields.contains('plAppIcon'))) {
+          /*_loadedFields.add('icon.plAppIcon');*/
+          obj.plAppIcon = obj.plAppIcon ??
+              await obj.getAppIcon(
                   loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
       } // END RELATIONSHIPS PRELOAD
@@ -4709,35 +4710,35 @@ class Incomecategory {
     return obj;
   }
 
-  /// Saves the (Incomecategory) object. If the income_category_id field is null, saves as a new record and returns new income_category_id, if income_category_id is not null then updates record
+  /// Saves the (IncomeCategory) object. If the income_category_id field is null, saves as a new record and returns new income_category_id, if income_category_id is not null then updates record
 
   /// <returns>Returns income_category_id
   Future<int> save() async {
     if (income_category_id == null || income_category_id == 0) {
-      income_category_id = await _mnIncomecategory.insert(this);
+      income_category_id = await _mnIncomeCategory.insert(this);
     } else {
       // income_category_id= await _upsert(); // removed in sqfentity_gen 1.3.0+6
-      await _mnIncomecategory.update(this);
+      await _mnIncomeCategory.update(this);
     }
 
     return income_category_id;
   }
 
-  /// saveAs Incomecategory. Returns a new Primary Key value of Incomecategory
+  /// saveAs IncomeCategory. Returns a new Primary Key value of IncomeCategory
 
-  /// <returns>Returns a new Primary Key value of Incomecategory
+  /// <returns>Returns a new Primary Key value of IncomeCategory
   Future<int> saveAs() async {
     income_category_id = null;
 
     return save();
   }
 
-  /// saveAll method saves the sent List<Incomecategory> as a bulk in one transaction
+  /// saveAll method saves the sent List<IncomeCategory> as a bulk in one transaction
   ///
   /// Returns a <List<BoolResult>>
   static Future<List<dynamic>> saveAll(
-      List<Incomecategory> incomecategories) async {
-    // final results = _mnIncomecategory.saveAll('INSERT OR REPLACE INTO incomecategory (income_category_id,name, priority, icon_id, created_at,isDeleted)  VALUES (?,?,?,?,?,?)',incomecategories);
+      List<IncomeCategory> incomecategories) async {
+    // final results = _mnIncomeCategory.saveAll('INSERT OR REPLACE INTO incomecategory (income_category_id,name, priority, icon_id, created_at,isDeleted)  VALUES (?,?,?,?,?,?)',incomecategories);
     // return results; removed in sqfentity_gen 1.3.0+6
     await DbModel().batchStart();
     for (final obj in incomecategories) {
@@ -4759,7 +4760,7 @@ class Incomecategory {
   /// <returns>Returns income_category_id
   Future<int> upsert() async {
     try {
-      if (await _mnIncomecategory.rawInsert(
+      if (await _mnIncomeCategory.rawInsert(
               'INSERT OR REPLACE INTO incomecategory (income_category_id,name, priority, icon_id, created_at,isDeleted)  VALUES (?,?,?,?,?,?)',
               [
                 income_category_id,
@@ -4773,41 +4774,41 @@ class Incomecategory {
         saveResult = BoolResult(
             success: true,
             successMessage:
-                'Incomecategory income_category_id=$income_category_id updated successfully');
+                'IncomeCategory income_category_id=$income_category_id updated successfully');
       } else {
         saveResult = BoolResult(
             success: false,
             errorMessage:
-                'Incomecategory income_category_id=$income_category_id did not update');
+                'IncomeCategory income_category_id=$income_category_id did not update');
       }
       return income_category_id;
     } catch (e) {
       saveResult = BoolResult(
           success: false,
-          errorMessage: 'Incomecategory Save failed. Error: ${e.toString()}');
+          errorMessage: 'IncomeCategory Save failed. Error: ${e.toString()}');
       return 0;
     }
   }
 
-  /// inserts or replaces the sent List<<Incomecategory>> as a bulk in one transaction.
+  /// inserts or replaces the sent List<<IncomeCategory>> as a bulk in one transaction.
   ///
   /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
   ///
   /// Returns a BoolCommitResult
   Future<BoolCommitResult> upsertAll(
-      List<Incomecategory> incomecategories) async {
-    final results = await _mnIncomecategory.rawInsertAll(
+      List<IncomeCategory> incomecategories) async {
+    final results = await _mnIncomeCategory.rawInsertAll(
         'INSERT OR REPLACE INTO incomecategory (income_category_id,name, priority, icon_id, created_at,isDeleted)  VALUES (?,?,?,?,?,?)',
         incomecategories);
     return results;
   }
 
-  /// Deletes Incomecategory
+  /// Deletes IncomeCategory
 
   /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
   Future<BoolResult> delete([bool hardDelete = false]) async {
     print(
-        'SQFENTITIY: delete Incomecategory invoked (income_category_id=$income_category_id)');
+        'SQFENTITIY: delete IncomeCategory invoked (income_category_id=$income_category_id)');
     if (await Income()
             .select()
             .income_category_id
@@ -4821,11 +4822,11 @@ class Incomecategory {
               'SQFENTITY ERROR: The DELETE statement conflicted with the REFERENCE RELATIONSHIP (Income.income_category_id)');
     }
     if (!_softDeleteActivated || hardDelete || isDeleted) {
-      return _mnIncomecategory.delete(QueryParams(
+      return _mnIncomeCategory.delete(QueryParams(
           whereString: 'income_category_id=?',
           whereArguments: [income_category_id]));
     } else {
-      return _mnIncomecategory.updateBatch(
+      return _mnIncomeCategory.updateBatch(
           QueryParams(
               whereString: 'income_category_id=?',
               whereArguments: [income_category_id]),
@@ -4833,14 +4834,14 @@ class Incomecategory {
     }
   }
 
-  /// Recover Incomecategory>
+  /// Recover IncomeCategory>
 
   /// <returns>BoolResult res.success=Recovered, not res.success=Can not recovered
   Future<BoolResult> recover([bool recoverChilds = true]) async {
     print(
-        'SQFENTITIY: recover Incomecategory invoked (income_category_id=$income_category_id)');
+        'SQFENTITIY: recover IncomeCategory invoked (income_category_id=$income_category_id)');
     {
-      return _mnIncomecategory.updateBatch(
+      return _mnIncomeCategory.updateBatch(
           QueryParams(
               whereString: 'income_category_id=?',
               whereArguments: [income_category_id]),
@@ -4848,16 +4849,16 @@ class Incomecategory {
     }
   }
 
-  IncomecategoryFilterBuilder select(
+  IncomeCategoryFilterBuilder select(
       {List<String> columnsToSelect, bool getIsDeleted}) {
-    return IncomecategoryFilterBuilder(this)
+    return IncomeCategoryFilterBuilder(this)
       .._getIsDeleted = getIsDeleted == true
       ..qparams.selectColumns = columnsToSelect;
   }
 
-  IncomecategoryFilterBuilder distinct(
+  IncomeCategoryFilterBuilder distinct(
       {List<String> columnsToSelect, bool getIsDeleted}) {
-    return IncomecategoryFilterBuilder(this)
+    return IncomeCategoryFilterBuilder(this)
       .._getIsDeleted = getIsDeleted == true
       ..qparams.selectColumns = columnsToSelect
       ..qparams.distinct = true;
@@ -4889,21 +4890,21 @@ class Incomecategory {
 }
 // endregion incomecategory
 
-// region IncomecategoryField
-class IncomecategoryField extends SearchCriteria {
-  IncomecategoryField(this.incomecategoryFB) {
+// region IncomeCategoryField
+class IncomeCategoryField extends SearchCriteria {
+  IncomeCategoryField(this.incomecategoryFB) {
     param = DbParameter();
   }
   DbParameter param;
   String _waitingNot = '';
-  IncomecategoryFilterBuilder incomecategoryFB;
+  IncomeCategoryFilterBuilder incomecategoryFB;
 
-  IncomecategoryField get not {
+  IncomeCategoryField get not {
     _waitingNot = ' NOT ';
     return this;
   }
 
-  IncomecategoryFilterBuilder equals(dynamic pValue) {
+  IncomeCategoryFilterBuilder equals(dynamic pValue) {
     param.expression = '=';
     incomecategoryFB._addedBlocks = _waitingNot == ''
         ? setCriteria(pValue, incomecategoryFB.parameters, param,
@@ -4916,7 +4917,7 @@ class IncomecategoryField extends SearchCriteria {
     return incomecategoryFB;
   }
 
-  IncomecategoryFilterBuilder equalsOrNull(dynamic pValue) {
+  IncomeCategoryFilterBuilder equalsOrNull(dynamic pValue) {
     param.expression = '=';
     incomecategoryFB._addedBlocks = _waitingNot == ''
         ? setCriteria(pValue, incomecategoryFB.parameters, param,
@@ -4929,7 +4930,7 @@ class IncomecategoryField extends SearchCriteria {
     return incomecategoryFB;
   }
 
-  IncomecategoryFilterBuilder isNull() {
+  IncomeCategoryFilterBuilder isNull() {
     incomecategoryFB._addedBlocks = setCriteria(
         0,
         incomecategoryFB.parameters,
@@ -4942,7 +4943,7 @@ class IncomecategoryField extends SearchCriteria {
     return incomecategoryFB;
   }
 
-  IncomecategoryFilterBuilder contains(dynamic pValue) {
+  IncomeCategoryFilterBuilder contains(dynamic pValue) {
     if (pValue != null) {
       incomecategoryFB._addedBlocks = setCriteria(
           '%${pValue.toString()}%',
@@ -4957,7 +4958,7 @@ class IncomecategoryField extends SearchCriteria {
     return incomecategoryFB;
   }
 
-  IncomecategoryFilterBuilder startsWith(dynamic pValue) {
+  IncomeCategoryFilterBuilder startsWith(dynamic pValue) {
     if (pValue != null) {
       incomecategoryFB._addedBlocks = setCriteria(
           '${pValue.toString()}%',
@@ -4974,7 +4975,7 @@ class IncomecategoryField extends SearchCriteria {
     return incomecategoryFB;
   }
 
-  IncomecategoryFilterBuilder endsWith(dynamic pValue) {
+  IncomeCategoryFilterBuilder endsWith(dynamic pValue) {
     if (pValue != null) {
       incomecategoryFB._addedBlocks = setCriteria(
           '%${pValue.toString()}',
@@ -4989,7 +4990,7 @@ class IncomecategoryField extends SearchCriteria {
     return incomecategoryFB;
   }
 
-  IncomecategoryFilterBuilder between(dynamic pFirst, dynamic pLast) {
+  IncomeCategoryFilterBuilder between(dynamic pFirst, dynamic pLast) {
     if (pFirst != null && pLast != null) {
       incomecategoryFB._addedBlocks = setCriteria(
           pFirst,
@@ -5037,7 +5038,7 @@ class IncomecategoryField extends SearchCriteria {
     return incomecategoryFB;
   }
 
-  IncomecategoryFilterBuilder greaterThan(dynamic pValue) {
+  IncomeCategoryFilterBuilder greaterThan(dynamic pValue) {
     param.expression = '>';
     incomecategoryFB._addedBlocks = _waitingNot == ''
         ? setCriteria(pValue, incomecategoryFB.parameters, param,
@@ -5050,7 +5051,7 @@ class IncomecategoryField extends SearchCriteria {
     return incomecategoryFB;
   }
 
-  IncomecategoryFilterBuilder lessThan(dynamic pValue) {
+  IncomeCategoryFilterBuilder lessThan(dynamic pValue) {
     param.expression = '<';
     incomecategoryFB._addedBlocks = _waitingNot == ''
         ? setCriteria(pValue, incomecategoryFB.parameters, param,
@@ -5063,7 +5064,7 @@ class IncomecategoryField extends SearchCriteria {
     return incomecategoryFB;
   }
 
-  IncomecategoryFilterBuilder greaterThanOrEquals(dynamic pValue) {
+  IncomeCategoryFilterBuilder greaterThanOrEquals(dynamic pValue) {
     param.expression = '>=';
     incomecategoryFB._addedBlocks = _waitingNot == ''
         ? setCriteria(pValue, incomecategoryFB.parameters, param,
@@ -5076,7 +5077,7 @@ class IncomecategoryField extends SearchCriteria {
     return incomecategoryFB;
   }
 
-  IncomecategoryFilterBuilder lessThanOrEquals(dynamic pValue) {
+  IncomeCategoryFilterBuilder lessThanOrEquals(dynamic pValue) {
     param.expression = '<=';
     incomecategoryFB._addedBlocks = _waitingNot == ''
         ? setCriteria(pValue, incomecategoryFB.parameters, param,
@@ -5089,7 +5090,7 @@ class IncomecategoryField extends SearchCriteria {
     return incomecategoryFB;
   }
 
-  IncomecategoryFilterBuilder inValues(dynamic pValue) {
+  IncomeCategoryFilterBuilder inValues(dynamic pValue) {
     incomecategoryFB._addedBlocks = setCriteria(
         pValue,
         incomecategoryFB.parameters,
@@ -5102,11 +5103,11 @@ class IncomecategoryField extends SearchCriteria {
     return incomecategoryFB;
   }
 }
-// endregion IncomecategoryField
+// endregion IncomeCategoryField
 
-// region IncomecategoryFilterBuilder
-class IncomecategoryFilterBuilder extends SearchCriteria {
-  IncomecategoryFilterBuilder(Incomecategory obj) {
+// region IncomeCategoryFilterBuilder
+class IncomeCategoryFilterBuilder extends SearchCriteria {
+  IncomeCategoryFilterBuilder(IncomeCategory obj) {
     whereString = '';
     qparams = QueryParams();
     parameters = <DbParameter>[];
@@ -5123,13 +5124,13 @@ class IncomecategoryFilterBuilder extends SearchCriteria {
   int _blockIndex = 0;
   List<DbParameter> parameters;
   List<String> orderByList;
-  Incomecategory _obj;
+  IncomeCategory _obj;
   QueryParams qparams;
   int _pagesize;
   int _page;
 
   /// put the sql keyword 'AND'
-  IncomecategoryFilterBuilder get and {
+  IncomeCategoryFilterBuilder get and {
     if (parameters.isNotEmpty) {
       parameters[parameters.length - 1].wOperator = ' AND ';
     }
@@ -5137,7 +5138,7 @@ class IncomecategoryFilterBuilder extends SearchCriteria {
   }
 
   /// put the sql keyword 'OR'
-  IncomecategoryFilterBuilder get or {
+  IncomeCategoryFilterBuilder get or {
     if (parameters.isNotEmpty) {
       parameters[parameters.length - 1].wOperator = ' OR ';
     }
@@ -5145,7 +5146,7 @@ class IncomecategoryFilterBuilder extends SearchCriteria {
   }
 
   /// open parentheses
-  IncomecategoryFilterBuilder get startBlock {
+  IncomeCategoryFilterBuilder get startBlock {
     _addedBlocks.waitingStartBlock.add(true);
     _addedBlocks.needEndBlock.add(false);
     _blockIndex++;
@@ -5156,7 +5157,7 @@ class IncomecategoryFilterBuilder extends SearchCriteria {
   }
 
   /// String whereCriteria, write raw query without 'where' keyword. Like this: 'field1 like 'test%' and field2 = 3'
-  IncomecategoryFilterBuilder where(String whereCriteria,
+  IncomeCategoryFilterBuilder where(String whereCriteria,
       {dynamic parameterValue}) {
     if (whereCriteria != null && whereCriteria != '') {
       final DbParameter param = DbParameter(
@@ -5172,7 +5173,7 @@ class IncomecategoryFilterBuilder extends SearchCriteria {
   /// page = page number,
   ///
   /// pagesize = row(s) per page
-  IncomecategoryFilterBuilder page(int page, int pagesize) {
+  IncomeCategoryFilterBuilder page(int page, int pagesize) {
     if (page > 0) {
       _page = page;
     }
@@ -5183,7 +5184,7 @@ class IncomecategoryFilterBuilder extends SearchCriteria {
   }
 
   /// int count = LIMIT
-  IncomecategoryFilterBuilder top(int count) {
+  IncomeCategoryFilterBuilder top(int count) {
     if (count > 0) {
       _pagesize = count;
     }
@@ -5191,7 +5192,7 @@ class IncomecategoryFilterBuilder extends SearchCriteria {
   }
 
   /// close parentheses
-  IncomecategoryFilterBuilder get endBlock {
+  IncomeCategoryFilterBuilder get endBlock {
     if (_addedBlocks.needEndBlock[_blockIndex]) {
       parameters[parameters.length - 1].whereString += ' ) ';
     }
@@ -5206,7 +5207,7 @@ class IncomecategoryFilterBuilder extends SearchCriteria {
   /// Example 1: argFields='name, date'
   ///
   /// Example 2: argFields = ['name', 'date']
-  IncomecategoryFilterBuilder orderBy(dynamic argFields) {
+  IncomeCategoryFilterBuilder orderBy(dynamic argFields) {
     if (argFields != null) {
       if (argFields is String) {
         orderByList.add(argFields);
@@ -5226,7 +5227,7 @@ class IncomecategoryFilterBuilder extends SearchCriteria {
   /// Example 1: argFields='field1, field2'
   ///
   /// Example 2: argFields = ['field1', 'field2']
-  IncomecategoryFilterBuilder orderByDesc(dynamic argFields) {
+  IncomeCategoryFilterBuilder orderByDesc(dynamic argFields) {
     if (argFields != null) {
       if (argFields is String) {
         orderByList.add('$argFields desc ');
@@ -5246,7 +5247,7 @@ class IncomecategoryFilterBuilder extends SearchCriteria {
   /// Example 1: argFields='field1, field2'
   ///
   /// Example 2: argFields = ['field1', 'field2']
-  IncomecategoryFilterBuilder groupBy(dynamic argFields) {
+  IncomeCategoryFilterBuilder groupBy(dynamic argFields) {
     if (argFields != null) {
       if (argFields is String) {
         groupByList.add(' $argFields ');
@@ -5266,7 +5267,7 @@ class IncomecategoryFilterBuilder extends SearchCriteria {
   /// Example 1: argFields='name, date'
   ///
   /// Example 2: argFields = ['name', 'date']
-  IncomecategoryFilterBuilder having(dynamic argFields) {
+  IncomeCategoryFilterBuilder having(dynamic argFields) {
     if (argFields != null) {
       if (argFields is String) {
         havingList.add(argFields);
@@ -5281,43 +5282,43 @@ class IncomecategoryFilterBuilder extends SearchCriteria {
     return this;
   }
 
-  IncomecategoryField setField(
-      IncomecategoryField field, String colName, DbType dbtype) {
-    return IncomecategoryField(this)
+  IncomeCategoryField setField(
+      IncomeCategoryField field, String colName, DbType dbtype) {
+    return IncomeCategoryField(this)
       ..param = DbParameter(
           dbType: dbtype,
           columnName: colName,
           wStartBlock: _addedBlocks.waitingStartBlock[_blockIndex]);
   }
 
-  IncomecategoryField _income_category_id;
-  IncomecategoryField get income_category_id {
+  IncomeCategoryField _income_category_id;
+  IncomeCategoryField get income_category_id {
     return _income_category_id =
         setField(_income_category_id, 'income_category_id', DbType.integer);
   }
 
-  IncomecategoryField _name;
-  IncomecategoryField get name {
+  IncomeCategoryField _name;
+  IncomeCategoryField get name {
     return _name = setField(_name, 'name', DbType.text);
   }
 
-  IncomecategoryField _priority;
-  IncomecategoryField get priority {
+  IncomeCategoryField _priority;
+  IncomeCategoryField get priority {
     return _priority = setField(_priority, 'priority', DbType.integer);
   }
 
-  IncomecategoryField _icon_id;
-  IncomecategoryField get icon_id {
+  IncomeCategoryField _icon_id;
+  IncomeCategoryField get icon_id {
     return _icon_id = setField(_icon_id, 'icon_id', DbType.integer);
   }
 
-  IncomecategoryField _created_at;
-  IncomecategoryField get created_at {
+  IncomeCategoryField _created_at;
+  IncomeCategoryField get created_at {
     return _created_at = setField(_created_at, 'created_at', DbType.datetime);
   }
 
-  IncomecategoryField _isDeleted;
-  IncomecategoryField get isDeleted {
+  IncomeCategoryField _isDeleted;
+  IncomeCategoryField get isDeleted {
     return _isDeleted = setField(_isDeleted, 'isDeleted', DbType.bool);
   }
 
@@ -5399,7 +5400,7 @@ class IncomecategoryFilterBuilder extends SearchCriteria {
         whereString += param.whereString;
       }
     }
-    if (Incomecategory._softDeleteActivated) {
+    if (IncomeCategory._softDeleteActivated) {
       if (whereString != '') {
         whereString =
             '${!_getIsDeleted ? 'ifnull(isDeleted,0)=0 AND' : ''} ($whereString)';
@@ -5418,7 +5419,7 @@ class IncomecategoryFilterBuilder extends SearchCriteria {
       ..having = havingList.join(',');
   }
 
-  /// Deletes List<Incomecategory> bulk by query
+  /// Deletes List<IncomeCategory> bulk by query
   ///
   /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
   Future<BoolResult> delete([bool hardDelete = false]) async {
@@ -5440,20 +5441,20 @@ class IncomecategoryFilterBuilder extends SearchCriteria {
               'SQFENTITY ERROR: The DELETE statement conflicted with the REFERENCE RELATIONSHIP (Income.income_category_id)');
     }
 
-    if (Incomecategory._softDeleteActivated && !hardDelete) {
-      r = await _obj._mnIncomecategory.updateBatch(qparams, {'isDeleted': 1});
+    if (IncomeCategory._softDeleteActivated && !hardDelete) {
+      r = await _obj._mnIncomeCategory.updateBatch(qparams, {'isDeleted': 1});
     } else {
-      r = await _obj._mnIncomecategory.delete(qparams);
+      r = await _obj._mnIncomeCategory.delete(qparams);
     }
     return r;
   }
 
-  /// Recover List<Incomecategory> bulk by query
+  /// Recover List<IncomeCategory> bulk by query
   Future<BoolResult> recover() async {
     _getIsDeleted = true;
     _buildParameters();
-    print('SQFENTITIY: recover Incomecategory bulk invoked');
-    return _obj._mnIncomecategory.updateBatch(qparams, {'isDeleted': 0});
+    print('SQFENTITIY: recover IncomeCategory bulk invoked');
+    return _obj._mnIncomeCategory.updateBatch(qparams, {'isDeleted': 0});
   }
 
   /// using:
@@ -5467,10 +5468,10 @@ class IncomecategoryFilterBuilder extends SearchCriteria {
       qparams.whereString =
           'income_category_id IN (SELECT income_category_id from incomecategory ${qparams.whereString.isNotEmpty ? 'WHERE ${qparams.whereString}' : ''}${qparams.limit > 0 ? ' LIMIT ${qparams.limit}' : ''}${qparams.offset > 0 ? ' OFFSET ${qparams.offset}' : ''})';
     }
-    return _obj._mnIncomecategory.updateBatch(qparams, values);
+    return _obj._mnIncomeCategory.updateBatch(qparams, values);
   }
 
-  /// This method always returns Incomecategory Obj if exist, otherwise returns null
+  /// This method always returns IncomeCategory Obj if exist, otherwise returns null
   ///
   /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
@@ -5483,19 +5484,19 @@ class IncomecategoryFilterBuilder extends SearchCriteria {
   /// bool loadParents: if true, loads all parent objects until the object has no parent
 
   ///
-  /// <returns>List<Incomecategory>
-  Future<Incomecategory> toSingle(
+  /// <returns>List<IncomeCategory>
+  Future<IncomeCategory> toSingle(
       {bool preload = false,
       List<String> preloadFields,
       bool loadParents = false,
       List<String> loadedFields}) async {
     _pagesize = 1;
     _buildParameters();
-    final objFuture = _obj._mnIncomecategory.toList(qparams);
+    final objFuture = _obj._mnIncomeCategory.toList(qparams);
     final data = await objFuture;
-    Incomecategory obj;
+    IncomeCategory obj;
     if (data.isNotEmpty) {
-      obj = Incomecategory.fromMap(data[0] as Map<String, dynamic>);
+      obj = IncomeCategory.fromMap(data[0] as Map<String, dynamic>);
       // final List<String> _loadedFields = loadedFields ?? [];
 
       // RELATIONSHIPS PRELOAD CHILD
@@ -5516,13 +5517,13 @@ class IncomecategoryFilterBuilder extends SearchCriteria {
       // RELATIONSHIPS PRELOAD
       if (preload || loadParents) {
         loadedFields = loadedFields ?? [];
-        if (/*!_loadedFields.contains('icon.plIcon') && */ (preloadFields ==
+        if (/*!_loadedFields.contains('icon.plAppIcon') && */ (preloadFields ==
                 null ||
             loadParents ||
-            preloadFields.contains('plIcon'))) {
-          /*_loadedFields.add('icon.plIcon');*/
-          obj.plIcon = obj.plIcon ??
-              await obj.getIcon(
+            preloadFields.contains('plAppIcon'))) {
+          /*_loadedFields.add('icon.plAppIcon');*/
+          obj.plAppIcon = obj.plAppIcon ??
+              await obj.getAppIcon(
                   loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
       } // END RELATIONSHIPS PRELOAD
@@ -5533,14 +5534,14 @@ class IncomecategoryFilterBuilder extends SearchCriteria {
     return obj;
   }
 
-  /// This method returns int. [Incomecategory]
+  /// This method returns int. [IncomeCategory]
   ///
   /// <returns>int
   Future<int> toCount(
       [VoidCallback Function(int c) incomecategoryCount]) async {
     _buildParameters();
     qparams.selectColumns = ['COUNT(1) AS CNT'];
-    final incomecategoriesFuture = await _obj._mnIncomecategory.toList(qparams);
+    final incomecategoriesFuture = await _obj._mnIncomeCategory.toList(qparams);
     final int count = incomecategoriesFuture[0]['CNT'] as int;
     if (incomecategoryCount != null) {
       incomecategoryCount(count);
@@ -5548,7 +5549,7 @@ class IncomecategoryFilterBuilder extends SearchCriteria {
     return count;
   }
 
-  /// This method returns List<Incomecategory> [Incomecategory]
+  /// This method returns List<IncomeCategory> [IncomeCategory]
   ///
   /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
@@ -5561,15 +5562,15 @@ class IncomecategoryFilterBuilder extends SearchCriteria {
   /// bool loadParents: if true, loads all parent objects until the object has no parent
 
   ///
-  /// <returns>List<Incomecategory>
-  Future<List<Incomecategory>> toList(
+  /// <returns>List<IncomeCategory>
+  Future<List<IncomeCategory>> toList(
       {bool preload = false,
       List<String> preloadFields,
       bool loadParents = false,
       List<String> loadedFields}) async {
     final data = await toMapList();
-    final List<Incomecategory> incomecategoriesData =
-        await Incomecategory.fromMapList(data,
+    final List<IncomeCategory> incomecategoriesData =
+        await IncomeCategory.fromMapList(data,
             preload: preload,
             preloadFields: preloadFields,
             loadParents: loadParents,
@@ -5578,7 +5579,7 @@ class IncomecategoryFilterBuilder extends SearchCriteria {
     return incomecategoriesData;
   }
 
-  /// This method returns Json String [Incomecategory]
+  /// This method returns Json String [IncomeCategory]
   Future<String> toJson() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -5588,7 +5589,7 @@ class IncomecategoryFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method returns Json String. [Incomecategory]
+  /// This method returns Json String. [IncomeCategory]
   Future<String> toJsonWithChilds() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -5598,15 +5599,15 @@ class IncomecategoryFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method returns List<dynamic>. [Incomecategory]
+  /// This method returns List<dynamic>. [IncomeCategory]
   ///
   /// <returns>List<dynamic>
   Future<List<dynamic>> toMapList() async {
     _buildParameters();
-    return await _obj._mnIncomecategory.toList(qparams);
+    return await _obj._mnIncomeCategory.toList(qparams);
   }
 
-  /// This method returns Primary Key List SQL and Parameters retVal = Map<String,dynamic>. [Incomecategory]
+  /// This method returns Primary Key List SQL and Parameters retVal = Map<String,dynamic>. [IncomeCategory]
   ///
   /// retVal['sql'] = SQL statement string, retVal['args'] = whereArguments List<dynamic>;
   ///
@@ -5631,7 +5632,7 @@ class IncomecategoryFilterBuilder extends SearchCriteria {
     final List<int> income_category_idData = <int>[];
     qparams.selectColumns = ['income_category_id'];
     final income_category_idFuture =
-        await _obj._mnIncomecategory.toList(qparams);
+        await _obj._mnIncomeCategory.toList(qparams);
 
     final int count = income_category_idFuture.length;
     for (int i = 0; i < count; i++) {
@@ -5641,13 +5642,13 @@ class IncomecategoryFilterBuilder extends SearchCriteria {
     return income_category_idData;
   }
 
-  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..  [Incomecategory]
+  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..  [IncomeCategory]
   ///
   /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
   Future<List<dynamic>> toListObject() async {
     _buildParameters();
 
-    final objectFuture = _obj._mnIncomecategory.toList(qparams);
+    final objectFuture = _obj._mnIncomeCategory.toList(qparams);
 
     final List<dynamic> objectsData = <dynamic>[];
     final data = await objectFuture;
@@ -5660,12 +5661,12 @@ class IncomecategoryFilterBuilder extends SearchCriteria {
 
   /// Returns List<String> for selected first column
   ///
-  /// Sample usage: await Incomecategory.select(columnsToSelect: ['columnName']).toListString()
+  /// Sample usage: await IncomeCategory.select(columnsToSelect: ['columnName']).toListString()
   Future<List<String>> toListString(
       [VoidCallback Function(List<String> o) listString]) async {
     _buildParameters();
 
-    final objectFuture = _obj._mnIncomecategory.toList(qparams);
+    final objectFuture = _obj._mnIncomeCategory.toList(qparams);
 
     final List<String> objectsData = <String>[];
     final data = await objectFuture;
@@ -5679,10 +5680,10 @@ class IncomecategoryFilterBuilder extends SearchCriteria {
     return objectsData;
   }
 }
-// endregion IncomecategoryFilterBuilder
+// endregion IncomeCategoryFilterBuilder
 
-// region IncomecategoryFields
-class IncomecategoryFields {
+// region IncomeCategoryFields
+class IncomeCategoryFields {
   static TableField _fIncome_category_id;
   static TableField get income_category_id {
     return _fIncome_category_id = _fIncome_category_id ??
@@ -5719,11 +5720,11 @@ class IncomecategoryFields {
         SqlSyntax.setField(_fIsDeleted, 'isDeleted', DbType.integer);
   }
 }
-// endregion IncomecategoryFields
+// endregion IncomeCategoryFields
 
-//region IncomecategoryManager
-class IncomecategoryManager extends SqfEntityProvider {
-  IncomecategoryManager()
+//region IncomeCategoryManager
+class IncomeCategoryManager extends SqfEntityProvider {
+  IncomeCategoryManager()
       : super(DbModel(),
             tableName: _tableName,
             primaryKeyList: _primaryKeyList,
@@ -5733,34 +5734,36 @@ class IncomecategoryManager extends SqfEntityProvider {
   static final String _whereStr = 'income_category_id=?';
 }
 
-//endregion IncomecategoryManager
-// region Fixedfee
-class Fixedfee {
-  Fixedfee(
+//endregion IncomeCategoryManager
+// region FixedFee
+class FixedFee {
+  FixedFee(
       {this.fixed_fee_id,
       this.name,
       this.price,
       this.payment_cycle_id,
-      this.payment_cycle_id,
+      this.note,
+      this.priority,
       this.created_at,
       this.isDeleted}) {
     _setDefaultValues();
   }
-  Fixedfee.withFields(this.name, this.price, this.payment_cycle_id,
-      this.payment_cycle_id, this.created_at, this.isDeleted) {
+  FixedFee.withFields(this.name, this.price, this.payment_cycle_id, this.note,
+      this.priority, this.created_at, this.isDeleted) {
     _setDefaultValues();
   }
-  Fixedfee.withId(
+  FixedFee.withId(
       this.fixed_fee_id,
       this.name,
       this.price,
       this.payment_cycle_id,
-      this.payment_cycle_id,
+      this.note,
+      this.priority,
       this.created_at,
       this.isDeleted) {
     _setDefaultValues();
   }
-  Fixedfee.fromMap(Map<String, dynamic> o, {bool setDefaultValues = true}) {
+  FixedFee.fromMap(Map<String, dynamic> o, {bool setDefaultValues = true}) {
     if (setDefaultValues) {
       _setDefaultValues();
     }
@@ -5771,11 +5774,14 @@ class Fixedfee {
     if (o['price'] != null) {
       price = int.tryParse(o['price'].toString());
     }
-    if (o['payment_cycle_id'] != null) {
-      payment_cycle_id = int.tryParse(o['payment_cycle_id'].toString());
-    }
     payment_cycle_id = int.tryParse(o['payment_cycle_id'].toString());
 
+    if (o['note'] != null) {
+      note = o['note'] as String;
+    }
+    if (o['priority'] != null) {
+      priority = int.tryParse(o['priority'].toString());
+    }
     if (o['created_at'] != null) {
       created_at = int.tryParse(o['created_at'].toString()) != null
           ? DateTime.fromMillisecondsSinceEpoch(
@@ -5787,42 +5793,43 @@ class Fixedfee {
         : null;
 
     // RELATIONSHIPS FromMAP
-    plPaymentcycle = o['paymentcycle'] != null
-        ? Paymentcycle.fromMap(o['paymentcycle'] as Map<String, dynamic>)
+    plPaymentCycle = o['paymentCycle'] != null
+        ? PaymentCycle.fromMap(o['paymentCycle'] as Map<String, dynamic>)
         : null;
     // END RELATIONSHIPS FromMAP
   }
-  // FIELDS (Fixedfee)
+  // FIELDS (FixedFee)
   int fixed_fee_id;
   String name;
   int price;
   int payment_cycle_id;
-  int payment_cycle_id;
+  String note;
+  int priority;
   DateTime created_at;
   bool isDeleted;
 
   BoolResult saveResult;
-  // end FIELDS (Fixedfee)
+  // end FIELDS (FixedFee)
 
-// RELATIONSHIPS (Fixedfee)
+// RELATIONSHIPS (FixedFee)
   /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
-  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plPaymentcycle', 'plField2'..]) or so on..
-  Paymentcycle plPaymentcycle;
+  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plPaymentCycle', 'plField2'..]) or so on..
+  PaymentCycle plPaymentCycle;
 
-  /// get Paymentcycle By Payment_cycle_id
-  Future<Paymentcycle> getPaymentcycle(
+  /// get PaymentCycle By Payment_cycle_id
+  Future<PaymentCycle> getPaymentCycle(
       {bool loadParents = false, List<String> loadedFields}) async {
-    final _obj = await Paymentcycle().getById(payment_cycle_id,
+    final _obj = await PaymentCycle().getById(payment_cycle_id,
         loadParents: loadParents, loadedFields: loadedFields);
     return _obj;
   }
-  // END RELATIONSHIPS (Fixedfee)
+  // END RELATIONSHIPS (FixedFee)
 
   static const bool _softDeleteActivated = true;
-  FixedfeeManager __mnFixedfee;
+  FixedFeeManager __mnFixedFee;
 
-  FixedfeeManager get _mnFixedfee {
-    return __mnFixedfee = __mnFixedfee ?? FixedfeeManager();
+  FixedFeeManager get _mnFixedFee {
+    return __mnFixedFee = __mnFixedFee ?? FixedFeeManager();
   }
 
   // METHODS
@@ -5841,12 +5848,16 @@ class Fixedfee {
     }
 
     if (payment_cycle_id != null) {
-      map['payment_cycle_id'] = payment_cycle_id;
+      map['payment_cycle_id'] =
+          forView ? plPaymentCycle.payment_cycle_id : payment_cycle_id;
     }
 
-    if (payment_cycle_id != null) {
-      map['payment_cycle_id'] =
-          forView ? plPaymentcycle.payment_cycle_id : payment_cycle_id;
+    if (note != null) {
+      map['note'] = note;
+    }
+
+    if (priority != null) {
+      map['priority'] = priority;
     }
 
     if (created_at != null) {
@@ -5881,12 +5892,16 @@ class Fixedfee {
     }
 
     if (payment_cycle_id != null) {
-      map['payment_cycle_id'] = payment_cycle_id;
+      map['payment_cycle_id'] =
+          forView ? plPaymentCycle.payment_cycle_id : payment_cycle_id;
     }
 
-    if (payment_cycle_id != null) {
-      map['payment_cycle_id'] =
-          forView ? plPaymentcycle.payment_cycle_id : payment_cycle_id;
+    if (note != null) {
+      map['note'] = note;
+    }
+
+    if (priority != null) {
+      map['priority'] = priority;
     }
 
     if (created_at != null) {
@@ -5904,12 +5919,12 @@ class Fixedfee {
     return map;
   }
 
-  /// This method returns Json String [Fixedfee]
+  /// This method returns Json String [FixedFee]
   String toJson() {
     return json.encode(toMap(forJson: true));
   }
 
-  /// This method returns Json String [Fixedfee]
+  /// This method returns Json String [FixedFee]
   Future<String> toJsonWithChilds() async {
     return json.encode(await toMapWithChildren(false, true));
   }
@@ -5919,7 +5934,8 @@ class Fixedfee {
       name,
       price,
       payment_cycle_id,
-      payment_cycle_id,
+      note,
+      priority,
       created_at != null ? created_at.millisecondsSinceEpoch : null,
       isDeleted
     ];
@@ -5931,20 +5947,21 @@ class Fixedfee {
       name,
       price,
       payment_cycle_id,
-      payment_cycle_id,
+      note,
+      priority,
       created_at != null ? created_at.millisecondsSinceEpoch : null,
       isDeleted
     ];
   }
 
-  static Future<List<Fixedfee>> fromWebUrl(String url,
+  static Future<List<FixedFee>> fromWebUrl(String url,
       {Map<String, String> headers}) async {
     try {
       final response = await http.get(url, headers: headers);
       return await fromJson(response.body);
     } catch (e) {
       print(
-          'SQFENTITY ERROR Fixedfee.fromWebUrl: ErrorMessage: ${e.toString()}');
+          'SQFENTITY ERROR FixedFee.fromWebUrl: ErrorMessage: ${e.toString()}');
       return null;
     }
   }
@@ -5953,42 +5970,42 @@ class Fixedfee {
     return http.post(url, headers: headers, body: toJson());
   }
 
-  static Future<List<Fixedfee>> fromJson(String jsonBody) async {
+  static Future<List<FixedFee>> fromJson(String jsonBody) async {
     final Iterable list = await json.decode(jsonBody) as Iterable;
-    var objList = <Fixedfee>[];
+    var objList = <FixedFee>[];
     try {
       objList = list
-          .map((fixedfee) => Fixedfee.fromMap(fixedfee as Map<String, dynamic>))
+          .map((fixedfee) => FixedFee.fromMap(fixedfee as Map<String, dynamic>))
           .toList();
     } catch (e) {
-      print('SQFENTITY ERROR Fixedfee.fromJson: ErrorMessage: ${e.toString()}');
+      print('SQFENTITY ERROR FixedFee.fromJson: ErrorMessage: ${e.toString()}');
     }
     return objList;
   }
 
-  static Future<List<Fixedfee>> fromMapList(List<dynamic> data,
+  static Future<List<FixedFee>> fromMapList(List<dynamic> data,
       {bool preload = false,
       List<String> preloadFields,
       bool loadParents = false,
       List<String> loadedFields,
       bool setDefaultValues = true}) async {
-    final List<Fixedfee> objList = <Fixedfee>[];
+    final List<FixedFee> objList = <FixedFee>[];
     loadedFields = loadedFields ?? [];
     for (final map in data) {
-      final obj = Fixedfee.fromMap(map as Map<String, dynamic>,
+      final obj = FixedFee.fromMap(map as Map<String, dynamic>,
           setDefaultValues: setDefaultValues);
       // final List<String> _loadedFields = List<String>.from(loadedFields);
 
       // RELATIONSHIPS PRELOAD
       if (preload || loadParents) {
         loadedFields = loadedFields ?? [];
-        if (/*!_loadedFields.contains('paymentcycle.plPaymentcycle') && */ (preloadFields ==
+        if (/*!_loadedFields.contains('paymentcycle.plPaymentCycle') && */ (preloadFields ==
                 null ||
             loadParents ||
-            preloadFields.contains('plPaymentcycle'))) {
-          /*_loadedFields.add('paymentcycle.plPaymentcycle');*/
-          obj.plPaymentcycle = obj.plPaymentcycle ??
-              await obj.getPaymentcycle(
+            preloadFields.contains('plPaymentCycle'))) {
+          /*_loadedFields.add('paymentcycle.plPaymentCycle');*/
+          obj.plPaymentCycle = obj.plPaymentCycle ??
+              await obj.getPaymentCycle(
                   loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
       } // END RELATIONSHIPS PRELOAD
@@ -5998,7 +6015,7 @@ class Fixedfee {
     return objList;
   }
 
-  /// returns Fixedfee by ID if exist, otherwise returns null
+  /// returns FixedFee by ID if exist, otherwise returns null
   ///
   /// Primary Keys: int fixed_fee_id
   ///
@@ -6013,8 +6030,8 @@ class Fixedfee {
   /// bool loadParents: if true, loads all parent objects until the object has no parent
 
   ///
-  /// <returns>returns Fixedfee if exist, otherwise returns null
-  Future<Fixedfee> getById(int fixed_fee_id,
+  /// <returns>returns FixedFee if exist, otherwise returns null
+  Future<FixedFee> getById(int fixed_fee_id,
       {bool preload = false,
       List<String> preloadFields,
       bool loadParents = false,
@@ -6022,22 +6039,22 @@ class Fixedfee {
     if (fixed_fee_id == null) {
       return null;
     }
-    Fixedfee obj;
-    final data = await _mnFixedfee.getById([fixed_fee_id]);
+    FixedFee obj;
+    final data = await _mnFixedFee.getById([fixed_fee_id]);
     if (data.length != 0) {
-      obj = Fixedfee.fromMap(data[0] as Map<String, dynamic>);
+      obj = FixedFee.fromMap(data[0] as Map<String, dynamic>);
       // final List<String> _loadedFields = loadedFields ?? [];
 
       // RELATIONSHIPS PRELOAD
       if (preload || loadParents) {
         loadedFields = loadedFields ?? [];
-        if (/*!_loadedFields.contains('paymentcycle.plPaymentcycle') && */ (preloadFields ==
+        if (/*!_loadedFields.contains('paymentcycle.plPaymentCycle') && */ (preloadFields ==
                 null ||
             loadParents ||
-            preloadFields.contains('plPaymentcycle'))) {
-          /*_loadedFields.add('paymentcycle.plPaymentcycle');*/
-          obj.plPaymentcycle = obj.plPaymentcycle ??
-              await obj.getPaymentcycle(
+            preloadFields.contains('plPaymentCycle'))) {
+          /*_loadedFields.add('paymentcycle.plPaymentCycle');*/
+          obj.plPaymentCycle = obj.plPaymentCycle ??
+              await obj.getPaymentCycle(
                   loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
       } // END RELATIONSHIPS PRELOAD
@@ -6048,34 +6065,34 @@ class Fixedfee {
     return obj;
   }
 
-  /// Saves the (Fixedfee) object. If the fixed_fee_id field is null, saves as a new record and returns new fixed_fee_id, if fixed_fee_id is not null then updates record
+  /// Saves the (FixedFee) object. If the fixed_fee_id field is null, saves as a new record and returns new fixed_fee_id, if fixed_fee_id is not null then updates record
 
   /// <returns>Returns fixed_fee_id
   Future<int> save() async {
     if (fixed_fee_id == null || fixed_fee_id == 0) {
-      fixed_fee_id = await _mnFixedfee.insert(this);
+      fixed_fee_id = await _mnFixedFee.insert(this);
     } else {
       // fixed_fee_id= await _upsert(); // removed in sqfentity_gen 1.3.0+6
-      await _mnFixedfee.update(this);
+      await _mnFixedFee.update(this);
     }
 
     return fixed_fee_id;
   }
 
-  /// saveAs Fixedfee. Returns a new Primary Key value of Fixedfee
+  /// saveAs FixedFee. Returns a new Primary Key value of FixedFee
 
-  /// <returns>Returns a new Primary Key value of Fixedfee
+  /// <returns>Returns a new Primary Key value of FixedFee
   Future<int> saveAs() async {
     fixed_fee_id = null;
 
     return save();
   }
 
-  /// saveAll method saves the sent List<Fixedfee> as a bulk in one transaction
+  /// saveAll method saves the sent List<FixedFee> as a bulk in one transaction
   ///
   /// Returns a <List<BoolResult>>
-  static Future<List<dynamic>> saveAll(List<Fixedfee> fixedfees) async {
-    // final results = _mnFixedfee.saveAll('INSERT OR REPLACE INTO fixedfee (fixed_fee_id,name, price, payment_cycle_id, payment_cycle_id, created_at,isDeleted)  VALUES (?,?,?,?,?,?,?)',fixedfees);
+  static Future<List<dynamic>> saveAll(List<FixedFee> fixedfees) async {
+    // final results = _mnFixedFee.saveAll('INSERT OR REPLACE INTO fixedfee (fixed_fee_id,name, price, payment_cycle_id, note, priority, created_at,isDeleted)  VALUES (?,?,?,?,?,?,?,?)',fixedfees);
     // return results; removed in sqfentity_gen 1.3.0+6
     await DbModel().batchStart();
     for (final obj in fixedfees) {
@@ -6097,14 +6114,15 @@ class Fixedfee {
   /// <returns>Returns fixed_fee_id
   Future<int> upsert() async {
     try {
-      if (await _mnFixedfee.rawInsert(
-              'INSERT OR REPLACE INTO fixedfee (fixed_fee_id,name, price, payment_cycle_id, payment_cycle_id, created_at,isDeleted)  VALUES (?,?,?,?,?,?,?)',
+      if (await _mnFixedFee.rawInsert(
+              'INSERT OR REPLACE INTO fixedfee (fixed_fee_id,name, price, payment_cycle_id, note, priority, created_at,isDeleted)  VALUES (?,?,?,?,?,?,?,?)',
               [
                 fixed_fee_id,
                 name,
                 price,
                 payment_cycle_id,
-                payment_cycle_id,
+                note,
+                priority,
                 created_at != null ? created_at.millisecondsSinceEpoch : null,
                 isDeleted
               ]) ==
@@ -6112,72 +6130,72 @@ class Fixedfee {
         saveResult = BoolResult(
             success: true,
             successMessage:
-                'Fixedfee fixed_fee_id=$fixed_fee_id updated successfully');
+                'FixedFee fixed_fee_id=$fixed_fee_id updated successfully');
       } else {
         saveResult = BoolResult(
             success: false,
-            errorMessage: 'Fixedfee fixed_fee_id=$fixed_fee_id did not update');
+            errorMessage: 'FixedFee fixed_fee_id=$fixed_fee_id did not update');
       }
       return fixed_fee_id;
     } catch (e) {
       saveResult = BoolResult(
           success: false,
-          errorMessage: 'Fixedfee Save failed. Error: ${e.toString()}');
+          errorMessage: 'FixedFee Save failed. Error: ${e.toString()}');
       return 0;
     }
   }
 
-  /// inserts or replaces the sent List<<Fixedfee>> as a bulk in one transaction.
+  /// inserts or replaces the sent List<<FixedFee>> as a bulk in one transaction.
   ///
   /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
   ///
   /// Returns a BoolCommitResult
-  Future<BoolCommitResult> upsertAll(List<Fixedfee> fixedfees) async {
-    final results = await _mnFixedfee.rawInsertAll(
-        'INSERT OR REPLACE INTO fixedfee (fixed_fee_id,name, price, payment_cycle_id, payment_cycle_id, created_at,isDeleted)  VALUES (?,?,?,?,?,?,?)',
+  Future<BoolCommitResult> upsertAll(List<FixedFee> fixedfees) async {
+    final results = await _mnFixedFee.rawInsertAll(
+        'INSERT OR REPLACE INTO fixedfee (fixed_fee_id,name, price, payment_cycle_id, note, priority, created_at,isDeleted)  VALUES (?,?,?,?,?,?,?,?)',
         fixedfees);
     return results;
   }
 
-  /// Deletes Fixedfee
+  /// Deletes FixedFee
 
   /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
   Future<BoolResult> delete([bool hardDelete = false]) async {
-    print('SQFENTITIY: delete Fixedfee invoked (fixed_fee_id=$fixed_fee_id)');
+    print('SQFENTITIY: delete FixedFee invoked (fixed_fee_id=$fixed_fee_id)');
     if (!_softDeleteActivated || hardDelete || isDeleted) {
-      return _mnFixedfee.delete(QueryParams(
+      return _mnFixedFee.delete(QueryParams(
           whereString: 'fixed_fee_id=?', whereArguments: [fixed_fee_id]));
     } else {
-      return _mnFixedfee.updateBatch(
+      return _mnFixedFee.updateBatch(
           QueryParams(
               whereString: 'fixed_fee_id=?', whereArguments: [fixed_fee_id]),
           {'isDeleted': 1});
     }
   }
 
-  /// Recover Fixedfee>
+  /// Recover FixedFee>
 
   /// <returns>BoolResult res.success=Recovered, not res.success=Can not recovered
   Future<BoolResult> recover([bool recoverChilds = true]) async {
-    print('SQFENTITIY: recover Fixedfee invoked (fixed_fee_id=$fixed_fee_id)');
+    print('SQFENTITIY: recover FixedFee invoked (fixed_fee_id=$fixed_fee_id)');
     {
-      return _mnFixedfee.updateBatch(
+      return _mnFixedFee.updateBatch(
           QueryParams(
               whereString: 'fixed_fee_id=?', whereArguments: [fixed_fee_id]),
           {'isDeleted': 0});
     }
   }
 
-  FixedfeeFilterBuilder select(
+  FixedFeeFilterBuilder select(
       {List<String> columnsToSelect, bool getIsDeleted}) {
-    return FixedfeeFilterBuilder(this)
+    return FixedFeeFilterBuilder(this)
       .._getIsDeleted = getIsDeleted == true
       ..qparams.selectColumns = columnsToSelect;
   }
 
-  FixedfeeFilterBuilder distinct(
+  FixedFeeFilterBuilder distinct(
       {List<String> columnsToSelect, bool getIsDeleted}) {
-    return FixedfeeFilterBuilder(this)
+    return FixedFeeFilterBuilder(this)
       .._getIsDeleted = getIsDeleted == true
       ..qparams.selectColumns = columnsToSelect
       ..qparams.distinct = true;
@@ -6209,21 +6227,21 @@ class Fixedfee {
 }
 // endregion fixedfee
 
-// region FixedfeeField
-class FixedfeeField extends SearchCriteria {
-  FixedfeeField(this.fixedfeeFB) {
+// region FixedFeeField
+class FixedFeeField extends SearchCriteria {
+  FixedFeeField(this.fixedfeeFB) {
     param = DbParameter();
   }
   DbParameter param;
   String _waitingNot = '';
-  FixedfeeFilterBuilder fixedfeeFB;
+  FixedFeeFilterBuilder fixedfeeFB;
 
-  FixedfeeField get not {
+  FixedFeeField get not {
     _waitingNot = ' NOT ';
     return this;
   }
 
-  FixedfeeFilterBuilder equals(dynamic pValue) {
+  FixedFeeFilterBuilder equals(dynamic pValue) {
     param.expression = '=';
     fixedfeeFB._addedBlocks = _waitingNot == ''
         ? setCriteria(pValue, fixedfeeFB.parameters, param, SqlSyntax.EQuals,
@@ -6236,7 +6254,7 @@ class FixedfeeField extends SearchCriteria {
     return fixedfeeFB;
   }
 
-  FixedfeeFilterBuilder equalsOrNull(dynamic pValue) {
+  FixedFeeFilterBuilder equalsOrNull(dynamic pValue) {
     param.expression = '=';
     fixedfeeFB._addedBlocks = _waitingNot == ''
         ? setCriteria(pValue, fixedfeeFB.parameters, param,
@@ -6249,7 +6267,7 @@ class FixedfeeField extends SearchCriteria {
     return fixedfeeFB;
   }
 
-  FixedfeeFilterBuilder isNull() {
+  FixedFeeFilterBuilder isNull() {
     fixedfeeFB._addedBlocks = setCriteria(
         0,
         fixedfeeFB.parameters,
@@ -6262,7 +6280,7 @@ class FixedfeeField extends SearchCriteria {
     return fixedfeeFB;
   }
 
-  FixedfeeFilterBuilder contains(dynamic pValue) {
+  FixedFeeFilterBuilder contains(dynamic pValue) {
     if (pValue != null) {
       fixedfeeFB._addedBlocks = setCriteria(
           '%${pValue.toString()}%',
@@ -6277,7 +6295,7 @@ class FixedfeeField extends SearchCriteria {
     return fixedfeeFB;
   }
 
-  FixedfeeFilterBuilder startsWith(dynamic pValue) {
+  FixedFeeFilterBuilder startsWith(dynamic pValue) {
     if (pValue != null) {
       fixedfeeFB._addedBlocks = setCriteria(
           '${pValue.toString()}%',
@@ -6294,7 +6312,7 @@ class FixedfeeField extends SearchCriteria {
     return fixedfeeFB;
   }
 
-  FixedfeeFilterBuilder endsWith(dynamic pValue) {
+  FixedFeeFilterBuilder endsWith(dynamic pValue) {
     if (pValue != null) {
       fixedfeeFB._addedBlocks = setCriteria(
           '%${pValue.toString()}',
@@ -6309,7 +6327,7 @@ class FixedfeeField extends SearchCriteria {
     return fixedfeeFB;
   }
 
-  FixedfeeFilterBuilder between(dynamic pFirst, dynamic pLast) {
+  FixedFeeFilterBuilder between(dynamic pFirst, dynamic pLast) {
     if (pFirst != null && pLast != null) {
       fixedfeeFB._addedBlocks = setCriteria(
           pFirst,
@@ -6341,7 +6359,7 @@ class FixedfeeField extends SearchCriteria {
     return fixedfeeFB;
   }
 
-  FixedfeeFilterBuilder greaterThan(dynamic pValue) {
+  FixedFeeFilterBuilder greaterThan(dynamic pValue) {
     param.expression = '>';
     fixedfeeFB._addedBlocks = _waitingNot == ''
         ? setCriteria(pValue, fixedfeeFB.parameters, param,
@@ -6354,7 +6372,7 @@ class FixedfeeField extends SearchCriteria {
     return fixedfeeFB;
   }
 
-  FixedfeeFilterBuilder lessThan(dynamic pValue) {
+  FixedFeeFilterBuilder lessThan(dynamic pValue) {
     param.expression = '<';
     fixedfeeFB._addedBlocks = _waitingNot == ''
         ? setCriteria(pValue, fixedfeeFB.parameters, param, SqlSyntax.LessThan,
@@ -6367,7 +6385,7 @@ class FixedfeeField extends SearchCriteria {
     return fixedfeeFB;
   }
 
-  FixedfeeFilterBuilder greaterThanOrEquals(dynamic pValue) {
+  FixedFeeFilterBuilder greaterThanOrEquals(dynamic pValue) {
     param.expression = '>=';
     fixedfeeFB._addedBlocks = _waitingNot == ''
         ? setCriteria(pValue, fixedfeeFB.parameters, param,
@@ -6380,7 +6398,7 @@ class FixedfeeField extends SearchCriteria {
     return fixedfeeFB;
   }
 
-  FixedfeeFilterBuilder lessThanOrEquals(dynamic pValue) {
+  FixedFeeFilterBuilder lessThanOrEquals(dynamic pValue) {
     param.expression = '<=';
     fixedfeeFB._addedBlocks = _waitingNot == ''
         ? setCriteria(pValue, fixedfeeFB.parameters, param,
@@ -6393,7 +6411,7 @@ class FixedfeeField extends SearchCriteria {
     return fixedfeeFB;
   }
 
-  FixedfeeFilterBuilder inValues(dynamic pValue) {
+  FixedFeeFilterBuilder inValues(dynamic pValue) {
     fixedfeeFB._addedBlocks = setCriteria(
         pValue,
         fixedfeeFB.parameters,
@@ -6406,11 +6424,11 @@ class FixedfeeField extends SearchCriteria {
     return fixedfeeFB;
   }
 }
-// endregion FixedfeeField
+// endregion FixedFeeField
 
-// region FixedfeeFilterBuilder
-class FixedfeeFilterBuilder extends SearchCriteria {
-  FixedfeeFilterBuilder(Fixedfee obj) {
+// region FixedFeeFilterBuilder
+class FixedFeeFilterBuilder extends SearchCriteria {
+  FixedFeeFilterBuilder(FixedFee obj) {
     whereString = '';
     qparams = QueryParams();
     parameters = <DbParameter>[];
@@ -6427,13 +6445,13 @@ class FixedfeeFilterBuilder extends SearchCriteria {
   int _blockIndex = 0;
   List<DbParameter> parameters;
   List<String> orderByList;
-  Fixedfee _obj;
+  FixedFee _obj;
   QueryParams qparams;
   int _pagesize;
   int _page;
 
   /// put the sql keyword 'AND'
-  FixedfeeFilterBuilder get and {
+  FixedFeeFilterBuilder get and {
     if (parameters.isNotEmpty) {
       parameters[parameters.length - 1].wOperator = ' AND ';
     }
@@ -6441,7 +6459,7 @@ class FixedfeeFilterBuilder extends SearchCriteria {
   }
 
   /// put the sql keyword 'OR'
-  FixedfeeFilterBuilder get or {
+  FixedFeeFilterBuilder get or {
     if (parameters.isNotEmpty) {
       parameters[parameters.length - 1].wOperator = ' OR ';
     }
@@ -6449,7 +6467,7 @@ class FixedfeeFilterBuilder extends SearchCriteria {
   }
 
   /// open parentheses
-  FixedfeeFilterBuilder get startBlock {
+  FixedFeeFilterBuilder get startBlock {
     _addedBlocks.waitingStartBlock.add(true);
     _addedBlocks.needEndBlock.add(false);
     _blockIndex++;
@@ -6460,7 +6478,7 @@ class FixedfeeFilterBuilder extends SearchCriteria {
   }
 
   /// String whereCriteria, write raw query without 'where' keyword. Like this: 'field1 like 'test%' and field2 = 3'
-  FixedfeeFilterBuilder where(String whereCriteria, {dynamic parameterValue}) {
+  FixedFeeFilterBuilder where(String whereCriteria, {dynamic parameterValue}) {
     if (whereCriteria != null && whereCriteria != '') {
       final DbParameter param = DbParameter(
           columnName: parameterValue == null ? null : '',
@@ -6475,7 +6493,7 @@ class FixedfeeFilterBuilder extends SearchCriteria {
   /// page = page number,
   ///
   /// pagesize = row(s) per page
-  FixedfeeFilterBuilder page(int page, int pagesize) {
+  FixedFeeFilterBuilder page(int page, int pagesize) {
     if (page > 0) {
       _page = page;
     }
@@ -6486,7 +6504,7 @@ class FixedfeeFilterBuilder extends SearchCriteria {
   }
 
   /// int count = LIMIT
-  FixedfeeFilterBuilder top(int count) {
+  FixedFeeFilterBuilder top(int count) {
     if (count > 0) {
       _pagesize = count;
     }
@@ -6494,7 +6512,7 @@ class FixedfeeFilterBuilder extends SearchCriteria {
   }
 
   /// close parentheses
-  FixedfeeFilterBuilder get endBlock {
+  FixedFeeFilterBuilder get endBlock {
     if (_addedBlocks.needEndBlock[_blockIndex]) {
       parameters[parameters.length - 1].whereString += ' ) ';
     }
@@ -6509,7 +6527,7 @@ class FixedfeeFilterBuilder extends SearchCriteria {
   /// Example 1: argFields='name, date'
   ///
   /// Example 2: argFields = ['name', 'date']
-  FixedfeeFilterBuilder orderBy(dynamic argFields) {
+  FixedFeeFilterBuilder orderBy(dynamic argFields) {
     if (argFields != null) {
       if (argFields is String) {
         orderByList.add(argFields);
@@ -6529,7 +6547,7 @@ class FixedfeeFilterBuilder extends SearchCriteria {
   /// Example 1: argFields='field1, field2'
   ///
   /// Example 2: argFields = ['field1', 'field2']
-  FixedfeeFilterBuilder orderByDesc(dynamic argFields) {
+  FixedFeeFilterBuilder orderByDesc(dynamic argFields) {
     if (argFields != null) {
       if (argFields is String) {
         orderByList.add('$argFields desc ');
@@ -6549,7 +6567,7 @@ class FixedfeeFilterBuilder extends SearchCriteria {
   /// Example 1: argFields='field1, field2'
   ///
   /// Example 2: argFields = ['field1', 'field2']
-  FixedfeeFilterBuilder groupBy(dynamic argFields) {
+  FixedFeeFilterBuilder groupBy(dynamic argFields) {
     if (argFields != null) {
       if (argFields is String) {
         groupByList.add(' $argFields ');
@@ -6569,7 +6587,7 @@ class FixedfeeFilterBuilder extends SearchCriteria {
   /// Example 1: argFields='name, date'
   ///
   /// Example 2: argFields = ['name', 'date']
-  FixedfeeFilterBuilder having(dynamic argFields) {
+  FixedFeeFilterBuilder having(dynamic argFields) {
     if (argFields != null) {
       if (argFields is String) {
         havingList.add(argFields);
@@ -6584,49 +6602,53 @@ class FixedfeeFilterBuilder extends SearchCriteria {
     return this;
   }
 
-  FixedfeeField setField(FixedfeeField field, String colName, DbType dbtype) {
-    return FixedfeeField(this)
+  FixedFeeField setField(FixedFeeField field, String colName, DbType dbtype) {
+    return FixedFeeField(this)
       ..param = DbParameter(
           dbType: dbtype,
           columnName: colName,
           wStartBlock: _addedBlocks.waitingStartBlock[_blockIndex]);
   }
 
-  FixedfeeField _fixed_fee_id;
-  FixedfeeField get fixed_fee_id {
+  FixedFeeField _fixed_fee_id;
+  FixedFeeField get fixed_fee_id {
     return _fixed_fee_id =
         setField(_fixed_fee_id, 'fixed_fee_id', DbType.integer);
   }
 
-  FixedfeeField _name;
-  FixedfeeField get name {
+  FixedFeeField _name;
+  FixedFeeField get name {
     return _name = setField(_name, 'name', DbType.text);
   }
 
-  FixedfeeField _price;
-  FixedfeeField get price {
+  FixedFeeField _price;
+  FixedFeeField get price {
     return _price = setField(_price, 'price', DbType.integer);
   }
 
-  FixedfeeField _payment_cycle_id;
-  FixedfeeField get payment_cycle_id {
+  FixedFeeField _payment_cycle_id;
+  FixedFeeField get payment_cycle_id {
     return _payment_cycle_id =
         setField(_payment_cycle_id, 'payment_cycle_id', DbType.integer);
   }
 
-  FixedfeeField _payment_cycle_id;
-  FixedfeeField get payment_cycle_id {
-    return _payment_cycle_id =
-        setField(_payment_cycle_id, 'payment_cycle_id', DbType.integer);
+  FixedFeeField _note;
+  FixedFeeField get note {
+    return _note = setField(_note, 'note', DbType.text);
   }
 
-  FixedfeeField _created_at;
-  FixedfeeField get created_at {
+  FixedFeeField _priority;
+  FixedFeeField get priority {
+    return _priority = setField(_priority, 'priority', DbType.integer);
+  }
+
+  FixedFeeField _created_at;
+  FixedFeeField get created_at {
     return _created_at = setField(_created_at, 'created_at', DbType.datetime);
   }
 
-  FixedfeeField _isDeleted;
-  FixedfeeField get isDeleted {
+  FixedFeeField _isDeleted;
+  FixedFeeField get isDeleted {
     return _isDeleted = setField(_isDeleted, 'isDeleted', DbType.bool);
   }
 
@@ -6708,7 +6730,7 @@ class FixedfeeFilterBuilder extends SearchCriteria {
         whereString += param.whereString;
       }
     }
-    if (Fixedfee._softDeleteActivated) {
+    if (FixedFee._softDeleteActivated) {
       if (whereString != '') {
         whereString =
             '${!_getIsDeleted ? 'ifnull(isDeleted,0)=0 AND' : ''} ($whereString)';
@@ -6727,27 +6749,27 @@ class FixedfeeFilterBuilder extends SearchCriteria {
       ..having = havingList.join(',');
   }
 
-  /// Deletes List<Fixedfee> bulk by query
+  /// Deletes List<FixedFee> bulk by query
   ///
   /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
   Future<BoolResult> delete([bool hardDelete = false]) async {
     _buildParameters();
     var r = BoolResult();
 
-    if (Fixedfee._softDeleteActivated && !hardDelete) {
-      r = await _obj._mnFixedfee.updateBatch(qparams, {'isDeleted': 1});
+    if (FixedFee._softDeleteActivated && !hardDelete) {
+      r = await _obj._mnFixedFee.updateBatch(qparams, {'isDeleted': 1});
     } else {
-      r = await _obj._mnFixedfee.delete(qparams);
+      r = await _obj._mnFixedFee.delete(qparams);
     }
     return r;
   }
 
-  /// Recover List<Fixedfee> bulk by query
+  /// Recover List<FixedFee> bulk by query
   Future<BoolResult> recover() async {
     _getIsDeleted = true;
     _buildParameters();
-    print('SQFENTITIY: recover Fixedfee bulk invoked');
-    return _obj._mnFixedfee.updateBatch(qparams, {'isDeleted': 0});
+    print('SQFENTITIY: recover FixedFee bulk invoked');
+    return _obj._mnFixedFee.updateBatch(qparams, {'isDeleted': 0});
   }
 
   /// using:
@@ -6761,10 +6783,10 @@ class FixedfeeFilterBuilder extends SearchCriteria {
       qparams.whereString =
           'fixed_fee_id IN (SELECT fixed_fee_id from fixedfee ${qparams.whereString.isNotEmpty ? 'WHERE ${qparams.whereString}' : ''}${qparams.limit > 0 ? ' LIMIT ${qparams.limit}' : ''}${qparams.offset > 0 ? ' OFFSET ${qparams.offset}' : ''})';
     }
-    return _obj._mnFixedfee.updateBatch(qparams, values);
+    return _obj._mnFixedFee.updateBatch(qparams, values);
   }
 
-  /// This method always returns Fixedfee Obj if exist, otherwise returns null
+  /// This method always returns FixedFee Obj if exist, otherwise returns null
   ///
   /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
@@ -6777,31 +6799,31 @@ class FixedfeeFilterBuilder extends SearchCriteria {
   /// bool loadParents: if true, loads all parent objects until the object has no parent
 
   ///
-  /// <returns>List<Fixedfee>
-  Future<Fixedfee> toSingle(
+  /// <returns>List<FixedFee>
+  Future<FixedFee> toSingle(
       {bool preload = false,
       List<String> preloadFields,
       bool loadParents = false,
       List<String> loadedFields}) async {
     _pagesize = 1;
     _buildParameters();
-    final objFuture = _obj._mnFixedfee.toList(qparams);
+    final objFuture = _obj._mnFixedFee.toList(qparams);
     final data = await objFuture;
-    Fixedfee obj;
+    FixedFee obj;
     if (data.isNotEmpty) {
-      obj = Fixedfee.fromMap(data[0] as Map<String, dynamic>);
+      obj = FixedFee.fromMap(data[0] as Map<String, dynamic>);
       // final List<String> _loadedFields = loadedFields ?? [];
 
       // RELATIONSHIPS PRELOAD
       if (preload || loadParents) {
         loadedFields = loadedFields ?? [];
-        if (/*!_loadedFields.contains('paymentcycle.plPaymentcycle') && */ (preloadFields ==
+        if (/*!_loadedFields.contains('paymentcycle.plPaymentCycle') && */ (preloadFields ==
                 null ||
             loadParents ||
-            preloadFields.contains('plPaymentcycle'))) {
-          /*_loadedFields.add('paymentcycle.plPaymentcycle');*/
-          obj.plPaymentcycle = obj.plPaymentcycle ??
-              await obj.getPaymentcycle(
+            preloadFields.contains('plPaymentCycle'))) {
+          /*_loadedFields.add('paymentcycle.plPaymentCycle');*/
+          obj.plPaymentCycle = obj.plPaymentCycle ??
+              await obj.getPaymentCycle(
                   loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
       } // END RELATIONSHIPS PRELOAD
@@ -6812,13 +6834,13 @@ class FixedfeeFilterBuilder extends SearchCriteria {
     return obj;
   }
 
-  /// This method returns int. [Fixedfee]
+  /// This method returns int. [FixedFee]
   ///
   /// <returns>int
   Future<int> toCount([VoidCallback Function(int c) fixedfeeCount]) async {
     _buildParameters();
     qparams.selectColumns = ['COUNT(1) AS CNT'];
-    final fixedfeesFuture = await _obj._mnFixedfee.toList(qparams);
+    final fixedfeesFuture = await _obj._mnFixedFee.toList(qparams);
     final int count = fixedfeesFuture[0]['CNT'] as int;
     if (fixedfeeCount != null) {
       fixedfeeCount(count);
@@ -6826,7 +6848,7 @@ class FixedfeeFilterBuilder extends SearchCriteria {
     return count;
   }
 
-  /// This method returns List<Fixedfee> [Fixedfee]
+  /// This method returns List<FixedFee> [FixedFee]
   ///
   /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
@@ -6839,14 +6861,14 @@ class FixedfeeFilterBuilder extends SearchCriteria {
   /// bool loadParents: if true, loads all parent objects until the object has no parent
 
   ///
-  /// <returns>List<Fixedfee>
-  Future<List<Fixedfee>> toList(
+  /// <returns>List<FixedFee>
+  Future<List<FixedFee>> toList(
       {bool preload = false,
       List<String> preloadFields,
       bool loadParents = false,
       List<String> loadedFields}) async {
     final data = await toMapList();
-    final List<Fixedfee> fixedfeesData = await Fixedfee.fromMapList(data,
+    final List<FixedFee> fixedfeesData = await FixedFee.fromMapList(data,
         preload: preload,
         preloadFields: preloadFields,
         loadParents: loadParents,
@@ -6855,7 +6877,7 @@ class FixedfeeFilterBuilder extends SearchCriteria {
     return fixedfeesData;
   }
 
-  /// This method returns Json String [Fixedfee]
+  /// This method returns Json String [FixedFee]
   Future<String> toJson() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -6865,7 +6887,7 @@ class FixedfeeFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method returns Json String. [Fixedfee]
+  /// This method returns Json String. [FixedFee]
   Future<String> toJsonWithChilds() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -6875,15 +6897,15 @@ class FixedfeeFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method returns List<dynamic>. [Fixedfee]
+  /// This method returns List<dynamic>. [FixedFee]
   ///
   /// <returns>List<dynamic>
   Future<List<dynamic>> toMapList() async {
     _buildParameters();
-    return await _obj._mnFixedfee.toList(qparams);
+    return await _obj._mnFixedFee.toList(qparams);
   }
 
-  /// This method returns Primary Key List SQL and Parameters retVal = Map<String,dynamic>. [Fixedfee]
+  /// This method returns Primary Key List SQL and Parameters retVal = Map<String,dynamic>. [FixedFee]
   ///
   /// retVal['sql'] = SQL statement string, retVal['args'] = whereArguments List<dynamic>;
   ///
@@ -6907,7 +6929,7 @@ class FixedfeeFilterBuilder extends SearchCriteria {
     }
     final List<int> fixed_fee_idData = <int>[];
     qparams.selectColumns = ['fixed_fee_id'];
-    final fixed_fee_idFuture = await _obj._mnFixedfee.toList(qparams);
+    final fixed_fee_idFuture = await _obj._mnFixedFee.toList(qparams);
 
     final int count = fixed_fee_idFuture.length;
     for (int i = 0; i < count; i++) {
@@ -6916,13 +6938,13 @@ class FixedfeeFilterBuilder extends SearchCriteria {
     return fixed_fee_idData;
   }
 
-  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..  [Fixedfee]
+  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..  [FixedFee]
   ///
   /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
   Future<List<dynamic>> toListObject() async {
     _buildParameters();
 
-    final objectFuture = _obj._mnFixedfee.toList(qparams);
+    final objectFuture = _obj._mnFixedFee.toList(qparams);
 
     final List<dynamic> objectsData = <dynamic>[];
     final data = await objectFuture;
@@ -6935,12 +6957,12 @@ class FixedfeeFilterBuilder extends SearchCriteria {
 
   /// Returns List<String> for selected first column
   ///
-  /// Sample usage: await Fixedfee.select(columnsToSelect: ['columnName']).toListString()
+  /// Sample usage: await FixedFee.select(columnsToSelect: ['columnName']).toListString()
   Future<List<String>> toListString(
       [VoidCallback Function(List<String> o) listString]) async {
     _buildParameters();
 
-    final objectFuture = _obj._mnFixedfee.toList(qparams);
+    final objectFuture = _obj._mnFixedFee.toList(qparams);
 
     final List<String> objectsData = <String>[];
     final data = await objectFuture;
@@ -6954,10 +6976,10 @@ class FixedfeeFilterBuilder extends SearchCriteria {
     return objectsData;
   }
 }
-// endregion FixedfeeFilterBuilder
+// endregion FixedFeeFilterBuilder
 
-// region FixedfeeFields
-class FixedfeeFields {
+// region FixedFeeFields
+class FixedFeeFields {
   static TableField _fFixed_fee_id;
   static TableField get fixed_fee_id {
     return _fFixed_fee_id = _fFixed_fee_id ??
@@ -6982,11 +7004,15 @@ class FixedfeeFields {
             _fPayment_cycle_id, 'payment_cycle_id', DbType.integer);
   }
 
-  static TableField _fPayment_cycle_id;
-  static TableField get payment_cycle_id {
-    return _fPayment_cycle_id = _fPayment_cycle_id ??
-        SqlSyntax.setField(
-            _fPayment_cycle_id, 'payment_cycle_id', DbType.integer);
+  static TableField _fNote;
+  static TableField get note {
+    return _fNote = _fNote ?? SqlSyntax.setField(_fNote, 'note', DbType.text);
+  }
+
+  static TableField _fPriority;
+  static TableField get priority {
+    return _fPriority = _fPriority ??
+        SqlSyntax.setField(_fPriority, 'priority', DbType.integer);
   }
 
   static TableField _fCreated_at;
@@ -7001,11 +7027,11 @@ class FixedfeeFields {
         SqlSyntax.setField(_fIsDeleted, 'isDeleted', DbType.integer);
   }
 }
-// endregion FixedfeeFields
+// endregion FixedFeeFields
 
-//region FixedfeeManager
-class FixedfeeManager extends SqfEntityProvider {
-  FixedfeeManager()
+//region FixedFeeManager
+class FixedFeeManager extends SqfEntityProvider {
+  FixedFeeManager()
       : super(DbModel(),
             tableName: _tableName,
             primaryKeyList: _primaryKeyList,
@@ -7015,19 +7041,19 @@ class FixedfeeManager extends SqfEntityProvider {
   static final String _whereStr = 'fixed_fee_id=?';
 }
 
-//endregion FixedfeeManager
-// region Icon
-class Icon {
-  Icon({this.icon_id, this.name, this.priority}) {
+//endregion FixedFeeManager
+// region AppIcon
+class AppIcon {
+  AppIcon({this.icon_id, this.name, this.priority}) {
     _setDefaultValues();
   }
-  Icon.withFields(this.name, this.priority) {
+  AppIcon.withFields(this.name, this.priority) {
     _setDefaultValues();
   }
-  Icon.withId(this.icon_id, this.name, this.priority) {
+  AppIcon.withId(this.icon_id, this.name, this.priority) {
     _setDefaultValues();
   }
-  Icon.fromMap(Map<String, dynamic> o, {bool setDefaultValues = true}) {
+  AppIcon.fromMap(Map<String, dynamic> o, {bool setDefaultValues = true}) {
     if (setDefaultValues) {
       _setDefaultValues();
     }
@@ -7039,26 +7065,26 @@ class Icon {
       priority = int.tryParse(o['priority'].toString());
     }
   }
-  // FIELDS (Icon)
+  // FIELDS (AppIcon)
   int icon_id;
   String name;
   int priority;
 
   BoolResult saveResult;
-  // end FIELDS (Icon)
+  // end FIELDS (AppIcon)
 
-// COLLECTIONS & VIRTUALS (Icon)
+// COLLECTIONS & VIRTUALS (AppIcon)
   /// to load children of items to this field, use preload parameter. Ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
-  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plExpensecategories', 'plField2'..]) or so on..
-  List<Expensecategory> plExpensecategories;
+  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plExpenseCategories', 'plField2'..]) or so on..
+  List<ExpenseCategory> plExpenseCategories;
 
-  /// get Expensecategory(s) filtered by icon_id=icon_id
-  ExpensecategoryFilterBuilder getExpensecategories(
+  /// get ExpenseCategory(s) filtered by icon_id=icon_id
+  ExpenseCategoryFilterBuilder getExpenseCategories(
       {List<String> columnsToSelect, bool getIsDeleted}) {
     if (icon_id == null) {
       return null;
     }
-    return Expensecategory()
+    return ExpenseCategory()
         .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
         .icon_id
         .equals(icon_id)
@@ -7066,29 +7092,29 @@ class Icon {
   }
 
   /// to load children of items to this field, use preload parameter. Ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
-  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plIncomecategories', 'plField2'..]) or so on..
-  List<Incomecategory> plIncomecategories;
+  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plIncomeCategories', 'plField2'..]) or so on..
+  List<IncomeCategory> plIncomeCategories;
 
-  /// get Incomecategory(s) filtered by icon_id=icon_id
-  IncomecategoryFilterBuilder getIncomecategories(
+  /// get IncomeCategory(s) filtered by icon_id=icon_id
+  IncomeCategoryFilterBuilder getIncomeCategories(
       {List<String> columnsToSelect, bool getIsDeleted}) {
     if (icon_id == null) {
       return null;
     }
-    return Incomecategory()
+    return IncomeCategory()
         .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
         .icon_id
         .equals(icon_id)
         .and;
   }
 
-// END COLLECTIONS & VIRTUALS (Icon)
+// END COLLECTIONS & VIRTUALS (AppIcon)
 
   static const bool _softDeleteActivated = false;
-  IconManager __mnIcon;
+  AppIconManager __mnAppIcon;
 
-  IconManager get _mnIcon {
-    return __mnIcon = __mnIcon ?? IconManager();
+  AppIconManager get _mnAppIcon {
+    return __mnAppIcon = __mnAppIcon ?? AppIconManager();
   }
 
   // METHODS
@@ -7125,24 +7151,24 @@ class Icon {
       map['priority'] = priority;
     }
 
-// COLLECTIONS (Icon)
+// COLLECTIONS (AppIcon)
     if (!forQuery) {
-      map['Expensecategories'] = await getExpensecategories().toMapList();
+      map['ExpenseCategories'] = await getExpenseCategories().toMapList();
     }
     if (!forQuery) {
-      map['Incomecategories'] = await getIncomecategories().toMapList();
+      map['IncomeCategories'] = await getIncomeCategories().toMapList();
     }
-// END COLLECTIONS (Icon)
+// END COLLECTIONS (AppIcon)
 
     return map;
   }
 
-  /// This method returns Json String [Icon]
+  /// This method returns Json String [AppIcon]
   String toJson() {
     return json.encode(toMap(forJson: true));
   }
 
-  /// This method returns Json String [Icon]
+  /// This method returns Json String [AppIcon]
   Future<String> toJsonWithChilds() async {
     return json.encode(await toMapWithChildren(false, true));
   }
@@ -7155,13 +7181,14 @@ class Icon {
     return [icon_id, name, priority];
   }
 
-  static Future<List<Icon>> fromWebUrl(String url,
+  static Future<List<AppIcon>> fromWebUrl(String url,
       {Map<String, String> headers}) async {
     try {
       final response = await http.get(url, headers: headers);
       return await fromJson(response.body);
     } catch (e) {
-      print('SQFENTITY ERROR Icon.fromWebUrl: ErrorMessage: ${e.toString()}');
+      print(
+          'SQFENTITY ERROR AppIcon.fromWebUrl: ErrorMessage: ${e.toString()}');
       return null;
     }
   }
@@ -7170,51 +7197,51 @@ class Icon {
     return http.post(url, headers: headers, body: toJson());
   }
 
-  static Future<List<Icon>> fromJson(String jsonBody) async {
+  static Future<List<AppIcon>> fromJson(String jsonBody) async {
     final Iterable list = await json.decode(jsonBody) as Iterable;
-    var objList = <Icon>[];
+    var objList = <AppIcon>[];
     try {
       objList = list
-          .map((icon) => Icon.fromMap(icon as Map<String, dynamic>))
+          .map((appicon) => AppIcon.fromMap(appicon as Map<String, dynamic>))
           .toList();
     } catch (e) {
-      print('SQFENTITY ERROR Icon.fromJson: ErrorMessage: ${e.toString()}');
+      print('SQFENTITY ERROR AppIcon.fromJson: ErrorMessage: ${e.toString()}');
     }
     return objList;
   }
 
-  static Future<List<Icon>> fromMapList(List<dynamic> data,
+  static Future<List<AppIcon>> fromMapList(List<dynamic> data,
       {bool preload = false,
       List<String> preloadFields,
       bool loadParents = false,
       List<String> loadedFields,
       bool setDefaultValues = true}) async {
-    final List<Icon> objList = <Icon>[];
+    final List<AppIcon> objList = <AppIcon>[];
     loadedFields = loadedFields ?? [];
     for (final map in data) {
-      final obj = Icon.fromMap(map as Map<String, dynamic>,
+      final obj = AppIcon.fromMap(map as Map<String, dynamic>,
           setDefaultValues: setDefaultValues);
       // final List<String> _loadedFields = List<String>.from(loadedFields);
 
       // RELATIONSHIPS PRELOAD CHILD
       if (preload) {
         loadedFields = loadedFields ?? [];
-        if (/*!_loadedFields.contains('icon.plExpensecategories') && */ (preloadFields ==
+        if (/*!_loadedFields.contains('icon.plExpenseCategories') && */ (preloadFields ==
                 null ||
-            preloadFields.contains('plExpensecategories'))) {
-          /*_loadedFields.add('icon.plExpensecategories'); */
-          obj.plExpensecategories = obj.plExpensecategories ??
-              await obj.getExpensecategories().toList(
+            preloadFields.contains('plExpenseCategories'))) {
+          /*_loadedFields.add('icon.plExpenseCategories'); */
+          obj.plExpenseCategories = obj.plExpenseCategories ??
+              await obj.getExpenseCategories().toList(
                   preload: preload,
                   preloadFields: preloadFields,
                   loadParents: false /*, loadedFields:_loadedFields*/);
         }
-        if (/*!_loadedFields.contains('icon.plIncomecategories') && */ (preloadFields ==
+        if (/*!_loadedFields.contains('icon.plIncomeCategories') && */ (preloadFields ==
                 null ||
-            preloadFields.contains('plIncomecategories'))) {
-          /*_loadedFields.add('icon.plIncomecategories'); */
-          obj.plIncomecategories = obj.plIncomecategories ??
-              await obj.getIncomecategories().toList(
+            preloadFields.contains('plIncomeCategories'))) {
+          /*_loadedFields.add('icon.plIncomeCategories'); */
+          obj.plIncomeCategories = obj.plIncomeCategories ??
+              await obj.getIncomeCategories().toList(
                   preload: preload,
                   preloadFields: preloadFields,
                   loadParents: false /*, loadedFields:_loadedFields*/);
@@ -7226,7 +7253,7 @@ class Icon {
     return objList;
   }
 
-  /// returns Icon by ID if exist, otherwise returns null
+  /// returns AppIcon by ID if exist, otherwise returns null
   ///
   /// Primary Keys: int icon_id
   ///
@@ -7241,8 +7268,8 @@ class Icon {
   /// bool loadParents: if true, loads all parent objects until the object has no parent
 
   ///
-  /// <returns>returns Icon if exist, otherwise returns null
-  Future<Icon> getById(int icon_id,
+  /// <returns>returns AppIcon if exist, otherwise returns null
+  Future<AppIcon> getById(int icon_id,
       {bool preload = false,
       List<String> preloadFields,
       bool loadParents = false,
@@ -7250,31 +7277,31 @@ class Icon {
     if (icon_id == null) {
       return null;
     }
-    Icon obj;
-    final data = await _mnIcon.getById([icon_id]);
+    AppIcon obj;
+    final data = await _mnAppIcon.getById([icon_id]);
     if (data.length != 0) {
-      obj = Icon.fromMap(data[0] as Map<String, dynamic>);
+      obj = AppIcon.fromMap(data[0] as Map<String, dynamic>);
       // final List<String> _loadedFields = loadedFields ?? [];
 
       // RELATIONSHIPS PRELOAD CHILD
       if (preload) {
         loadedFields = loadedFields ?? [];
-        if (/*!_loadedFields.contains('icon.plExpensecategories') && */ (preloadFields ==
+        if (/*!_loadedFields.contains('icon.plExpenseCategories') && */ (preloadFields ==
                 null ||
-            preloadFields.contains('plExpensecategories'))) {
-          /*_loadedFields.add('icon.plExpensecategories'); */
-          obj.plExpensecategories = obj.plExpensecategories ??
-              await obj.getExpensecategories().toList(
+            preloadFields.contains('plExpenseCategories'))) {
+          /*_loadedFields.add('icon.plExpenseCategories'); */
+          obj.plExpenseCategories = obj.plExpenseCategories ??
+              await obj.getExpenseCategories().toList(
                   preload: preload,
                   preloadFields: preloadFields,
                   loadParents: false /*, loadedFields:_loadedFields*/);
         }
-        if (/*!_loadedFields.contains('icon.plIncomecategories') && */ (preloadFields ==
+        if (/*!_loadedFields.contains('icon.plIncomeCategories') && */ (preloadFields ==
                 null ||
-            preloadFields.contains('plIncomecategories'))) {
-          /*_loadedFields.add('icon.plIncomecategories'); */
-          obj.plIncomecategories = obj.plIncomecategories ??
-              await obj.getIncomecategories().toList(
+            preloadFields.contains('plIncomeCategories'))) {
+          /*_loadedFields.add('icon.plIncomeCategories'); */
+          obj.plIncomeCategories = obj.plIncomeCategories ??
+              await obj.getIncomeCategories().toList(
                   preload: preload,
                   preloadFields: preloadFields,
                   loadParents: false /*, loadedFields:_loadedFields*/);
@@ -7287,44 +7314,44 @@ class Icon {
     return obj;
   }
 
-  /// Saves the (Icon) object. If the icon_id field is null, saves as a new record and returns new icon_id, if icon_id is not null then updates record
+  /// Saves the (AppIcon) object. If the icon_id field is null, saves as a new record and returns new icon_id, if icon_id is not null then updates record
 
   /// <returns>Returns icon_id
   Future<int> save() async {
     if (icon_id == null || icon_id == 0) {
-      icon_id = await _mnIcon.insert(this);
+      icon_id = await _mnAppIcon.insert(this);
     } else {
       // icon_id= await _upsert(); // removed in sqfentity_gen 1.3.0+6
-      await _mnIcon.update(this);
+      await _mnAppIcon.update(this);
     }
 
     return icon_id;
   }
 
-  /// saveAs Icon. Returns a new Primary Key value of Icon
+  /// saveAs AppIcon. Returns a new Primary Key value of AppIcon
 
-  /// <returns>Returns a new Primary Key value of Icon
+  /// <returns>Returns a new Primary Key value of AppIcon
   Future<int> saveAs() async {
     icon_id = null;
 
     return save();
   }
 
-  /// saveAll method saves the sent List<Icon> as a bulk in one transaction
+  /// saveAll method saves the sent List<AppIcon> as a bulk in one transaction
   ///
   /// Returns a <List<BoolResult>>
-  static Future<List<dynamic>> saveAll(List<Icon> icons) async {
-    // final results = _mnIcon.saveAll('INSERT OR REPLACE INTO icon (icon_id,name, priority)  VALUES (?,?,?)',icons);
+  static Future<List<dynamic>> saveAll(List<AppIcon> appicons) async {
+    // final results = _mnAppIcon.saveAll('INSERT OR REPLACE INTO icon (icon_id,name, priority)  VALUES (?,?,?)',appicons);
     // return results; removed in sqfentity_gen 1.3.0+6
     await DbModel().batchStart();
-    for (final obj in icons) {
+    for (final obj in appicons) {
       await obj.save();
     }
     //    return DbModel().batchCommit();
     final result = await DbModel().batchCommit();
-    for (int i = 0; i < icons.length; i++) {
-      if (icons[i].icon_id == null) {
-        icons[i].icon_id = result[i] as int;
+    for (int i = 0; i < appicons.length; i++) {
+      if (appicons[i].icon_id == null) {
+        appicons[i].icon_id = result[i] as int;
       }
     }
 
@@ -7336,77 +7363,78 @@ class Icon {
   /// <returns>Returns icon_id
   Future<int> upsert() async {
     try {
-      if (await _mnIcon.rawInsert(
+      if (await _mnAppIcon.rawInsert(
               'INSERT OR REPLACE INTO icon (icon_id,name, priority)  VALUES (?,?,?)',
               [icon_id, name, priority]) ==
           1) {
         saveResult = BoolResult(
             success: true,
-            successMessage: 'Icon icon_id=$icon_id updated successfully');
+            successMessage: 'AppIcon icon_id=$icon_id updated successfully');
       } else {
         saveResult = BoolResult(
             success: false,
-            errorMessage: 'Icon icon_id=$icon_id did not update');
+            errorMessage: 'AppIcon icon_id=$icon_id did not update');
       }
       return icon_id;
     } catch (e) {
       saveResult = BoolResult(
           success: false,
-          errorMessage: 'Icon Save failed. Error: ${e.toString()}');
+          errorMessage: 'AppIcon Save failed. Error: ${e.toString()}');
       return 0;
     }
   }
 
-  /// inserts or replaces the sent List<<Icon>> as a bulk in one transaction.
+  /// inserts or replaces the sent List<<AppIcon>> as a bulk in one transaction.
   ///
   /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
   ///
   /// Returns a BoolCommitResult
-  Future<BoolCommitResult> upsertAll(List<Icon> icons) async {
-    final results = await _mnIcon.rawInsertAll(
+  Future<BoolCommitResult> upsertAll(List<AppIcon> appicons) async {
+    final results = await _mnAppIcon.rawInsertAll(
         'INSERT OR REPLACE INTO icon (icon_id,name, priority)  VALUES (?,?,?)',
-        icons);
+        appicons);
     return results;
   }
 
-  /// Deletes Icon
+  /// Deletes AppIcon
 
   /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
   Future<BoolResult> delete([bool hardDelete = false]) async {
-    print('SQFENTITIY: delete Icon invoked (icon_id=$icon_id)');
-    if (await Expensecategory().select().icon_id.equals(icon_id).and.toCount() >
+    print('SQFENTITIY: delete AppIcon invoked (icon_id=$icon_id)');
+    if (await ExpenseCategory().select().icon_id.equals(icon_id).and.toCount() >
         0) {
       return BoolResult(
           success: false,
           errorMessage:
-              'SQFENTITY ERROR: The DELETE statement conflicted with the REFERENCE RELATIONSHIP (Expensecategory.icon_id)');
+              'SQFENTITY ERROR: The DELETE statement conflicted with the REFERENCE RELATIONSHIP (ExpenseCategory.icon_id)');
     }
-    if (await Incomecategory().select().icon_id.equals(icon_id).and.toCount() >
+    if (await IncomeCategory().select().icon_id.equals(icon_id).and.toCount() >
         0) {
       return BoolResult(
           success: false,
           errorMessage:
-              'SQFENTITY ERROR: The DELETE statement conflicted with the REFERENCE RELATIONSHIP (Incomecategory.icon_id)');
+              'SQFENTITY ERROR: The DELETE statement conflicted with the REFERENCE RELATIONSHIP (IncomeCategory.icon_id)');
     }
     if (!_softDeleteActivated || hardDelete) {
-      return _mnIcon.delete(
+      return _mnAppIcon.delete(
           QueryParams(whereString: 'icon_id=?', whereArguments: [icon_id]));
     } else {
-      return _mnIcon.updateBatch(
+      return _mnAppIcon.updateBatch(
           QueryParams(whereString: 'icon_id=?', whereArguments: [icon_id]),
           {'isDeleted': 1});
     }
   }
 
-  IconFilterBuilder select({List<String> columnsToSelect, bool getIsDeleted}) {
-    return IconFilterBuilder(this)
+  AppIconFilterBuilder select(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    return AppIconFilterBuilder(this)
       .._getIsDeleted = getIsDeleted == true
       ..qparams.selectColumns = columnsToSelect;
   }
 
-  IconFilterBuilder distinct(
+  AppIconFilterBuilder distinct(
       {List<String> columnsToSelect, bool getIsDeleted}) {
-    return IconFilterBuilder(this)
+    return AppIconFilterBuilder(this)
       .._getIsDeleted = getIsDeleted == true
       ..qparams.selectColumns = columnsToSelect
       ..qparams.distinct = true;
@@ -7434,210 +7462,210 @@ class Icon {
      */
   // END CUSTOM CODES
 }
-// endregion icon
+// endregion appicon
 
-// region IconField
-class IconField extends SearchCriteria {
-  IconField(this.iconFB) {
+// region AppIconField
+class AppIconField extends SearchCriteria {
+  AppIconField(this.appiconFB) {
     param = DbParameter();
   }
   DbParameter param;
   String _waitingNot = '';
-  IconFilterBuilder iconFB;
+  AppIconFilterBuilder appiconFB;
 
-  IconField get not {
+  AppIconField get not {
     _waitingNot = ' NOT ';
     return this;
   }
 
-  IconFilterBuilder equals(dynamic pValue) {
+  AppIconFilterBuilder equals(dynamic pValue) {
     param.expression = '=';
-    iconFB._addedBlocks = _waitingNot == ''
-        ? setCriteria(pValue, iconFB.parameters, param, SqlSyntax.EQuals,
-            iconFB._addedBlocks)
-        : setCriteria(pValue, iconFB.parameters, param, SqlSyntax.NotEQuals,
-            iconFB._addedBlocks);
+    appiconFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, appiconFB.parameters, param, SqlSyntax.EQuals,
+            appiconFB._addedBlocks)
+        : setCriteria(pValue, appiconFB.parameters, param, SqlSyntax.NotEQuals,
+            appiconFB._addedBlocks);
     _waitingNot = '';
-    iconFB._addedBlocks.needEndBlock[iconFB._blockIndex] =
-        iconFB._addedBlocks.retVal;
-    return iconFB;
+    appiconFB._addedBlocks.needEndBlock[appiconFB._blockIndex] =
+        appiconFB._addedBlocks.retVal;
+    return appiconFB;
   }
 
-  IconFilterBuilder equalsOrNull(dynamic pValue) {
+  AppIconFilterBuilder equalsOrNull(dynamic pValue) {
     param.expression = '=';
-    iconFB._addedBlocks = _waitingNot == ''
-        ? setCriteria(pValue, iconFB.parameters, param, SqlSyntax.EQualsOrNull,
-            iconFB._addedBlocks)
-        : setCriteria(pValue, iconFB.parameters, param,
-            SqlSyntax.NotEQualsOrNull, iconFB._addedBlocks);
+    appiconFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, appiconFB.parameters, param,
+            SqlSyntax.EQualsOrNull, appiconFB._addedBlocks)
+        : setCriteria(pValue, appiconFB.parameters, param,
+            SqlSyntax.NotEQualsOrNull, appiconFB._addedBlocks);
     _waitingNot = '';
-    iconFB._addedBlocks.needEndBlock[iconFB._blockIndex] =
-        iconFB._addedBlocks.retVal;
-    return iconFB;
+    appiconFB._addedBlocks.needEndBlock[appiconFB._blockIndex] =
+        appiconFB._addedBlocks.retVal;
+    return appiconFB;
   }
 
-  IconFilterBuilder isNull() {
-    iconFB._addedBlocks = setCriteria(
+  AppIconFilterBuilder isNull() {
+    appiconFB._addedBlocks = setCriteria(
         0,
-        iconFB.parameters,
+        appiconFB.parameters,
         param,
         SqlSyntax.IsNULL.replaceAll(SqlSyntax.notKeyword, _waitingNot),
-        iconFB._addedBlocks);
+        appiconFB._addedBlocks);
     _waitingNot = '';
-    iconFB._addedBlocks.needEndBlock[iconFB._blockIndex] =
-        iconFB._addedBlocks.retVal;
-    return iconFB;
+    appiconFB._addedBlocks.needEndBlock[appiconFB._blockIndex] =
+        appiconFB._addedBlocks.retVal;
+    return appiconFB;
   }
 
-  IconFilterBuilder contains(dynamic pValue) {
+  AppIconFilterBuilder contains(dynamic pValue) {
     if (pValue != null) {
-      iconFB._addedBlocks = setCriteria(
+      appiconFB._addedBlocks = setCriteria(
           '%${pValue.toString()}%',
-          iconFB.parameters,
+          appiconFB.parameters,
           param,
           SqlSyntax.Contains.replaceAll(SqlSyntax.notKeyword, _waitingNot),
-          iconFB._addedBlocks);
+          appiconFB._addedBlocks);
       _waitingNot = '';
-      iconFB._addedBlocks.needEndBlock[iconFB._blockIndex] =
-          iconFB._addedBlocks.retVal;
+      appiconFB._addedBlocks.needEndBlock[appiconFB._blockIndex] =
+          appiconFB._addedBlocks.retVal;
     }
-    return iconFB;
+    return appiconFB;
   }
 
-  IconFilterBuilder startsWith(dynamic pValue) {
+  AppIconFilterBuilder startsWith(dynamic pValue) {
     if (pValue != null) {
-      iconFB._addedBlocks = setCriteria(
+      appiconFB._addedBlocks = setCriteria(
           '${pValue.toString()}%',
-          iconFB.parameters,
+          appiconFB.parameters,
           param,
           SqlSyntax.Contains.replaceAll(SqlSyntax.notKeyword, _waitingNot),
-          iconFB._addedBlocks);
+          appiconFB._addedBlocks);
       _waitingNot = '';
-      iconFB._addedBlocks.needEndBlock[iconFB._blockIndex] =
-          iconFB._addedBlocks.retVal;
-      iconFB._addedBlocks.needEndBlock[iconFB._blockIndex] =
-          iconFB._addedBlocks.retVal;
+      appiconFB._addedBlocks.needEndBlock[appiconFB._blockIndex] =
+          appiconFB._addedBlocks.retVal;
+      appiconFB._addedBlocks.needEndBlock[appiconFB._blockIndex] =
+          appiconFB._addedBlocks.retVal;
     }
-    return iconFB;
+    return appiconFB;
   }
 
-  IconFilterBuilder endsWith(dynamic pValue) {
+  AppIconFilterBuilder endsWith(dynamic pValue) {
     if (pValue != null) {
-      iconFB._addedBlocks = setCriteria(
+      appiconFB._addedBlocks = setCriteria(
           '%${pValue.toString()}',
-          iconFB.parameters,
+          appiconFB.parameters,
           param,
           SqlSyntax.Contains.replaceAll(SqlSyntax.notKeyword, _waitingNot),
-          iconFB._addedBlocks);
+          appiconFB._addedBlocks);
       _waitingNot = '';
-      iconFB._addedBlocks.needEndBlock[iconFB._blockIndex] =
-          iconFB._addedBlocks.retVal;
+      appiconFB._addedBlocks.needEndBlock[appiconFB._blockIndex] =
+          appiconFB._addedBlocks.retVal;
     }
-    return iconFB;
+    return appiconFB;
   }
 
-  IconFilterBuilder between(dynamic pFirst, dynamic pLast) {
+  AppIconFilterBuilder between(dynamic pFirst, dynamic pLast) {
     if (pFirst != null && pLast != null) {
-      iconFB._addedBlocks = setCriteria(
+      appiconFB._addedBlocks = setCriteria(
           pFirst,
-          iconFB.parameters,
+          appiconFB.parameters,
           param,
           SqlSyntax.Between.replaceAll(SqlSyntax.notKeyword, _waitingNot),
-          iconFB._addedBlocks,
+          appiconFB._addedBlocks,
           pLast);
     } else if (pFirst != null) {
       if (_waitingNot != '') {
-        iconFB._addedBlocks = setCriteria(pFirst, iconFB.parameters, param,
-            SqlSyntax.LessThan, iconFB._addedBlocks);
+        appiconFB._addedBlocks = setCriteria(pFirst, appiconFB.parameters,
+            param, SqlSyntax.LessThan, appiconFB._addedBlocks);
       } else {
-        iconFB._addedBlocks = setCriteria(pFirst, iconFB.parameters, param,
-            SqlSyntax.GreaterThanOrEquals, iconFB._addedBlocks);
+        appiconFB._addedBlocks = setCriteria(pFirst, appiconFB.parameters,
+            param, SqlSyntax.GreaterThanOrEquals, appiconFB._addedBlocks);
       }
     } else if (pLast != null) {
       if (_waitingNot != '') {
-        iconFB._addedBlocks = setCriteria(pLast, iconFB.parameters, param,
-            SqlSyntax.GreaterThan, iconFB._addedBlocks);
+        appiconFB._addedBlocks = setCriteria(pLast, appiconFB.parameters, param,
+            SqlSyntax.GreaterThan, appiconFB._addedBlocks);
       } else {
-        iconFB._addedBlocks = setCriteria(pLast, iconFB.parameters, param,
-            SqlSyntax.LessThanOrEquals, iconFB._addedBlocks);
+        appiconFB._addedBlocks = setCriteria(pLast, appiconFB.parameters, param,
+            SqlSyntax.LessThanOrEquals, appiconFB._addedBlocks);
       }
     }
     _waitingNot = '';
-    iconFB._addedBlocks.needEndBlock[iconFB._blockIndex] =
-        iconFB._addedBlocks.retVal;
-    return iconFB;
+    appiconFB._addedBlocks.needEndBlock[appiconFB._blockIndex] =
+        appiconFB._addedBlocks.retVal;
+    return appiconFB;
   }
 
-  IconFilterBuilder greaterThan(dynamic pValue) {
+  AppIconFilterBuilder greaterThan(dynamic pValue) {
     param.expression = '>';
-    iconFB._addedBlocks = _waitingNot == ''
-        ? setCriteria(pValue, iconFB.parameters, param, SqlSyntax.GreaterThan,
-            iconFB._addedBlocks)
-        : setCriteria(pValue, iconFB.parameters, param,
-            SqlSyntax.LessThanOrEquals, iconFB._addedBlocks);
+    appiconFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, appiconFB.parameters, param,
+            SqlSyntax.GreaterThan, appiconFB._addedBlocks)
+        : setCriteria(pValue, appiconFB.parameters, param,
+            SqlSyntax.LessThanOrEquals, appiconFB._addedBlocks);
     _waitingNot = '';
-    iconFB._addedBlocks.needEndBlock[iconFB._blockIndex] =
-        iconFB._addedBlocks.retVal;
-    return iconFB;
+    appiconFB._addedBlocks.needEndBlock[appiconFB._blockIndex] =
+        appiconFB._addedBlocks.retVal;
+    return appiconFB;
   }
 
-  IconFilterBuilder lessThan(dynamic pValue) {
+  AppIconFilterBuilder lessThan(dynamic pValue) {
     param.expression = '<';
-    iconFB._addedBlocks = _waitingNot == ''
-        ? setCriteria(pValue, iconFB.parameters, param, SqlSyntax.LessThan,
-            iconFB._addedBlocks)
-        : setCriteria(pValue, iconFB.parameters, param,
-            SqlSyntax.GreaterThanOrEquals, iconFB._addedBlocks);
+    appiconFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, appiconFB.parameters, param, SqlSyntax.LessThan,
+            appiconFB._addedBlocks)
+        : setCriteria(pValue, appiconFB.parameters, param,
+            SqlSyntax.GreaterThanOrEquals, appiconFB._addedBlocks);
     _waitingNot = '';
-    iconFB._addedBlocks.needEndBlock[iconFB._blockIndex] =
-        iconFB._addedBlocks.retVal;
-    return iconFB;
+    appiconFB._addedBlocks.needEndBlock[appiconFB._blockIndex] =
+        appiconFB._addedBlocks.retVal;
+    return appiconFB;
   }
 
-  IconFilterBuilder greaterThanOrEquals(dynamic pValue) {
+  AppIconFilterBuilder greaterThanOrEquals(dynamic pValue) {
     param.expression = '>=';
-    iconFB._addedBlocks = _waitingNot == ''
-        ? setCriteria(pValue, iconFB.parameters, param,
-            SqlSyntax.GreaterThanOrEquals, iconFB._addedBlocks)
-        : setCriteria(pValue, iconFB.parameters, param, SqlSyntax.LessThan,
-            iconFB._addedBlocks);
+    appiconFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, appiconFB.parameters, param,
+            SqlSyntax.GreaterThanOrEquals, appiconFB._addedBlocks)
+        : setCriteria(pValue, appiconFB.parameters, param, SqlSyntax.LessThan,
+            appiconFB._addedBlocks);
     _waitingNot = '';
-    iconFB._addedBlocks.needEndBlock[iconFB._blockIndex] =
-        iconFB._addedBlocks.retVal;
-    return iconFB;
+    appiconFB._addedBlocks.needEndBlock[appiconFB._blockIndex] =
+        appiconFB._addedBlocks.retVal;
+    return appiconFB;
   }
 
-  IconFilterBuilder lessThanOrEquals(dynamic pValue) {
+  AppIconFilterBuilder lessThanOrEquals(dynamic pValue) {
     param.expression = '<=';
-    iconFB._addedBlocks = _waitingNot == ''
-        ? setCriteria(pValue, iconFB.parameters, param,
-            SqlSyntax.LessThanOrEquals, iconFB._addedBlocks)
-        : setCriteria(pValue, iconFB.parameters, param, SqlSyntax.GreaterThan,
-            iconFB._addedBlocks);
+    appiconFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, appiconFB.parameters, param,
+            SqlSyntax.LessThanOrEquals, appiconFB._addedBlocks)
+        : setCriteria(pValue, appiconFB.parameters, param,
+            SqlSyntax.GreaterThan, appiconFB._addedBlocks);
     _waitingNot = '';
-    iconFB._addedBlocks.needEndBlock[iconFB._blockIndex] =
-        iconFB._addedBlocks.retVal;
-    return iconFB;
+    appiconFB._addedBlocks.needEndBlock[appiconFB._blockIndex] =
+        appiconFB._addedBlocks.retVal;
+    return appiconFB;
   }
 
-  IconFilterBuilder inValues(dynamic pValue) {
-    iconFB._addedBlocks = setCriteria(
+  AppIconFilterBuilder inValues(dynamic pValue) {
+    appiconFB._addedBlocks = setCriteria(
         pValue,
-        iconFB.parameters,
+        appiconFB.parameters,
         param,
         SqlSyntax.IN.replaceAll(SqlSyntax.notKeyword, _waitingNot),
-        iconFB._addedBlocks);
+        appiconFB._addedBlocks);
     _waitingNot = '';
-    iconFB._addedBlocks.needEndBlock[iconFB._blockIndex] =
-        iconFB._addedBlocks.retVal;
-    return iconFB;
+    appiconFB._addedBlocks.needEndBlock[appiconFB._blockIndex] =
+        appiconFB._addedBlocks.retVal;
+    return appiconFB;
   }
 }
-// endregion IconField
+// endregion AppIconField
 
-// region IconFilterBuilder
-class IconFilterBuilder extends SearchCriteria {
-  IconFilterBuilder(Icon obj) {
+// region AppIconFilterBuilder
+class AppIconFilterBuilder extends SearchCriteria {
+  AppIconFilterBuilder(AppIcon obj) {
     whereString = '';
     qparams = QueryParams();
     parameters = <DbParameter>[];
@@ -7654,13 +7682,13 @@ class IconFilterBuilder extends SearchCriteria {
   int _blockIndex = 0;
   List<DbParameter> parameters;
   List<String> orderByList;
-  Icon _obj;
+  AppIcon _obj;
   QueryParams qparams;
   int _pagesize;
   int _page;
 
   /// put the sql keyword 'AND'
-  IconFilterBuilder get and {
+  AppIconFilterBuilder get and {
     if (parameters.isNotEmpty) {
       parameters[parameters.length - 1].wOperator = ' AND ';
     }
@@ -7668,7 +7696,7 @@ class IconFilterBuilder extends SearchCriteria {
   }
 
   /// put the sql keyword 'OR'
-  IconFilterBuilder get or {
+  AppIconFilterBuilder get or {
     if (parameters.isNotEmpty) {
       parameters[parameters.length - 1].wOperator = ' OR ';
     }
@@ -7676,7 +7704,7 @@ class IconFilterBuilder extends SearchCriteria {
   }
 
   /// open parentheses
-  IconFilterBuilder get startBlock {
+  AppIconFilterBuilder get startBlock {
     _addedBlocks.waitingStartBlock.add(true);
     _addedBlocks.needEndBlock.add(false);
     _blockIndex++;
@@ -7687,7 +7715,7 @@ class IconFilterBuilder extends SearchCriteria {
   }
 
   /// String whereCriteria, write raw query without 'where' keyword. Like this: 'field1 like 'test%' and field2 = 3'
-  IconFilterBuilder where(String whereCriteria, {dynamic parameterValue}) {
+  AppIconFilterBuilder where(String whereCriteria, {dynamic parameterValue}) {
     if (whereCriteria != null && whereCriteria != '') {
       final DbParameter param = DbParameter(
           columnName: parameterValue == null ? null : '',
@@ -7702,7 +7730,7 @@ class IconFilterBuilder extends SearchCriteria {
   /// page = page number,
   ///
   /// pagesize = row(s) per page
-  IconFilterBuilder page(int page, int pagesize) {
+  AppIconFilterBuilder page(int page, int pagesize) {
     if (page > 0) {
       _page = page;
     }
@@ -7713,7 +7741,7 @@ class IconFilterBuilder extends SearchCriteria {
   }
 
   /// int count = LIMIT
-  IconFilterBuilder top(int count) {
+  AppIconFilterBuilder top(int count) {
     if (count > 0) {
       _pagesize = count;
     }
@@ -7721,7 +7749,7 @@ class IconFilterBuilder extends SearchCriteria {
   }
 
   /// close parentheses
-  IconFilterBuilder get endBlock {
+  AppIconFilterBuilder get endBlock {
     if (_addedBlocks.needEndBlock[_blockIndex]) {
       parameters[parameters.length - 1].whereString += ' ) ';
     }
@@ -7736,7 +7764,7 @@ class IconFilterBuilder extends SearchCriteria {
   /// Example 1: argFields='name, date'
   ///
   /// Example 2: argFields = ['name', 'date']
-  IconFilterBuilder orderBy(dynamic argFields) {
+  AppIconFilterBuilder orderBy(dynamic argFields) {
     if (argFields != null) {
       if (argFields is String) {
         orderByList.add(argFields);
@@ -7756,7 +7784,7 @@ class IconFilterBuilder extends SearchCriteria {
   /// Example 1: argFields='field1, field2'
   ///
   /// Example 2: argFields = ['field1', 'field2']
-  IconFilterBuilder orderByDesc(dynamic argFields) {
+  AppIconFilterBuilder orderByDesc(dynamic argFields) {
     if (argFields != null) {
       if (argFields is String) {
         orderByList.add('$argFields desc ');
@@ -7776,7 +7804,7 @@ class IconFilterBuilder extends SearchCriteria {
   /// Example 1: argFields='field1, field2'
   ///
   /// Example 2: argFields = ['field1', 'field2']
-  IconFilterBuilder groupBy(dynamic argFields) {
+  AppIconFilterBuilder groupBy(dynamic argFields) {
     if (argFields != null) {
       if (argFields is String) {
         groupByList.add(' $argFields ');
@@ -7796,7 +7824,7 @@ class IconFilterBuilder extends SearchCriteria {
   /// Example 1: argFields='name, date'
   ///
   /// Example 2: argFields = ['name', 'date']
-  IconFilterBuilder having(dynamic argFields) {
+  AppIconFilterBuilder having(dynamic argFields) {
     if (argFields != null) {
       if (argFields is String) {
         havingList.add(argFields);
@@ -7811,26 +7839,26 @@ class IconFilterBuilder extends SearchCriteria {
     return this;
   }
 
-  IconField setField(IconField field, String colName, DbType dbtype) {
-    return IconField(this)
+  AppIconField setField(AppIconField field, String colName, DbType dbtype) {
+    return AppIconField(this)
       ..param = DbParameter(
           dbType: dbtype,
           columnName: colName,
           wStartBlock: _addedBlocks.waitingStartBlock[_blockIndex]);
   }
 
-  IconField _icon_id;
-  IconField get icon_id {
+  AppIconField _icon_id;
+  AppIconField get icon_id {
     return _icon_id = setField(_icon_id, 'icon_id', DbType.integer);
   }
 
-  IconField _name;
-  IconField get name {
+  AppIconField _name;
+  AppIconField get name {
     return _name = setField(_name, 'name', DbType.text);
   }
 
-  IconField _priority;
-  IconField get priority {
+  AppIconField _priority;
+  AppIconField get priority {
     return _priority = setField(_priority, 'priority', DbType.integer);
   }
 
@@ -7912,7 +7940,7 @@ class IconFilterBuilder extends SearchCriteria {
         whereString += param.whereString;
       }
     }
-    if (Icon._softDeleteActivated) {
+    if (AppIcon._softDeleteActivated) {
       if (whereString != '') {
         whereString =
             '${!_getIsDeleted ? 'ifnull(isDeleted,0)=0 AND' : ''} ($whereString)';
@@ -7931,45 +7959,45 @@ class IconFilterBuilder extends SearchCriteria {
       ..having = havingList.join(',');
   }
 
-  /// Deletes List<Icon> bulk by query
+  /// Deletes List<AppIcon> bulk by query
   ///
   /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
   Future<BoolResult> delete([bool hardDelete = false]) async {
     _buildParameters();
     var r = BoolResult();
-    // Check sub records where in (Expensecategory) according to DeleteRule.NO_ACTION
+    // Check sub records where in (ExpenseCategory) according to DeleteRule.NO_ACTION
 
-    final idListExpensecategoryBYicon_id = toListPrimaryKeySQL(false);
-    final resExpensecategoryBYicon_id = await Expensecategory()
+    final idListExpenseCategoryBYicon_id = toListPrimaryKeySQL(false);
+    final resExpenseCategoryBYicon_id = await ExpenseCategory()
         .select()
-        .where('icon_id IN (${idListExpensecategoryBYicon_id['sql']})',
-            parameterValue: idListExpensecategoryBYicon_id['args'])
+        .where('icon_id IN (${idListExpenseCategoryBYicon_id['sql']})',
+            parameterValue: idListExpenseCategoryBYicon_id['args'])
         .toCount();
-    if (resExpensecategoryBYicon_id > 0) {
+    if (resExpenseCategoryBYicon_id > 0) {
       return BoolResult(
           success: false,
           errorMessage:
-              'SQFENTITY ERROR: The DELETE statement conflicted with the REFERENCE RELATIONSHIP (Expensecategory.icon_id)');
+              'SQFENTITY ERROR: The DELETE statement conflicted with the REFERENCE RELATIONSHIP (ExpenseCategory.icon_id)');
     }
-// Check sub records where in (Incomecategory) according to DeleteRule.NO_ACTION
+// Check sub records where in (IncomeCategory) according to DeleteRule.NO_ACTION
 
-    final idListIncomecategoryBYicon_id = toListPrimaryKeySQL(false);
-    final resIncomecategoryBYicon_id = await Incomecategory()
+    final idListIncomeCategoryBYicon_id = toListPrimaryKeySQL(false);
+    final resIncomeCategoryBYicon_id = await IncomeCategory()
         .select()
-        .where('icon_id IN (${idListIncomecategoryBYicon_id['sql']})',
-            parameterValue: idListIncomecategoryBYicon_id['args'])
+        .where('icon_id IN (${idListIncomeCategoryBYicon_id['sql']})',
+            parameterValue: idListIncomeCategoryBYicon_id['args'])
         .toCount();
-    if (resIncomecategoryBYicon_id > 0) {
+    if (resIncomeCategoryBYicon_id > 0) {
       return BoolResult(
           success: false,
           errorMessage:
-              'SQFENTITY ERROR: The DELETE statement conflicted with the REFERENCE RELATIONSHIP (Incomecategory.icon_id)');
+              'SQFENTITY ERROR: The DELETE statement conflicted with the REFERENCE RELATIONSHIP (IncomeCategory.icon_id)');
     }
 
-    if (Icon._softDeleteActivated && !hardDelete) {
-      r = await _obj._mnIcon.updateBatch(qparams, {'isDeleted': 1});
+    if (AppIcon._softDeleteActivated && !hardDelete) {
+      r = await _obj._mnAppIcon.updateBatch(qparams, {'isDeleted': 1});
     } else {
-      r = await _obj._mnIcon.delete(qparams);
+      r = await _obj._mnAppIcon.delete(qparams);
     }
     return r;
   }
@@ -7985,10 +8013,10 @@ class IconFilterBuilder extends SearchCriteria {
       qparams.whereString =
           'icon_id IN (SELECT icon_id from icon ${qparams.whereString.isNotEmpty ? 'WHERE ${qparams.whereString}' : ''}${qparams.limit > 0 ? ' LIMIT ${qparams.limit}' : ''}${qparams.offset > 0 ? ' OFFSET ${qparams.offset}' : ''})';
     }
-    return _obj._mnIcon.updateBatch(qparams, values);
+    return _obj._mnAppIcon.updateBatch(qparams, values);
   }
 
-  /// This method always returns Icon Obj if exist, otherwise returns null
+  /// This method always returns AppIcon Obj if exist, otherwise returns null
   ///
   /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
@@ -8001,40 +8029,40 @@ class IconFilterBuilder extends SearchCriteria {
   /// bool loadParents: if true, loads all parent objects until the object has no parent
 
   ///
-  /// <returns>List<Icon>
-  Future<Icon> toSingle(
+  /// <returns>List<AppIcon>
+  Future<AppIcon> toSingle(
       {bool preload = false,
       List<String> preloadFields,
       bool loadParents = false,
       List<String> loadedFields}) async {
     _pagesize = 1;
     _buildParameters();
-    final objFuture = _obj._mnIcon.toList(qparams);
+    final objFuture = _obj._mnAppIcon.toList(qparams);
     final data = await objFuture;
-    Icon obj;
+    AppIcon obj;
     if (data.isNotEmpty) {
-      obj = Icon.fromMap(data[0] as Map<String, dynamic>);
+      obj = AppIcon.fromMap(data[0] as Map<String, dynamic>);
       // final List<String> _loadedFields = loadedFields ?? [];
 
       // RELATIONSHIPS PRELOAD CHILD
       if (preload) {
         loadedFields = loadedFields ?? [];
-        if (/*!_loadedFields.contains('icon.plExpensecategories') && */ (preloadFields ==
+        if (/*!_loadedFields.contains('icon.plExpenseCategories') && */ (preloadFields ==
                 null ||
-            preloadFields.contains('plExpensecategories'))) {
-          /*_loadedFields.add('icon.plExpensecategories'); */
-          obj.plExpensecategories = obj.plExpensecategories ??
-              await obj.getExpensecategories().toList(
+            preloadFields.contains('plExpenseCategories'))) {
+          /*_loadedFields.add('icon.plExpenseCategories'); */
+          obj.plExpenseCategories = obj.plExpenseCategories ??
+              await obj.getExpenseCategories().toList(
                   preload: preload,
                   preloadFields: preloadFields,
                   loadParents: false /*, loadedFields:_loadedFields*/);
         }
-        if (/*!_loadedFields.contains('icon.plIncomecategories') && */ (preloadFields ==
+        if (/*!_loadedFields.contains('icon.plIncomeCategories') && */ (preloadFields ==
                 null ||
-            preloadFields.contains('plIncomecategories'))) {
-          /*_loadedFields.add('icon.plIncomecategories'); */
-          obj.plIncomecategories = obj.plIncomecategories ??
-              await obj.getIncomecategories().toList(
+            preloadFields.contains('plIncomeCategories'))) {
+          /*_loadedFields.add('icon.plIncomeCategories'); */
+          obj.plIncomeCategories = obj.plIncomeCategories ??
+              await obj.getIncomeCategories().toList(
                   preload: preload,
                   preloadFields: preloadFields,
                   loadParents: false /*, loadedFields:_loadedFields*/);
@@ -8047,21 +8075,21 @@ class IconFilterBuilder extends SearchCriteria {
     return obj;
   }
 
-  /// This method returns int. [Icon]
+  /// This method returns int. [AppIcon]
   ///
   /// <returns>int
-  Future<int> toCount([VoidCallback Function(int c) iconCount]) async {
+  Future<int> toCount([VoidCallback Function(int c) appiconCount]) async {
     _buildParameters();
     qparams.selectColumns = ['COUNT(1) AS CNT'];
-    final iconsFuture = await _obj._mnIcon.toList(qparams);
-    final int count = iconsFuture[0]['CNT'] as int;
-    if (iconCount != null) {
-      iconCount(count);
+    final appiconsFuture = await _obj._mnAppIcon.toList(qparams);
+    final int count = appiconsFuture[0]['CNT'] as int;
+    if (appiconCount != null) {
+      appiconCount(count);
     }
     return count;
   }
 
-  /// This method returns List<Icon> [Icon]
+  /// This method returns List<AppIcon> [AppIcon]
   ///
   /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
@@ -8074,23 +8102,23 @@ class IconFilterBuilder extends SearchCriteria {
   /// bool loadParents: if true, loads all parent objects until the object has no parent
 
   ///
-  /// <returns>List<Icon>
-  Future<List<Icon>> toList(
+  /// <returns>List<AppIcon>
+  Future<List<AppIcon>> toList(
       {bool preload = false,
       List<String> preloadFields,
       bool loadParents = false,
       List<String> loadedFields}) async {
     final data = await toMapList();
-    final List<Icon> iconsData = await Icon.fromMapList(data,
+    final List<AppIcon> appiconsData = await AppIcon.fromMapList(data,
         preload: preload,
         preloadFields: preloadFields,
         loadParents: loadParents,
         loadedFields: loadedFields,
         setDefaultValues: qparams.selectColumns == null);
-    return iconsData;
+    return appiconsData;
   }
 
-  /// This method returns Json String [Icon]
+  /// This method returns Json String [AppIcon]
   Future<String> toJson() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -8100,7 +8128,7 @@ class IconFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method returns Json String. [Icon]
+  /// This method returns Json String. [AppIcon]
   Future<String> toJsonWithChilds() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -8110,15 +8138,15 @@ class IconFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method returns List<dynamic>. [Icon]
+  /// This method returns List<dynamic>. [AppIcon]
   ///
   /// <returns>List<dynamic>
   Future<List<dynamic>> toMapList() async {
     _buildParameters();
-    return await _obj._mnIcon.toList(qparams);
+    return await _obj._mnAppIcon.toList(qparams);
   }
 
-  /// This method returns Primary Key List SQL and Parameters retVal = Map<String,dynamic>. [Icon]
+  /// This method returns Primary Key List SQL and Parameters retVal = Map<String,dynamic>. [AppIcon]
   ///
   /// retVal['sql'] = SQL statement string, retVal['args'] = whereArguments List<dynamic>;
   ///
@@ -8141,7 +8169,7 @@ class IconFilterBuilder extends SearchCriteria {
     }
     final List<int> icon_idData = <int>[];
     qparams.selectColumns = ['icon_id'];
-    final icon_idFuture = await _obj._mnIcon.toList(qparams);
+    final icon_idFuture = await _obj._mnAppIcon.toList(qparams);
 
     final int count = icon_idFuture.length;
     for (int i = 0; i < count; i++) {
@@ -8150,13 +8178,13 @@ class IconFilterBuilder extends SearchCriteria {
     return icon_idData;
   }
 
-  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..  [Icon]
+  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..  [AppIcon]
   ///
   /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
   Future<List<dynamic>> toListObject() async {
     _buildParameters();
 
-    final objectFuture = _obj._mnIcon.toList(qparams);
+    final objectFuture = _obj._mnAppIcon.toList(qparams);
 
     final List<dynamic> objectsData = <dynamic>[];
     final data = await objectFuture;
@@ -8169,12 +8197,12 @@ class IconFilterBuilder extends SearchCriteria {
 
   /// Returns List<String> for selected first column
   ///
-  /// Sample usage: await Icon.select(columnsToSelect: ['columnName']).toListString()
+  /// Sample usage: await AppIcon.select(columnsToSelect: ['columnName']).toListString()
   Future<List<String>> toListString(
       [VoidCallback Function(List<String> o) listString]) async {
     _buildParameters();
 
-    final objectFuture = _obj._mnIcon.toList(qparams);
+    final objectFuture = _obj._mnAppIcon.toList(qparams);
 
     final List<String> objectsData = <String>[];
     final data = await objectFuture;
@@ -8188,10 +8216,10 @@ class IconFilterBuilder extends SearchCriteria {
     return objectsData;
   }
 }
-// endregion IconFilterBuilder
+// endregion AppIconFilterBuilder
 
-// region IconFields
-class IconFields {
+// region AppIconFields
+class AppIconFields {
   static TableField _fIcon_id;
   static TableField get icon_id {
     return _fIcon_id =
@@ -8209,11 +8237,11 @@ class IconFields {
         SqlSyntax.setField(_fPriority, 'priority', DbType.integer);
   }
 }
-// endregion IconFields
+// endregion AppIconFields
 
-//region IconManager
-class IconManager extends SqfEntityProvider {
-  IconManager()
+//region AppIconManager
+class AppIconManager extends SqfEntityProvider {
+  AppIconManager()
       : super(DbModel(),
             tableName: _tableName,
             primaryKeyList: _primaryKeyList,
@@ -8223,19 +8251,19 @@ class IconManager extends SqfEntityProvider {
   static final String _whereStr = 'icon_id=?';
 }
 
-//endregion IconManager
-// region Paymentcycle
-class Paymentcycle {
-  Paymentcycle({this.payment_cycle_id, this.month, this.priority}) {
+//endregion AppIconManager
+// region PaymentCycle
+class PaymentCycle {
+  PaymentCycle({this.payment_cycle_id, this.month, this.priority}) {
     _setDefaultValues();
   }
-  Paymentcycle.withFields(this.month, this.priority) {
+  PaymentCycle.withFields(this.month, this.priority) {
     _setDefaultValues();
   }
-  Paymentcycle.withId(this.payment_cycle_id, this.month, this.priority) {
+  PaymentCycle.withId(this.payment_cycle_id, this.month, this.priority) {
     _setDefaultValues();
   }
-  Paymentcycle.fromMap(Map<String, dynamic> o, {bool setDefaultValues = true}) {
+  PaymentCycle.fromMap(Map<String, dynamic> o, {bool setDefaultValues = true}) {
     if (setDefaultValues) {
       _setDefaultValues();
     }
@@ -8247,39 +8275,39 @@ class Paymentcycle {
       priority = int.tryParse(o['priority'].toString());
     }
   }
-  // FIELDS (Paymentcycle)
+  // FIELDS (PaymentCycle)
   int payment_cycle_id;
   int month;
   int priority;
 
   BoolResult saveResult;
-  // end FIELDS (Paymentcycle)
+  // end FIELDS (PaymentCycle)
 
-// COLLECTIONS & VIRTUALS (Paymentcycle)
+// COLLECTIONS & VIRTUALS (PaymentCycle)
   /// to load children of items to this field, use preload parameter. Ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
-  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plFixedfees', 'plField2'..]) or so on..
-  List<Fixedfee> plFixedfees;
+  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plFixedFees', 'plField2'..]) or so on..
+  List<FixedFee> plFixedFees;
 
-  /// get Fixedfee(s) filtered by payment_cycle_id=payment_cycle_id
-  FixedfeeFilterBuilder getFixedfees(
+  /// get FixedFee(s) filtered by payment_cycle_id=payment_cycle_id
+  FixedFeeFilterBuilder getFixedFees(
       {List<String> columnsToSelect, bool getIsDeleted}) {
     if (payment_cycle_id == null) {
       return null;
     }
-    return Fixedfee()
+    return FixedFee()
         .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
         .payment_cycle_id
         .equals(payment_cycle_id)
         .and;
   }
 
-// END COLLECTIONS & VIRTUALS (Paymentcycle)
+// END COLLECTIONS & VIRTUALS (PaymentCycle)
 
   static const bool _softDeleteActivated = false;
-  PaymentcycleManager __mnPaymentcycle;
+  PaymentCycleManager __mnPaymentCycle;
 
-  PaymentcycleManager get _mnPaymentcycle {
-    return __mnPaymentcycle = __mnPaymentcycle ?? PaymentcycleManager();
+  PaymentCycleManager get _mnPaymentCycle {
+    return __mnPaymentCycle = __mnPaymentCycle ?? PaymentCycleManager();
   }
 
   // METHODS
@@ -8316,21 +8344,21 @@ class Paymentcycle {
       map['priority'] = priority;
     }
 
-// COLLECTIONS (Paymentcycle)
+// COLLECTIONS (PaymentCycle)
     if (!forQuery) {
-      map['Fixedfees'] = await getFixedfees().toMapList();
+      map['FixedFees'] = await getFixedFees().toMapList();
     }
-// END COLLECTIONS (Paymentcycle)
+// END COLLECTIONS (PaymentCycle)
 
     return map;
   }
 
-  /// This method returns Json String [Paymentcycle]
+  /// This method returns Json String [PaymentCycle]
   String toJson() {
     return json.encode(toMap(forJson: true));
   }
 
-  /// This method returns Json String [Paymentcycle]
+  /// This method returns Json String [PaymentCycle]
   Future<String> toJsonWithChilds() async {
     return json.encode(await toMapWithChildren(false, true));
   }
@@ -8343,14 +8371,14 @@ class Paymentcycle {
     return [payment_cycle_id, month, priority];
   }
 
-  static Future<List<Paymentcycle>> fromWebUrl(String url,
+  static Future<List<PaymentCycle>> fromWebUrl(String url,
       {Map<String, String> headers}) async {
     try {
       final response = await http.get(url, headers: headers);
       return await fromJson(response.body);
     } catch (e) {
       print(
-          'SQFENTITY ERROR Paymentcycle.fromWebUrl: ErrorMessage: ${e.toString()}');
+          'SQFENTITY ERROR PaymentCycle.fromWebUrl: ErrorMessage: ${e.toString()}');
       return null;
     }
   }
@@ -8359,43 +8387,43 @@ class Paymentcycle {
     return http.post(url, headers: headers, body: toJson());
   }
 
-  static Future<List<Paymentcycle>> fromJson(String jsonBody) async {
+  static Future<List<PaymentCycle>> fromJson(String jsonBody) async {
     final Iterable list = await json.decode(jsonBody) as Iterable;
-    var objList = <Paymentcycle>[];
+    var objList = <PaymentCycle>[];
     try {
       objList = list
           .map((paymentcycle) =>
-              Paymentcycle.fromMap(paymentcycle as Map<String, dynamic>))
+              PaymentCycle.fromMap(paymentcycle as Map<String, dynamic>))
           .toList();
     } catch (e) {
       print(
-          'SQFENTITY ERROR Paymentcycle.fromJson: ErrorMessage: ${e.toString()}');
+          'SQFENTITY ERROR PaymentCycle.fromJson: ErrorMessage: ${e.toString()}');
     }
     return objList;
   }
 
-  static Future<List<Paymentcycle>> fromMapList(List<dynamic> data,
+  static Future<List<PaymentCycle>> fromMapList(List<dynamic> data,
       {bool preload = false,
       List<String> preloadFields,
       bool loadParents = false,
       List<String> loadedFields,
       bool setDefaultValues = true}) async {
-    final List<Paymentcycle> objList = <Paymentcycle>[];
+    final List<PaymentCycle> objList = <PaymentCycle>[];
     loadedFields = loadedFields ?? [];
     for (final map in data) {
-      final obj = Paymentcycle.fromMap(map as Map<String, dynamic>,
+      final obj = PaymentCycle.fromMap(map as Map<String, dynamic>,
           setDefaultValues: setDefaultValues);
       // final List<String> _loadedFields = List<String>.from(loadedFields);
 
       // RELATIONSHIPS PRELOAD CHILD
       if (preload) {
         loadedFields = loadedFields ?? [];
-        if (/*!_loadedFields.contains('paymentcycle.plFixedfees') && */ (preloadFields ==
+        if (/*!_loadedFields.contains('paymentcycle.plFixedFees') && */ (preloadFields ==
                 null ||
-            preloadFields.contains('plFixedfees'))) {
-          /*_loadedFields.add('paymentcycle.plFixedfees'); */
-          obj.plFixedfees = obj.plFixedfees ??
-              await obj.getFixedfees().toList(
+            preloadFields.contains('plFixedFees'))) {
+          /*_loadedFields.add('paymentcycle.plFixedFees'); */
+          obj.plFixedFees = obj.plFixedFees ??
+              await obj.getFixedFees().toList(
                   preload: preload,
                   preloadFields: preloadFields,
                   loadParents: false /*, loadedFields:_loadedFields*/);
@@ -8407,7 +8435,7 @@ class Paymentcycle {
     return objList;
   }
 
-  /// returns Paymentcycle by ID if exist, otherwise returns null
+  /// returns PaymentCycle by ID if exist, otherwise returns null
   ///
   /// Primary Keys: int payment_cycle_id
   ///
@@ -8422,8 +8450,8 @@ class Paymentcycle {
   /// bool loadParents: if true, loads all parent objects until the object has no parent
 
   ///
-  /// <returns>returns Paymentcycle if exist, otherwise returns null
-  Future<Paymentcycle> getById(int payment_cycle_id,
+  /// <returns>returns PaymentCycle if exist, otherwise returns null
+  Future<PaymentCycle> getById(int payment_cycle_id,
       {bool preload = false,
       List<String> preloadFields,
       bool loadParents = false,
@@ -8431,21 +8459,21 @@ class Paymentcycle {
     if (payment_cycle_id == null) {
       return null;
     }
-    Paymentcycle obj;
-    final data = await _mnPaymentcycle.getById([payment_cycle_id]);
+    PaymentCycle obj;
+    final data = await _mnPaymentCycle.getById([payment_cycle_id]);
     if (data.length != 0) {
-      obj = Paymentcycle.fromMap(data[0] as Map<String, dynamic>);
+      obj = PaymentCycle.fromMap(data[0] as Map<String, dynamic>);
       // final List<String> _loadedFields = loadedFields ?? [];
 
       // RELATIONSHIPS PRELOAD CHILD
       if (preload) {
         loadedFields = loadedFields ?? [];
-        if (/*!_loadedFields.contains('paymentcycle.plFixedfees') && */ (preloadFields ==
+        if (/*!_loadedFields.contains('paymentcycle.plFixedFees') && */ (preloadFields ==
                 null ||
-            preloadFields.contains('plFixedfees'))) {
-          /*_loadedFields.add('paymentcycle.plFixedfees'); */
-          obj.plFixedfees = obj.plFixedfees ??
-              await obj.getFixedfees().toList(
+            preloadFields.contains('plFixedFees'))) {
+          /*_loadedFields.add('paymentcycle.plFixedFees'); */
+          obj.plFixedFees = obj.plFixedFees ??
+              await obj.getFixedFees().toList(
                   preload: preload,
                   preloadFields: preloadFields,
                   loadParents: false /*, loadedFields:_loadedFields*/);
@@ -8458,34 +8486,34 @@ class Paymentcycle {
     return obj;
   }
 
-  /// Saves the (Paymentcycle) object. If the payment_cycle_id field is null, saves as a new record and returns new payment_cycle_id, if payment_cycle_id is not null then updates record
+  /// Saves the (PaymentCycle) object. If the payment_cycle_id field is null, saves as a new record and returns new payment_cycle_id, if payment_cycle_id is not null then updates record
 
   /// <returns>Returns payment_cycle_id
   Future<int> save() async {
     if (payment_cycle_id == null || payment_cycle_id == 0) {
-      payment_cycle_id = await _mnPaymentcycle.insert(this);
+      payment_cycle_id = await _mnPaymentCycle.insert(this);
     } else {
       // payment_cycle_id= await _upsert(); // removed in sqfentity_gen 1.3.0+6
-      await _mnPaymentcycle.update(this);
+      await _mnPaymentCycle.update(this);
     }
 
     return payment_cycle_id;
   }
 
-  /// saveAs Paymentcycle. Returns a new Primary Key value of Paymentcycle
+  /// saveAs PaymentCycle. Returns a new Primary Key value of PaymentCycle
 
-  /// <returns>Returns a new Primary Key value of Paymentcycle
+  /// <returns>Returns a new Primary Key value of PaymentCycle
   Future<int> saveAs() async {
     payment_cycle_id = null;
 
     return save();
   }
 
-  /// saveAll method saves the sent List<Paymentcycle> as a bulk in one transaction
+  /// saveAll method saves the sent List<PaymentCycle> as a bulk in one transaction
   ///
   /// Returns a <List<BoolResult>>
-  static Future<List<dynamic>> saveAll(List<Paymentcycle> paymentcycles) async {
-    // final results = _mnPaymentcycle.saveAll('INSERT OR REPLACE INTO paymentcycle (payment_cycle_id,month, priority)  VALUES (?,?,?)',paymentcycles);
+  static Future<List<dynamic>> saveAll(List<PaymentCycle> paymentcycles) async {
+    // final results = _mnPaymentCycle.saveAll('INSERT OR REPLACE INTO paymentcycle (payment_cycle_id,month, priority)  VALUES (?,?,?)',paymentcycles);
     // return results; removed in sqfentity_gen 1.3.0+6
     await DbModel().batchStart();
     for (final obj in paymentcycles) {
@@ -8507,48 +8535,48 @@ class Paymentcycle {
   /// <returns>Returns payment_cycle_id
   Future<int> upsert() async {
     try {
-      if (await _mnPaymentcycle.rawInsert(
+      if (await _mnPaymentCycle.rawInsert(
               'INSERT OR REPLACE INTO paymentcycle (payment_cycle_id,month, priority)  VALUES (?,?,?)',
               [payment_cycle_id, month, priority]) ==
           1) {
         saveResult = BoolResult(
             success: true,
             successMessage:
-                'Paymentcycle payment_cycle_id=$payment_cycle_id updated successfully');
+                'PaymentCycle payment_cycle_id=$payment_cycle_id updated successfully');
       } else {
         saveResult = BoolResult(
             success: false,
             errorMessage:
-                'Paymentcycle payment_cycle_id=$payment_cycle_id did not update');
+                'PaymentCycle payment_cycle_id=$payment_cycle_id did not update');
       }
       return payment_cycle_id;
     } catch (e) {
       saveResult = BoolResult(
           success: false,
-          errorMessage: 'Paymentcycle Save failed. Error: ${e.toString()}');
+          errorMessage: 'PaymentCycle Save failed. Error: ${e.toString()}');
       return 0;
     }
   }
 
-  /// inserts or replaces the sent List<<Paymentcycle>> as a bulk in one transaction.
+  /// inserts or replaces the sent List<<PaymentCycle>> as a bulk in one transaction.
   ///
   /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
   ///
   /// Returns a BoolCommitResult
-  Future<BoolCommitResult> upsertAll(List<Paymentcycle> paymentcycles) async {
-    final results = await _mnPaymentcycle.rawInsertAll(
+  Future<BoolCommitResult> upsertAll(List<PaymentCycle> paymentcycles) async {
+    final results = await _mnPaymentCycle.rawInsertAll(
         'INSERT OR REPLACE INTO paymentcycle (payment_cycle_id,month, priority)  VALUES (?,?,?)',
         paymentcycles);
     return results;
   }
 
-  /// Deletes Paymentcycle
+  /// Deletes PaymentCycle
 
   /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
   Future<BoolResult> delete([bool hardDelete = false]) async {
     print(
-        'SQFENTITIY: delete Paymentcycle invoked (payment_cycle_id=$payment_cycle_id)');
-    if (await Fixedfee()
+        'SQFENTITIY: delete PaymentCycle invoked (payment_cycle_id=$payment_cycle_id)');
+    if (await FixedFee()
             .select()
             .payment_cycle_id
             .equals(payment_cycle_id)
@@ -8558,14 +8586,14 @@ class Paymentcycle {
       return BoolResult(
           success: false,
           errorMessage:
-              'SQFENTITY ERROR: The DELETE statement conflicted with the REFERENCE RELATIONSHIP (Fixedfee.payment_cycle_id)');
+              'SQFENTITY ERROR: The DELETE statement conflicted with the REFERENCE RELATIONSHIP (FixedFee.payment_cycle_id)');
     }
     if (!_softDeleteActivated || hardDelete) {
-      return _mnPaymentcycle.delete(QueryParams(
+      return _mnPaymentCycle.delete(QueryParams(
           whereString: 'payment_cycle_id=?',
           whereArguments: [payment_cycle_id]));
     } else {
-      return _mnPaymentcycle.updateBatch(
+      return _mnPaymentCycle.updateBatch(
           QueryParams(
               whereString: 'payment_cycle_id=?',
               whereArguments: [payment_cycle_id]),
@@ -8573,16 +8601,16 @@ class Paymentcycle {
     }
   }
 
-  PaymentcycleFilterBuilder select(
+  PaymentCycleFilterBuilder select(
       {List<String> columnsToSelect, bool getIsDeleted}) {
-    return PaymentcycleFilterBuilder(this)
+    return PaymentCycleFilterBuilder(this)
       .._getIsDeleted = getIsDeleted == true
       ..qparams.selectColumns = columnsToSelect;
   }
 
-  PaymentcycleFilterBuilder distinct(
+  PaymentCycleFilterBuilder distinct(
       {List<String> columnsToSelect, bool getIsDeleted}) {
-    return PaymentcycleFilterBuilder(this)
+    return PaymentCycleFilterBuilder(this)
       .._getIsDeleted = getIsDeleted == true
       ..qparams.selectColumns = columnsToSelect
       ..qparams.distinct = true;
@@ -8612,21 +8640,21 @@ class Paymentcycle {
 }
 // endregion paymentcycle
 
-// region PaymentcycleField
-class PaymentcycleField extends SearchCriteria {
-  PaymentcycleField(this.paymentcycleFB) {
+// region PaymentCycleField
+class PaymentCycleField extends SearchCriteria {
+  PaymentCycleField(this.paymentcycleFB) {
     param = DbParameter();
   }
   DbParameter param;
   String _waitingNot = '';
-  PaymentcycleFilterBuilder paymentcycleFB;
+  PaymentCycleFilterBuilder paymentcycleFB;
 
-  PaymentcycleField get not {
+  PaymentCycleField get not {
     _waitingNot = ' NOT ';
     return this;
   }
 
-  PaymentcycleFilterBuilder equals(dynamic pValue) {
+  PaymentCycleFilterBuilder equals(dynamic pValue) {
     param.expression = '=';
     paymentcycleFB._addedBlocks = _waitingNot == ''
         ? setCriteria(pValue, paymentcycleFB.parameters, param,
@@ -8639,7 +8667,7 @@ class PaymentcycleField extends SearchCriteria {
     return paymentcycleFB;
   }
 
-  PaymentcycleFilterBuilder equalsOrNull(dynamic pValue) {
+  PaymentCycleFilterBuilder equalsOrNull(dynamic pValue) {
     param.expression = '=';
     paymentcycleFB._addedBlocks = _waitingNot == ''
         ? setCriteria(pValue, paymentcycleFB.parameters, param,
@@ -8652,7 +8680,7 @@ class PaymentcycleField extends SearchCriteria {
     return paymentcycleFB;
   }
 
-  PaymentcycleFilterBuilder isNull() {
+  PaymentCycleFilterBuilder isNull() {
     paymentcycleFB._addedBlocks = setCriteria(
         0,
         paymentcycleFB.parameters,
@@ -8665,7 +8693,7 @@ class PaymentcycleField extends SearchCriteria {
     return paymentcycleFB;
   }
 
-  PaymentcycleFilterBuilder contains(dynamic pValue) {
+  PaymentCycleFilterBuilder contains(dynamic pValue) {
     if (pValue != null) {
       paymentcycleFB._addedBlocks = setCriteria(
           '%${pValue.toString()}%',
@@ -8680,7 +8708,7 @@ class PaymentcycleField extends SearchCriteria {
     return paymentcycleFB;
   }
 
-  PaymentcycleFilterBuilder startsWith(dynamic pValue) {
+  PaymentCycleFilterBuilder startsWith(dynamic pValue) {
     if (pValue != null) {
       paymentcycleFB._addedBlocks = setCriteria(
           '${pValue.toString()}%',
@@ -8697,7 +8725,7 @@ class PaymentcycleField extends SearchCriteria {
     return paymentcycleFB;
   }
 
-  PaymentcycleFilterBuilder endsWith(dynamic pValue) {
+  PaymentCycleFilterBuilder endsWith(dynamic pValue) {
     if (pValue != null) {
       paymentcycleFB._addedBlocks = setCriteria(
           '%${pValue.toString()}',
@@ -8712,7 +8740,7 @@ class PaymentcycleField extends SearchCriteria {
     return paymentcycleFB;
   }
 
-  PaymentcycleFilterBuilder between(dynamic pFirst, dynamic pLast) {
+  PaymentCycleFilterBuilder between(dynamic pFirst, dynamic pLast) {
     if (pFirst != null && pLast != null) {
       paymentcycleFB._addedBlocks = setCriteria(
           pFirst,
@@ -8760,7 +8788,7 @@ class PaymentcycleField extends SearchCriteria {
     return paymentcycleFB;
   }
 
-  PaymentcycleFilterBuilder greaterThan(dynamic pValue) {
+  PaymentCycleFilterBuilder greaterThan(dynamic pValue) {
     param.expression = '>';
     paymentcycleFB._addedBlocks = _waitingNot == ''
         ? setCriteria(pValue, paymentcycleFB.parameters, param,
@@ -8773,7 +8801,7 @@ class PaymentcycleField extends SearchCriteria {
     return paymentcycleFB;
   }
 
-  PaymentcycleFilterBuilder lessThan(dynamic pValue) {
+  PaymentCycleFilterBuilder lessThan(dynamic pValue) {
     param.expression = '<';
     paymentcycleFB._addedBlocks = _waitingNot == ''
         ? setCriteria(pValue, paymentcycleFB.parameters, param,
@@ -8786,7 +8814,7 @@ class PaymentcycleField extends SearchCriteria {
     return paymentcycleFB;
   }
 
-  PaymentcycleFilterBuilder greaterThanOrEquals(dynamic pValue) {
+  PaymentCycleFilterBuilder greaterThanOrEquals(dynamic pValue) {
     param.expression = '>=';
     paymentcycleFB._addedBlocks = _waitingNot == ''
         ? setCriteria(pValue, paymentcycleFB.parameters, param,
@@ -8799,7 +8827,7 @@ class PaymentcycleField extends SearchCriteria {
     return paymentcycleFB;
   }
 
-  PaymentcycleFilterBuilder lessThanOrEquals(dynamic pValue) {
+  PaymentCycleFilterBuilder lessThanOrEquals(dynamic pValue) {
     param.expression = '<=';
     paymentcycleFB._addedBlocks = _waitingNot == ''
         ? setCriteria(pValue, paymentcycleFB.parameters, param,
@@ -8812,7 +8840,7 @@ class PaymentcycleField extends SearchCriteria {
     return paymentcycleFB;
   }
 
-  PaymentcycleFilterBuilder inValues(dynamic pValue) {
+  PaymentCycleFilterBuilder inValues(dynamic pValue) {
     paymentcycleFB._addedBlocks = setCriteria(
         pValue,
         paymentcycleFB.parameters,
@@ -8825,11 +8853,11 @@ class PaymentcycleField extends SearchCriteria {
     return paymentcycleFB;
   }
 }
-// endregion PaymentcycleField
+// endregion PaymentCycleField
 
-// region PaymentcycleFilterBuilder
-class PaymentcycleFilterBuilder extends SearchCriteria {
-  PaymentcycleFilterBuilder(Paymentcycle obj) {
+// region PaymentCycleFilterBuilder
+class PaymentCycleFilterBuilder extends SearchCriteria {
+  PaymentCycleFilterBuilder(PaymentCycle obj) {
     whereString = '';
     qparams = QueryParams();
     parameters = <DbParameter>[];
@@ -8846,13 +8874,13 @@ class PaymentcycleFilterBuilder extends SearchCriteria {
   int _blockIndex = 0;
   List<DbParameter> parameters;
   List<String> orderByList;
-  Paymentcycle _obj;
+  PaymentCycle _obj;
   QueryParams qparams;
   int _pagesize;
   int _page;
 
   /// put the sql keyword 'AND'
-  PaymentcycleFilterBuilder get and {
+  PaymentCycleFilterBuilder get and {
     if (parameters.isNotEmpty) {
       parameters[parameters.length - 1].wOperator = ' AND ';
     }
@@ -8860,7 +8888,7 @@ class PaymentcycleFilterBuilder extends SearchCriteria {
   }
 
   /// put the sql keyword 'OR'
-  PaymentcycleFilterBuilder get or {
+  PaymentCycleFilterBuilder get or {
     if (parameters.isNotEmpty) {
       parameters[parameters.length - 1].wOperator = ' OR ';
     }
@@ -8868,7 +8896,7 @@ class PaymentcycleFilterBuilder extends SearchCriteria {
   }
 
   /// open parentheses
-  PaymentcycleFilterBuilder get startBlock {
+  PaymentCycleFilterBuilder get startBlock {
     _addedBlocks.waitingStartBlock.add(true);
     _addedBlocks.needEndBlock.add(false);
     _blockIndex++;
@@ -8879,7 +8907,7 @@ class PaymentcycleFilterBuilder extends SearchCriteria {
   }
 
   /// String whereCriteria, write raw query without 'where' keyword. Like this: 'field1 like 'test%' and field2 = 3'
-  PaymentcycleFilterBuilder where(String whereCriteria,
+  PaymentCycleFilterBuilder where(String whereCriteria,
       {dynamic parameterValue}) {
     if (whereCriteria != null && whereCriteria != '') {
       final DbParameter param = DbParameter(
@@ -8895,7 +8923,7 @@ class PaymentcycleFilterBuilder extends SearchCriteria {
   /// page = page number,
   ///
   /// pagesize = row(s) per page
-  PaymentcycleFilterBuilder page(int page, int pagesize) {
+  PaymentCycleFilterBuilder page(int page, int pagesize) {
     if (page > 0) {
       _page = page;
     }
@@ -8906,7 +8934,7 @@ class PaymentcycleFilterBuilder extends SearchCriteria {
   }
 
   /// int count = LIMIT
-  PaymentcycleFilterBuilder top(int count) {
+  PaymentCycleFilterBuilder top(int count) {
     if (count > 0) {
       _pagesize = count;
     }
@@ -8914,7 +8942,7 @@ class PaymentcycleFilterBuilder extends SearchCriteria {
   }
 
   /// close parentheses
-  PaymentcycleFilterBuilder get endBlock {
+  PaymentCycleFilterBuilder get endBlock {
     if (_addedBlocks.needEndBlock[_blockIndex]) {
       parameters[parameters.length - 1].whereString += ' ) ';
     }
@@ -8929,7 +8957,7 @@ class PaymentcycleFilterBuilder extends SearchCriteria {
   /// Example 1: argFields='name, date'
   ///
   /// Example 2: argFields = ['name', 'date']
-  PaymentcycleFilterBuilder orderBy(dynamic argFields) {
+  PaymentCycleFilterBuilder orderBy(dynamic argFields) {
     if (argFields != null) {
       if (argFields is String) {
         orderByList.add(argFields);
@@ -8949,7 +8977,7 @@ class PaymentcycleFilterBuilder extends SearchCriteria {
   /// Example 1: argFields='field1, field2'
   ///
   /// Example 2: argFields = ['field1', 'field2']
-  PaymentcycleFilterBuilder orderByDesc(dynamic argFields) {
+  PaymentCycleFilterBuilder orderByDesc(dynamic argFields) {
     if (argFields != null) {
       if (argFields is String) {
         orderByList.add('$argFields desc ');
@@ -8969,7 +8997,7 @@ class PaymentcycleFilterBuilder extends SearchCriteria {
   /// Example 1: argFields='field1, field2'
   ///
   /// Example 2: argFields = ['field1', 'field2']
-  PaymentcycleFilterBuilder groupBy(dynamic argFields) {
+  PaymentCycleFilterBuilder groupBy(dynamic argFields) {
     if (argFields != null) {
       if (argFields is String) {
         groupByList.add(' $argFields ');
@@ -8989,7 +9017,7 @@ class PaymentcycleFilterBuilder extends SearchCriteria {
   /// Example 1: argFields='name, date'
   ///
   /// Example 2: argFields = ['name', 'date']
-  PaymentcycleFilterBuilder having(dynamic argFields) {
+  PaymentCycleFilterBuilder having(dynamic argFields) {
     if (argFields != null) {
       if (argFields is String) {
         havingList.add(argFields);
@@ -9004,28 +9032,28 @@ class PaymentcycleFilterBuilder extends SearchCriteria {
     return this;
   }
 
-  PaymentcycleField setField(
-      PaymentcycleField field, String colName, DbType dbtype) {
-    return PaymentcycleField(this)
+  PaymentCycleField setField(
+      PaymentCycleField field, String colName, DbType dbtype) {
+    return PaymentCycleField(this)
       ..param = DbParameter(
           dbType: dbtype,
           columnName: colName,
           wStartBlock: _addedBlocks.waitingStartBlock[_blockIndex]);
   }
 
-  PaymentcycleField _payment_cycle_id;
-  PaymentcycleField get payment_cycle_id {
+  PaymentCycleField _payment_cycle_id;
+  PaymentCycleField get payment_cycle_id {
     return _payment_cycle_id =
         setField(_payment_cycle_id, 'payment_cycle_id', DbType.integer);
   }
 
-  PaymentcycleField _month;
-  PaymentcycleField get month {
+  PaymentCycleField _month;
+  PaymentCycleField get month {
     return _month = setField(_month, 'month', DbType.integer);
   }
 
-  PaymentcycleField _priority;
-  PaymentcycleField get priority {
+  PaymentCycleField _priority;
+  PaymentCycleField get priority {
     return _priority = setField(_priority, 'priority', DbType.integer);
   }
 
@@ -9107,7 +9135,7 @@ class PaymentcycleFilterBuilder extends SearchCriteria {
         whereString += param.whereString;
       }
     }
-    if (Paymentcycle._softDeleteActivated) {
+    if (PaymentCycle._softDeleteActivated) {
       if (whereString != '') {
         whereString =
             '${!_getIsDeleted ? 'ifnull(isDeleted,0)=0 AND' : ''} ($whereString)';
@@ -9126,32 +9154,32 @@ class PaymentcycleFilterBuilder extends SearchCriteria {
       ..having = havingList.join(',');
   }
 
-  /// Deletes List<Paymentcycle> bulk by query
+  /// Deletes List<PaymentCycle> bulk by query
   ///
   /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
   Future<BoolResult> delete([bool hardDelete = false]) async {
     _buildParameters();
     var r = BoolResult();
-    // Check sub records where in (Fixedfee) according to DeleteRule.NO_ACTION
+    // Check sub records where in (FixedFee) according to DeleteRule.NO_ACTION
 
-    final idListFixedfeeBYpayment_cycle_id = toListPrimaryKeySQL(false);
-    final resFixedfeeBYpayment_cycle_id = await Fixedfee()
+    final idListFixedFeeBYpayment_cycle_id = toListPrimaryKeySQL(false);
+    final resFixedFeeBYpayment_cycle_id = await FixedFee()
         .select()
         .where(
-            'payment_cycle_id IN (${idListFixedfeeBYpayment_cycle_id['sql']})',
-            parameterValue: idListFixedfeeBYpayment_cycle_id['args'])
+            'payment_cycle_id IN (${idListFixedFeeBYpayment_cycle_id['sql']})',
+            parameterValue: idListFixedFeeBYpayment_cycle_id['args'])
         .toCount();
-    if (resFixedfeeBYpayment_cycle_id > 0) {
+    if (resFixedFeeBYpayment_cycle_id > 0) {
       return BoolResult(
           success: false,
           errorMessage:
-              'SQFENTITY ERROR: The DELETE statement conflicted with the REFERENCE RELATIONSHIP (Fixedfee.payment_cycle_id)');
+              'SQFENTITY ERROR: The DELETE statement conflicted with the REFERENCE RELATIONSHIP (FixedFee.payment_cycle_id)');
     }
 
-    if (Paymentcycle._softDeleteActivated && !hardDelete) {
-      r = await _obj._mnPaymentcycle.updateBatch(qparams, {'isDeleted': 1});
+    if (PaymentCycle._softDeleteActivated && !hardDelete) {
+      r = await _obj._mnPaymentCycle.updateBatch(qparams, {'isDeleted': 1});
     } else {
-      r = await _obj._mnPaymentcycle.delete(qparams);
+      r = await _obj._mnPaymentCycle.delete(qparams);
     }
     return r;
   }
@@ -9167,10 +9195,10 @@ class PaymentcycleFilterBuilder extends SearchCriteria {
       qparams.whereString =
           'payment_cycle_id IN (SELECT payment_cycle_id from paymentcycle ${qparams.whereString.isNotEmpty ? 'WHERE ${qparams.whereString}' : ''}${qparams.limit > 0 ? ' LIMIT ${qparams.limit}' : ''}${qparams.offset > 0 ? ' OFFSET ${qparams.offset}' : ''})';
     }
-    return _obj._mnPaymentcycle.updateBatch(qparams, values);
+    return _obj._mnPaymentCycle.updateBatch(qparams, values);
   }
 
-  /// This method always returns Paymentcycle Obj if exist, otherwise returns null
+  /// This method always returns PaymentCycle Obj if exist, otherwise returns null
   ///
   /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
@@ -9183,30 +9211,30 @@ class PaymentcycleFilterBuilder extends SearchCriteria {
   /// bool loadParents: if true, loads all parent objects until the object has no parent
 
   ///
-  /// <returns>List<Paymentcycle>
-  Future<Paymentcycle> toSingle(
+  /// <returns>List<PaymentCycle>
+  Future<PaymentCycle> toSingle(
       {bool preload = false,
       List<String> preloadFields,
       bool loadParents = false,
       List<String> loadedFields}) async {
     _pagesize = 1;
     _buildParameters();
-    final objFuture = _obj._mnPaymentcycle.toList(qparams);
+    final objFuture = _obj._mnPaymentCycle.toList(qparams);
     final data = await objFuture;
-    Paymentcycle obj;
+    PaymentCycle obj;
     if (data.isNotEmpty) {
-      obj = Paymentcycle.fromMap(data[0] as Map<String, dynamic>);
+      obj = PaymentCycle.fromMap(data[0] as Map<String, dynamic>);
       // final List<String> _loadedFields = loadedFields ?? [];
 
       // RELATIONSHIPS PRELOAD CHILD
       if (preload) {
         loadedFields = loadedFields ?? [];
-        if (/*!_loadedFields.contains('paymentcycle.plFixedfees') && */ (preloadFields ==
+        if (/*!_loadedFields.contains('paymentcycle.plFixedFees') && */ (preloadFields ==
                 null ||
-            preloadFields.contains('plFixedfees'))) {
-          /*_loadedFields.add('paymentcycle.plFixedfees'); */
-          obj.plFixedfees = obj.plFixedfees ??
-              await obj.getFixedfees().toList(
+            preloadFields.contains('plFixedFees'))) {
+          /*_loadedFields.add('paymentcycle.plFixedFees'); */
+          obj.plFixedFees = obj.plFixedFees ??
+              await obj.getFixedFees().toList(
                   preload: preload,
                   preloadFields: preloadFields,
                   loadParents: false /*, loadedFields:_loadedFields*/);
@@ -9219,13 +9247,13 @@ class PaymentcycleFilterBuilder extends SearchCriteria {
     return obj;
   }
 
-  /// This method returns int. [Paymentcycle]
+  /// This method returns int. [PaymentCycle]
   ///
   /// <returns>int
   Future<int> toCount([VoidCallback Function(int c) paymentcycleCount]) async {
     _buildParameters();
     qparams.selectColumns = ['COUNT(1) AS CNT'];
-    final paymentcyclesFuture = await _obj._mnPaymentcycle.toList(qparams);
+    final paymentcyclesFuture = await _obj._mnPaymentCycle.toList(qparams);
     final int count = paymentcyclesFuture[0]['CNT'] as int;
     if (paymentcycleCount != null) {
       paymentcycleCount(count);
@@ -9233,7 +9261,7 @@ class PaymentcycleFilterBuilder extends SearchCriteria {
     return count;
   }
 
-  /// This method returns List<Paymentcycle> [Paymentcycle]
+  /// This method returns List<PaymentCycle> [PaymentCycle]
   ///
   /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
@@ -9246,14 +9274,14 @@ class PaymentcycleFilterBuilder extends SearchCriteria {
   /// bool loadParents: if true, loads all parent objects until the object has no parent
 
   ///
-  /// <returns>List<Paymentcycle>
-  Future<List<Paymentcycle>> toList(
+  /// <returns>List<PaymentCycle>
+  Future<List<PaymentCycle>> toList(
       {bool preload = false,
       List<String> preloadFields,
       bool loadParents = false,
       List<String> loadedFields}) async {
     final data = await toMapList();
-    final List<Paymentcycle> paymentcyclesData = await Paymentcycle.fromMapList(
+    final List<PaymentCycle> paymentcyclesData = await PaymentCycle.fromMapList(
         data,
         preload: preload,
         preloadFields: preloadFields,
@@ -9263,7 +9291,7 @@ class PaymentcycleFilterBuilder extends SearchCriteria {
     return paymentcyclesData;
   }
 
-  /// This method returns Json String [Paymentcycle]
+  /// This method returns Json String [PaymentCycle]
   Future<String> toJson() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -9273,7 +9301,7 @@ class PaymentcycleFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method returns Json String. [Paymentcycle]
+  /// This method returns Json String. [PaymentCycle]
   Future<String> toJsonWithChilds() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -9283,15 +9311,15 @@ class PaymentcycleFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method returns List<dynamic>. [Paymentcycle]
+  /// This method returns List<dynamic>. [PaymentCycle]
   ///
   /// <returns>List<dynamic>
   Future<List<dynamic>> toMapList() async {
     _buildParameters();
-    return await _obj._mnPaymentcycle.toList(qparams);
+    return await _obj._mnPaymentCycle.toList(qparams);
   }
 
-  /// This method returns Primary Key List SQL and Parameters retVal = Map<String,dynamic>. [Paymentcycle]
+  /// This method returns Primary Key List SQL and Parameters retVal = Map<String,dynamic>. [PaymentCycle]
   ///
   /// retVal['sql'] = SQL statement string, retVal['args'] = whereArguments List<dynamic>;
   ///
@@ -9315,7 +9343,7 @@ class PaymentcycleFilterBuilder extends SearchCriteria {
     }
     final List<int> payment_cycle_idData = <int>[];
     qparams.selectColumns = ['payment_cycle_id'];
-    final payment_cycle_idFuture = await _obj._mnPaymentcycle.toList(qparams);
+    final payment_cycle_idFuture = await _obj._mnPaymentCycle.toList(qparams);
 
     final int count = payment_cycle_idFuture.length;
     for (int i = 0; i < count; i++) {
@@ -9325,13 +9353,13 @@ class PaymentcycleFilterBuilder extends SearchCriteria {
     return payment_cycle_idData;
   }
 
-  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..  [Paymentcycle]
+  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..  [PaymentCycle]
   ///
   /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
   Future<List<dynamic>> toListObject() async {
     _buildParameters();
 
-    final objectFuture = _obj._mnPaymentcycle.toList(qparams);
+    final objectFuture = _obj._mnPaymentCycle.toList(qparams);
 
     final List<dynamic> objectsData = <dynamic>[];
     final data = await objectFuture;
@@ -9344,12 +9372,12 @@ class PaymentcycleFilterBuilder extends SearchCriteria {
 
   /// Returns List<String> for selected first column
   ///
-  /// Sample usage: await Paymentcycle.select(columnsToSelect: ['columnName']).toListString()
+  /// Sample usage: await PaymentCycle.select(columnsToSelect: ['columnName']).toListString()
   Future<List<String>> toListString(
       [VoidCallback Function(List<String> o) listString]) async {
     _buildParameters();
 
-    final objectFuture = _obj._mnPaymentcycle.toList(qparams);
+    final objectFuture = _obj._mnPaymentCycle.toList(qparams);
 
     final List<String> objectsData = <String>[];
     final data = await objectFuture;
@@ -9363,10 +9391,10 @@ class PaymentcycleFilterBuilder extends SearchCriteria {
     return objectsData;
   }
 }
-// endregion PaymentcycleFilterBuilder
+// endregion PaymentCycleFilterBuilder
 
-// region PaymentcycleFields
-class PaymentcycleFields {
+// region PaymentCycleFields
+class PaymentCycleFields {
   static TableField _fPayment_cycle_id;
   static TableField get payment_cycle_id {
     return _fPayment_cycle_id = _fPayment_cycle_id ??
@@ -9386,11 +9414,11 @@ class PaymentcycleFields {
         SqlSyntax.setField(_fPriority, 'priority', DbType.integer);
   }
 }
-// endregion PaymentcycleFields
+// endregion PaymentCycleFields
 
-//region PaymentcycleManager
-class PaymentcycleManager extends SqfEntityProvider {
-  PaymentcycleManager()
+//region PaymentCycleManager
+class PaymentCycleManager extends SqfEntityProvider {
+  PaymentCycleManager()
       : super(DbModel(),
             tableName: _tableName,
             primaryKeyList: _primaryKeyList,
@@ -9400,7 +9428,7 @@ class PaymentcycleManager extends SqfEntityProvider {
   static final String _whereStr = 'payment_cycle_id=?';
 }
 
-//endregion PaymentcycleManager
+//endregion PaymentCycleManager
 class DbModelSequenceManager extends SqfEntityProvider {
   DbModelSequenceManager() : super(DbModel());
 }

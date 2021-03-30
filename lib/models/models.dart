@@ -22,6 +22,7 @@ const dbModel = SqfEntityModel(
 );
 
 const expense = SqfEntityTable(
+  modelName: 'Expense',
   tableName: 'expense',
   primaryKeyName: 'expense_id',
   primaryKeyType: PrimaryKeyType.integer_auto_incremental,
@@ -44,6 +45,7 @@ const expense = SqfEntityTable(
 );
 
 const income = SqfEntityTable(
+  modelName: 'Income',
   tableName: 'income',
   primaryKeyName: 'income_id',
   primaryKeyType: PrimaryKeyType.integer_auto_incremental,
@@ -64,6 +66,7 @@ const income = SqfEntityTable(
 );
 
 const expenseCategory = SqfEntityTable(
+  modelName: 'ExpenseCategory',
   tableName: 'expensecategory',
   primaryKeyName: 'expense_category_id',
   primaryKeyType: PrimaryKeyType.integer_auto_incremental,
@@ -82,6 +85,7 @@ const expenseCategory = SqfEntityTable(
 );
 
 const incomeCategory = SqfEntityTable(
+  modelName: 'IncomeCategory',
   tableName: 'incomecategory',
   primaryKeyName: 'income_category_id',
   primaryKeyType: PrimaryKeyType.integer_auto_incremental,
@@ -99,6 +103,7 @@ const incomeCategory = SqfEntityTable(
 );
 
 const fixedFee = SqfEntityTable(
+  modelName: 'FixedFee',
   tableName: 'fixedfee',
   primaryKeyName: 'fixed_fee_id',
   primaryKeyType: PrimaryKeyType.integer_auto_incremental,
@@ -106,17 +111,19 @@ const fixedFee = SqfEntityTable(
   fields: [
     SqfEntityField('name', DbType.text),
     SqfEntityField('price', DbType.integer),
-    SqfEntityField('payment_cycle_id', DbType.integer),
     SqfEntityFieldRelationship(
       parentTable: paymentCycle,
       fieldName: 'payment_cycle_id',
       relationType: RelationType.ONE_TO_MANY,
     ),
+    SqfEntityField('note', DbType.text),
+    SqfEntityField('priority', DbType.integer),
     SqfEntityField('created_at', DbType.datetime),
   ],
 );
 
 const icon = SqfEntityTable(
+  modelName: 'AppIcon',
   tableName: 'icon',
   primaryKeyName: 'icon_id',
   primaryKeyType: PrimaryKeyType.integer_auto_incremental,
@@ -128,6 +135,7 @@ const icon = SqfEntityTable(
 );
 
 const paymentCycle = SqfEntityTable(
+  modelName: 'PaymentCycle',
   tableName: 'paymentcycle',
   primaryKeyName: 'payment_cycle_id',
   primaryKeyType: PrimaryKeyType.integer_auto_incremental,
