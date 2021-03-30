@@ -82,11 +82,19 @@ class CalendarWidget extends StatelessWidget {
         final isValid = 1 <= number && number <= lastDay;
         final dateCell = Expanded(
           child: Container(
-            color: isValid
-                ? day == number
-                    ? Colors.amber[200]
-                    : Colors.transparent
-                : Colors.grey[200],
+            // color: isValid
+            //     ? day == number
+            //         ? Colors.amber[200]
+            //         : Colors.transparent
+            //     : Colors.grey[200],
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey[200]),
+              color: isValid
+                  ? day == number
+                      ? Colors.amber[200]
+                      : Colors.transparent
+                  : Colors.grey[200],
+            ),
             height: 80,
             child: isValid
                 ? InkWell(
@@ -97,14 +105,37 @@ class CalendarWidget extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('$number'),
-                          Text(
-                            '+ ¥2,000',
-                            style: calendarTotalIncomeTextStyle,
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              left: 1,
+                              top: 1,
+                            ),
+                            child: Text('$number'),
                           ),
-                          Text(
-                            '- ¥1,500',
-                            style: calendarTotalExpenseTextStyle,
+                          const SizedBox(height: 4),
+                          Container(
+                            padding: const EdgeInsets.only(
+                              right: 2,
+                              bottom: 2,
+                            ),
+                            width: double.infinity,
+                            child: Text(
+                              '¥2,000',
+                              style: calendarTotalIncomeTextStyle,
+                              textAlign: TextAlign.right,
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.only(
+                              right: 2,
+                              bottom: 2,
+                            ),
+                            width: double.infinity,
+                            child: Text(
+                              '¥1,500',
+                              style: calendarTotalExpenseTextStyle,
+                              textAlign: TextAlign.right,
+                            ),
                           ),
                         ],
                       ),

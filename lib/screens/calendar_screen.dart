@@ -7,10 +7,6 @@ class CalendarScreen extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         children: [
           CalendarWidget(today.year, today.month, today.day),
-          // SingleChildScrollView(
-          //   child: Text('支出一覧'),
-          // ),
-          // Text('2021年3月28日 (日)'),
         ],
       );
 }
