@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_account_book_app/models/models.dart';
 import 'package:flutter_account_book_app/screens/analytics_screen.dart';
 import 'package:flutter_account_book_app/screens/calendar_screen.dart';
 import 'package:flutter_account_book_app/screens/category_screen.dart';
 import 'package:flutter_account_book_app/screens/fixed_fee_screen.dart';
 
-import '../models/models.dart';
-
 class HomeScreen extends StatefulWidget {
-  HomeScreen({Key key, this.title}) : super(key: key);
+  const HomeScreen({Key key, this.title}) : super(key: key);
   final String title;
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  HomeScreenState createState() => HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  int _currentIndex = 0;
+class HomeScreenState extends State<HomeScreen> {
+  int currentIndex = 0;
 
   final items = <BottomNavigationBarItem>[
     const BottomNavigationBarItem(
@@ -51,36 +50,40 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
-            onPressed: () {},
+            onPressed: () async {
+              await FixedFeeScreenModel().fetchFixedFees();
+            },
           ),
         ],
       ),
       body: Stack(
         children: <Widget>[
           IndexedStack(
-            index: _currentIndex,
+            index: currentIndex,
             children: tabs,
           ),
         ],
       ),
-      bottomNavigationBar: _bottomNavigator(context),
+      bottomNavigationBar: bottomNavigator(context),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {},
+        onPressed: () async {
+          // await insertFixedFees();
+        },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),
     );
   }
 
-  Widget _bottomNavigator(BuildContext context) {
+  Widget bottomNavigator(BuildContext context) {
     return BottomNavigationBar(
       items: items,
-      currentIndex: _currentIndex,
+      currentIndex: currentIndex,
       type: BottomNavigationBarType.fixed,
       onTap: (index) {
-        if (_currentIndex != index) {
+        if (currentIndex != index) {
           setState(() {
-            _currentIndex = index;
+            currentIndex = index;
           });
         }
       },
@@ -181,15 +184,18 @@ class _HomeScreenState extends State<HomeScreen> {
         'priority': 11,
         'created_at': now,
       },
-    ]..forEach((element) async {
-        await FixedFee(
-          name: element['name'].toString(),
-          price: element['price'] as int,
-          payment_cycle_id: element['payment_cycle_id'] as int,
-          note: element['note'].toString(),
-          priority: element['priority'] as int,
-          created_at: element['created_at'] as DateTime,
-        ).save();
-      });
+    ];
+
+    for (var i = 0; i < fixedFees.length; i++) {
+      final result = await FixedFee(
+        name: fixedFees[i]['name'].toString(),
+        price: fixedFees[i]['price'] as int,
+        payment_cycle_id: fixedFees[i]['payment_cycle_id'] as int,
+        note: fixedFees[i]['note'].toString(),
+        priority: fixedFees[i]['priority'] as int,
+        created_at: fixedFees[i]['created_at'] as DateTime,
+      ).save();
+      debugPrint('result: $result');
+    }
   }
 }

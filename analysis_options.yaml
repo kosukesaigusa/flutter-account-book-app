@@ -34,7 +34,7 @@ linter:
     - avoid_slow_async_io
     - avoid_type_to_string
     - avoid_unused_constructor_parameters
-    - cascade_invocations
+    # - cascade_invocations
     - cast_nullable_to_non_nullable #experimental
     - comment_references
     - directives_ordering
