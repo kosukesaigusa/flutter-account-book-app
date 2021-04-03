@@ -10,7 +10,12 @@ class FixedFeeScreen extends StatelessWidget {
           child: Consumer<FixedFeeScreenModel>(
             builder: (context, model, child) => Column(
               children: [
-                Text(model.totalPrice().toString()),
+                Row(
+                  children: [
+                    const Text('固定費合計金額：'),
+                    Text('${model.totalPrice()} 円'),
+                  ],
+                ),
                 Expanded(
                   child: ReorderableListView(
                     onReorder: (oldIndex, newIndex) {
@@ -35,36 +40,51 @@ class FixedFeeScreen extends StatelessWidget {
       );
 
   Widget fixedFeeCard(FixedFeeScreenModel model, FixedFee fixedFee, Key key) =>
-      Card(
+      InkWell(
         key: key,
-        child: InkWell(
-          onTap: () {
-            debugPrint('タップしたのは ${fixedFee.name}');
-          },
-          child: Container(
-            padding: const EdgeInsets.all(8),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Flexible(
-                      child: Text(
-                        fixedFee.name,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Flexible(
-                      child: Text(
-                        '月額 ${calcMonthlyFee(fixedFee)} 円'
-                        '（順番：${fixedFee.priority}）',
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+        onTap: () {
+          debugPrint('タップしたのは ${fixedFee.name}');
+        },
+        child: Container(
+          padding: const EdgeInsets.all(8),
+          decoration: const BoxDecoration(
+            border: Border(
+              bottom: BorderSide(color: Colors.grey),
             ),
+          ),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Flexible(
+                    child: Text(
+                      fixedFee.name,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Flexible(
+                    child: Text(
+                      '月額 ${calcMonthlyFee(fixedFee)} 円',
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+              fixedFee.note.isNotEmpty
+                  ? Row(
+                      children: [
+                        Flexible(
+                          child: Text(
+                            '${fixedFee.note}',
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        )
+                      ],
+                    )
+                  : const SizedBox(),
+            ],
           ),
         ),
       );
