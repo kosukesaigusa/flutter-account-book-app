@@ -27,7 +27,7 @@ class TableExpense extends SqfEntityTableBase {
     tableName = 'expense';
     primaryKeyName = 'expense_id';
     primaryKeyType = PrimaryKeyType.integer_auto_incremental;
-    useSoftDeleting = true;
+    useSoftDeleting = false;
     // when useSoftDeleting is true, creates a field named 'isDeleted' on the table, and set to '1' this field when item deleted (does not hard delete)
 
     // declare fields
@@ -62,7 +62,7 @@ class TableIncome extends SqfEntityTableBase {
     tableName = 'income';
     primaryKeyName = 'income_id';
     primaryKeyType = PrimaryKeyType.integer_auto_incremental;
-    useSoftDeleting = true;
+    useSoftDeleting = false;
     // when useSoftDeleting is true, creates a field named 'isDeleted' on the table, and set to '1' this field when item deleted (does not hard delete)
 
     // declare fields
@@ -95,7 +95,7 @@ class TableExpenseCategory extends SqfEntityTableBase {
     tableName = 'expensecategory';
     primaryKeyName = 'expense_category_id';
     primaryKeyType = PrimaryKeyType.integer_auto_incremental;
-    useSoftDeleting = true;
+    useSoftDeleting = false;
     // when useSoftDeleting is true, creates a field named 'isDeleted' on the table, and set to '1' this field when item deleted (does not hard delete)
 
     // declare fields
@@ -126,7 +126,7 @@ class TableIncomeCategory extends SqfEntityTableBase {
     tableName = 'incomecategory';
     primaryKeyName = 'income_category_id';
     primaryKeyType = PrimaryKeyType.integer_auto_incremental;
-    useSoftDeleting = true;
+    useSoftDeleting = false;
     // when useSoftDeleting is true, creates a field named 'isDeleted' on the table, and set to '1' this field when item deleted (does not hard delete)
 
     // declare fields
@@ -156,7 +156,7 @@ class TableFixedFee extends SqfEntityTableBase {
     tableName = 'fixedfee';
     primaryKeyName = 'fixed_fee_id';
     primaryKeyType = PrimaryKeyType.integer_auto_incremental;
-    useSoftDeleting = true;
+    useSoftDeleting = false;
     // when useSoftDeleting is true, creates a field named 'isDeleted' on the table, and set to '1' this field when item deleted (does not hard delete)
 
     // declare fields
@@ -267,20 +267,11 @@ class Expense {
       this.year,
       this.month,
       this.date,
-      this.created_at,
-      this.isDeleted}) {
+      this.created_at}) {
     _setDefaultValues();
   }
-  Expense.withFields(
-      this.note,
-      this.expense_category_id,
-      this.price,
-      this.satisfaction,
-      this.year,
-      this.month,
-      this.date,
-      this.created_at,
-      this.isDeleted) {
+  Expense.withFields(this.note, this.expense_category_id, this.price,
+      this.satisfaction, this.year, this.month, this.date, this.created_at) {
     _setDefaultValues();
   }
   Expense.withId(
@@ -292,8 +283,7 @@ class Expense {
       this.year,
       this.month,
       this.date,
-      this.created_at,
-      this.isDeleted) {
+      this.created_at) {
     _setDefaultValues();
   }
   Expense.fromMap(Map<String, dynamic> o, {bool setDefaultValues = true}) {
@@ -327,9 +317,6 @@ class Expense {
               int.tryParse(o['created_at'].toString()))
           : DateTime.tryParse(o['created_at'].toString());
     }
-    isDeleted = o['isDeleted'] != null
-        ? o['isDeleted'] == 1 || o['isDeleted'] == true
-        : null;
 
     // RELATIONSHIPS FromMAP
     plExpenseCategory = o['expenseCategory'] != null
@@ -347,7 +334,6 @@ class Expense {
   int month;
   int date;
   DateTime created_at;
-  bool isDeleted;
 
   BoolResult saveResult;
   // end FIELDS (Expense)
@@ -366,7 +352,7 @@ class Expense {
   }
   // END RELATIONSHIPS (Expense)
 
-  static const bool _softDeleteActivated = true;
+  static const bool _softDeleteActivated = false;
   ExpenseManager __mnExpense;
 
   ExpenseManager get _mnExpense {
@@ -417,10 +403,6 @@ class Expense {
               : created_at;
     }
 
-    if (isDeleted != null) {
-      map['isDeleted'] = forQuery ? (isDeleted ? 1 : 0) : isDeleted;
-    }
-
     return map;
   }
 
@@ -469,10 +451,6 @@ class Expense {
               : created_at;
     }
 
-    if (isDeleted != null) {
-      map['isDeleted'] = forQuery ? (isDeleted ? 1 : 0) : isDeleted;
-    }
-
     return map;
   }
 
@@ -495,8 +473,7 @@ class Expense {
       year,
       month,
       date,
-      created_at != null ? created_at.millisecondsSinceEpoch : null,
-      isDeleted
+      created_at != null ? created_at.millisecondsSinceEpoch : null
     ];
   }
 
@@ -510,8 +487,7 @@ class Expense {
       year,
       month,
       date,
-      created_at != null ? created_at.millisecondsSinceEpoch : null,
-      isDeleted
+      created_at != null ? created_at.millisecondsSinceEpoch : null
     ];
   }
 
@@ -653,7 +629,7 @@ class Expense {
   ///
   /// Returns a <List<BoolResult>>
   static Future<List<dynamic>> saveAll(List<Expense> expenses) async {
-    // final results = _mnExpense.saveAll('INSERT OR REPLACE INTO expense (expense_id,note, expense_category_id, price, satisfaction, year, month, date, created_at,isDeleted)  VALUES (?,?,?,?,?,?,?,?,?,?)',expenses);
+    // final results = _mnExpense.saveAll('INSERT OR REPLACE INTO expense (expense_id,note, expense_category_id, price, satisfaction, year, month, date, created_at)  VALUES (?,?,?,?,?,?,?,?,?)',expenses);
     // return results; removed in sqfentity_gen 1.3.0+6
     await DbModel().batchStart();
     for (final obj in expenses) {
@@ -676,7 +652,7 @@ class Expense {
   Future<int> upsert() async {
     try {
       if (await _mnExpense.rawInsert(
-              'INSERT OR REPLACE INTO expense (expense_id,note, expense_category_id, price, satisfaction, year, month, date, created_at,isDeleted)  VALUES (?,?,?,?,?,?,?,?,?,?)',
+              'INSERT OR REPLACE INTO expense (expense_id,note, expense_category_id, price, satisfaction, year, month, date, created_at)  VALUES (?,?,?,?,?,?,?,?,?)',
               [
                 expense_id,
                 note,
@@ -686,8 +662,7 @@ class Expense {
                 year,
                 month,
                 date,
-                created_at != null ? created_at.millisecondsSinceEpoch : null,
-                isDeleted
+                created_at != null ? created_at.millisecondsSinceEpoch : null
               ]) ==
           1) {
         saveResult = BoolResult(
@@ -715,7 +690,7 @@ class Expense {
   /// Returns a BoolCommitResult
   Future<BoolCommitResult> upsertAll(List<Expense> expenses) async {
     final results = await _mnExpense.rawInsertAll(
-        'INSERT OR REPLACE INTO expense (expense_id,note, expense_category_id, price, satisfaction, year, month, date, created_at,isDeleted)  VALUES (?,?,?,?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO expense (expense_id,note, expense_category_id, price, satisfaction, year, month, date, created_at)  VALUES (?,?,?,?,?,?,?,?,?)',
         expenses);
     return results;
   }
@@ -725,7 +700,7 @@ class Expense {
   /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
   Future<BoolResult> delete([bool hardDelete = false]) async {
     print('SQFENTITIY: delete Expense invoked (expense_id=$expense_id)');
-    if (!_softDeleteActivated || hardDelete || isDeleted) {
+    if (!_softDeleteActivated || hardDelete) {
       return _mnExpense.delete(QueryParams(
           whereString: 'expense_id=?', whereArguments: [expense_id]));
     } else {
@@ -733,19 +708,6 @@ class Expense {
           QueryParams(
               whereString: 'expense_id=?', whereArguments: [expense_id]),
           {'isDeleted': 1});
-    }
-  }
-
-  /// Recover Expense>
-
-  /// <returns>BoolResult res.success=Recovered, not res.success=Can not recovered
-  Future<BoolResult> recover([bool recoverChilds = true]) async {
-    print('SQFENTITIY: recover Expense invoked (expense_id=$expense_id)');
-    {
-      return _mnExpense.updateBatch(
-          QueryParams(
-              whereString: 'expense_id=?', whereArguments: [expense_id]),
-          {'isDeleted': 0});
     }
   }
 
@@ -766,7 +728,6 @@ class Expense {
 
   void _setDefaultValues() {
     satisfaction = satisfaction ?? 3;
-    isDeleted = isDeleted ?? false;
   }
   // END METHODS
   // CUSTOM CODES
@@ -1221,11 +1182,6 @@ class ExpenseFilterBuilder extends SearchCriteria {
     return _created_at = setField(_created_at, 'created_at', DbType.datetime);
   }
 
-  ExpenseField _isDeleted;
-  ExpenseField get isDeleted {
-    return _isDeleted = setField(_isDeleted, 'isDeleted', DbType.bool);
-  }
-
   bool _getIsDeleted;
 
   void _buildParameters() {
@@ -1336,14 +1292,6 @@ class ExpenseFilterBuilder extends SearchCriteria {
       r = await _obj._mnExpense.delete(qparams);
     }
     return r;
-  }
-
-  /// Recover List<Expense> bulk by query
-  Future<BoolResult> recover() async {
-    _getIsDeleted = true;
-    _buildParameters();
-    print('SQFENTITIY: recover Expense bulk invoked');
-    return _obj._mnExpense.updateBatch(qparams, {'isDeleted': 0});
   }
 
   /// using:
@@ -1607,12 +1555,6 @@ class ExpenseFields {
     return _fCreated_at = _fCreated_at ??
         SqlSyntax.setField(_fCreated_at, 'created_at', DbType.datetime);
   }
-
-  static TableField _fIsDeleted;
-  static TableField get isDeleted {
-    return _fIsDeleted = _fIsDeleted ??
-        SqlSyntax.setField(_fIsDeleted, 'isDeleted', DbType.integer);
-  }
 }
 // endregion ExpenseFields
 
@@ -1639,16 +1581,15 @@ class Income {
       this.year,
       this.month,
       this.date,
-      this.created_at,
-      this.isDeleted}) {
+      this.created_at}) {
     _setDefaultValues();
   }
   Income.withFields(this.note, this.income_category_id, this.price, this.year,
-      this.month, this.date, this.created_at, this.isDeleted) {
+      this.month, this.date, this.created_at) {
     _setDefaultValues();
   }
   Income.withId(this.income_id, this.note, this.income_category_id, this.price,
-      this.year, this.month, this.date, this.created_at, this.isDeleted) {
+      this.year, this.month, this.date, this.created_at) {
     _setDefaultValues();
   }
   Income.fromMap(Map<String, dynamic> o, {bool setDefaultValues = true}) {
@@ -1679,9 +1620,6 @@ class Income {
               int.tryParse(o['created_at'].toString()))
           : DateTime.tryParse(o['created_at'].toString());
     }
-    isDeleted = o['isDeleted'] != null
-        ? o['isDeleted'] == 1 || o['isDeleted'] == true
-        : null;
 
     // RELATIONSHIPS FromMAP
     plIncomeCategory = o['incomeCategory'] != null
@@ -1698,7 +1636,6 @@ class Income {
   int month;
   int date;
   DateTime created_at;
-  bool isDeleted;
 
   BoolResult saveResult;
   // end FIELDS (Income)
@@ -1717,7 +1654,7 @@ class Income {
   }
   // END RELATIONSHIPS (Income)
 
-  static const bool _softDeleteActivated = true;
+  static const bool _softDeleteActivated = false;
   IncomeManager __mnIncome;
 
   IncomeManager get _mnIncome {
@@ -1764,10 +1701,6 @@ class Income {
               : created_at;
     }
 
-    if (isDeleted != null) {
-      map['isDeleted'] = forQuery ? (isDeleted ? 1 : 0) : isDeleted;
-    }
-
     return map;
   }
 
@@ -1812,10 +1745,6 @@ class Income {
               : created_at;
     }
 
-    if (isDeleted != null) {
-      map['isDeleted'] = forQuery ? (isDeleted ? 1 : 0) : isDeleted;
-    }
-
     return map;
   }
 
@@ -1837,8 +1766,7 @@ class Income {
       year,
       month,
       date,
-      created_at != null ? created_at.millisecondsSinceEpoch : null,
-      isDeleted
+      created_at != null ? created_at.millisecondsSinceEpoch : null
     ];
   }
 
@@ -1851,8 +1779,7 @@ class Income {
       year,
       month,
       date,
-      created_at != null ? created_at.millisecondsSinceEpoch : null,
-      isDeleted
+      created_at != null ? created_at.millisecondsSinceEpoch : null
     ];
   }
 
@@ -1993,7 +1920,7 @@ class Income {
   ///
   /// Returns a <List<BoolResult>>
   static Future<List<dynamic>> saveAll(List<Income> incomes) async {
-    // final results = _mnIncome.saveAll('INSERT OR REPLACE INTO income (income_id,note, income_category_id, price, year, month, date, created_at,isDeleted)  VALUES (?,?,?,?,?,?,?,?,?)',incomes);
+    // final results = _mnIncome.saveAll('INSERT OR REPLACE INTO income (income_id,note, income_category_id, price, year, month, date, created_at)  VALUES (?,?,?,?,?,?,?,?)',incomes);
     // return results; removed in sqfentity_gen 1.3.0+6
     await DbModel().batchStart();
     for (final obj in incomes) {
@@ -2016,7 +1943,7 @@ class Income {
   Future<int> upsert() async {
     try {
       if (await _mnIncome.rawInsert(
-              'INSERT OR REPLACE INTO income (income_id,note, income_category_id, price, year, month, date, created_at,isDeleted)  VALUES (?,?,?,?,?,?,?,?,?)',
+              'INSERT OR REPLACE INTO income (income_id,note, income_category_id, price, year, month, date, created_at)  VALUES (?,?,?,?,?,?,?,?)',
               [
                 income_id,
                 note,
@@ -2025,8 +1952,7 @@ class Income {
                 year,
                 month,
                 date,
-                created_at != null ? created_at.millisecondsSinceEpoch : null,
-                isDeleted
+                created_at != null ? created_at.millisecondsSinceEpoch : null
               ]) ==
           1) {
         saveResult = BoolResult(
@@ -2053,7 +1979,7 @@ class Income {
   /// Returns a BoolCommitResult
   Future<BoolCommitResult> upsertAll(List<Income> incomes) async {
     final results = await _mnIncome.rawInsertAll(
-        'INSERT OR REPLACE INTO income (income_id,note, income_category_id, price, year, month, date, created_at,isDeleted)  VALUES (?,?,?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO income (income_id,note, income_category_id, price, year, month, date, created_at)  VALUES (?,?,?,?,?,?,?,?)',
         incomes);
     return results;
   }
@@ -2063,25 +1989,13 @@ class Income {
   /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
   Future<BoolResult> delete([bool hardDelete = false]) async {
     print('SQFENTITIY: delete Income invoked (income_id=$income_id)');
-    if (!_softDeleteActivated || hardDelete || isDeleted) {
+    if (!_softDeleteActivated || hardDelete) {
       return _mnIncome.delete(
           QueryParams(whereString: 'income_id=?', whereArguments: [income_id]));
     } else {
       return _mnIncome.updateBatch(
           QueryParams(whereString: 'income_id=?', whereArguments: [income_id]),
           {'isDeleted': 1});
-    }
-  }
-
-  /// Recover Income>
-
-  /// <returns>BoolResult res.success=Recovered, not res.success=Can not recovered
-  Future<BoolResult> recover([bool recoverChilds = true]) async {
-    print('SQFENTITIY: recover Income invoked (income_id=$income_id)');
-    {
-      return _mnIncome.updateBatch(
-          QueryParams(whereString: 'income_id=?', whereArguments: [income_id]),
-          {'isDeleted': 0});
     }
   }
 
@@ -2100,9 +2014,7 @@ class Income {
       ..qparams.distinct = true;
   }
 
-  void _setDefaultValues() {
-    isDeleted = isDeleted ?? false;
-  }
+  void _setDefaultValues() {}
   // END METHODS
   // CUSTOM CODES
   /*
@@ -2550,11 +2462,6 @@ class IncomeFilterBuilder extends SearchCriteria {
     return _created_at = setField(_created_at, 'created_at', DbType.datetime);
   }
 
-  IncomeField _isDeleted;
-  IncomeField get isDeleted {
-    return _isDeleted = setField(_isDeleted, 'isDeleted', DbType.bool);
-  }
-
   bool _getIsDeleted;
 
   void _buildParameters() {
@@ -2665,14 +2572,6 @@ class IncomeFilterBuilder extends SearchCriteria {
       r = await _obj._mnIncome.delete(qparams);
     }
     return r;
-  }
-
-  /// Recover List<Income> bulk by query
-  Future<BoolResult> recover() async {
-    _getIsDeleted = true;
-    _buildParameters();
-    print('SQFENTITIY: recover Income bulk invoked');
-    return _obj._mnIncome.updateBatch(qparams, {'isDeleted': 0});
   }
 
   /// using:
@@ -2930,12 +2829,6 @@ class IncomeFields {
     return _fCreated_at = _fCreated_at ??
         SqlSyntax.setField(_fCreated_at, 'created_at', DbType.datetime);
   }
-
-  static TableField _fIsDeleted;
-  static TableField get isDeleted {
-    return _fIsDeleted = _fIsDeleted ??
-        SqlSyntax.setField(_fIsDeleted, 'isDeleted', DbType.integer);
-  }
 }
 // endregion IncomeFields
 
@@ -2960,16 +2853,15 @@ class ExpenseCategory {
       this.budget,
       this.priority,
       this.icon_id,
-      this.created_at,
-      this.isDeleted}) {
+      this.created_at}) {
     _setDefaultValues();
   }
-  ExpenseCategory.withFields(this.name, this.budget, this.priority,
-      this.icon_id, this.created_at, this.isDeleted) {
+  ExpenseCategory.withFields(
+      this.name, this.budget, this.priority, this.icon_id, this.created_at) {
     _setDefaultValues();
   }
   ExpenseCategory.withId(this.expense_category_id, this.name, this.budget,
-      this.priority, this.icon_id, this.created_at, this.isDeleted) {
+      this.priority, this.icon_id, this.created_at) {
     _setDefaultValues();
   }
   ExpenseCategory.fromMap(Map<String, dynamic> o,
@@ -2995,9 +2887,6 @@ class ExpenseCategory {
               int.tryParse(o['created_at'].toString()))
           : DateTime.tryParse(o['created_at'].toString());
     }
-    isDeleted = o['isDeleted'] != null
-        ? o['isDeleted'] == 1 || o['isDeleted'] == true
-        : null;
 
     // RELATIONSHIPS FromMAP
     plAppIcon = o['appIcon'] != null
@@ -3012,7 +2901,6 @@ class ExpenseCategory {
   int priority;
   int icon_id;
   DateTime created_at;
-  bool isDeleted;
 
   BoolResult saveResult;
   // end FIELDS (ExpenseCategory)
@@ -3051,7 +2939,7 @@ class ExpenseCategory {
 
 // END COLLECTIONS & VIRTUALS (ExpenseCategory)
 
-  static const bool _softDeleteActivated = true;
+  static const bool _softDeleteActivated = false;
   ExpenseCategoryManager __mnExpenseCategory;
 
   ExpenseCategoryManager get _mnExpenseCategory {
@@ -3090,10 +2978,6 @@ class ExpenseCategory {
               : created_at;
     }
 
-    if (isDeleted != null) {
-      map['isDeleted'] = forQuery ? (isDeleted ? 1 : 0) : isDeleted;
-    }
-
     return map;
   }
 
@@ -3129,10 +3013,6 @@ class ExpenseCategory {
               : created_at;
     }
 
-    if (isDeleted != null) {
-      map['isDeleted'] = forQuery ? (isDeleted ? 1 : 0) : isDeleted;
-    }
-
 // COLLECTIONS (ExpenseCategory)
     if (!forQuery) {
       map['Expenses'] = await getExpenses().toMapList();
@@ -3158,8 +3038,7 @@ class ExpenseCategory {
       budget,
       priority,
       icon_id,
-      created_at != null ? created_at.millisecondsSinceEpoch : null,
-      isDeleted
+      created_at != null ? created_at.millisecondsSinceEpoch : null
     ];
   }
 
@@ -3170,8 +3049,7 @@ class ExpenseCategory {
       budget,
       priority,
       icon_id,
-      created_at != null ? created_at.millisecondsSinceEpoch : null,
-      isDeleted
+      created_at != null ? created_at.millisecondsSinceEpoch : null
     ];
   }
 
@@ -3346,7 +3224,7 @@ class ExpenseCategory {
   /// Returns a <List<BoolResult>>
   static Future<List<dynamic>> saveAll(
       List<ExpenseCategory> expensecategories) async {
-    // final results = _mnExpenseCategory.saveAll('INSERT OR REPLACE INTO expensecategory (expense_category_id,name, budget, priority, icon_id, created_at,isDeleted)  VALUES (?,?,?,?,?,?,?)',expensecategories);
+    // final results = _mnExpenseCategory.saveAll('INSERT OR REPLACE INTO expensecategory (expense_category_id,name, budget, priority, icon_id, created_at)  VALUES (?,?,?,?,?,?)',expensecategories);
     // return results; removed in sqfentity_gen 1.3.0+6
     await DbModel().batchStart();
     for (final obj in expensecategories) {
@@ -3369,15 +3247,14 @@ class ExpenseCategory {
   Future<int> upsert() async {
     try {
       if (await _mnExpenseCategory.rawInsert(
-              'INSERT OR REPLACE INTO expensecategory (expense_category_id,name, budget, priority, icon_id, created_at,isDeleted)  VALUES (?,?,?,?,?,?,?)',
+              'INSERT OR REPLACE INTO expensecategory (expense_category_id,name, budget, priority, icon_id, created_at)  VALUES (?,?,?,?,?,?)',
               [
                 expense_category_id,
                 name,
                 budget,
                 priority,
                 icon_id,
-                created_at != null ? created_at.millisecondsSinceEpoch : null,
-                isDeleted
+                created_at != null ? created_at.millisecondsSinceEpoch : null
               ]) ==
           1) {
         saveResult = BoolResult(
@@ -3407,7 +3284,7 @@ class ExpenseCategory {
   Future<BoolCommitResult> upsertAll(
       List<ExpenseCategory> expensecategories) async {
     final results = await _mnExpenseCategory.rawInsertAll(
-        'INSERT OR REPLACE INTO expensecategory (expense_category_id,name, budget, priority, icon_id, created_at,isDeleted)  VALUES (?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO expensecategory (expense_category_id,name, budget, priority, icon_id, created_at)  VALUES (?,?,?,?,?,?)',
         expensecategories);
     return results;
   }
@@ -3430,7 +3307,7 @@ class ExpenseCategory {
           errorMessage:
               'SQFENTITY ERROR: The DELETE statement conflicted with the REFERENCE RELATIONSHIP (Expense.expense_category_id)');
     }
-    if (!_softDeleteActivated || hardDelete || isDeleted) {
+    if (!_softDeleteActivated || hardDelete) {
       return _mnExpenseCategory.delete(QueryParams(
           whereString: 'expense_category_id=?',
           whereArguments: [expense_category_id]));
@@ -3440,21 +3317,6 @@ class ExpenseCategory {
               whereString: 'expense_category_id=?',
               whereArguments: [expense_category_id]),
           {'isDeleted': 1});
-    }
-  }
-
-  /// Recover ExpenseCategory>
-
-  /// <returns>BoolResult res.success=Recovered, not res.success=Can not recovered
-  Future<BoolResult> recover([bool recoverChilds = true]) async {
-    print(
-        'SQFENTITIY: recover ExpenseCategory invoked (expense_category_id=$expense_category_id)');
-    {
-      return _mnExpenseCategory.updateBatch(
-          QueryParams(
-              whereString: 'expense_category_id=?',
-              whereArguments: [expense_category_id]),
-          {'isDeleted': 0});
     }
   }
 
@@ -3473,9 +3335,7 @@ class ExpenseCategory {
       ..qparams.distinct = true;
   }
 
-  void _setDefaultValues() {
-    isDeleted = isDeleted ?? false;
-  }
+  void _setDefaultValues() {}
   // END METHODS
   // CUSTOM CODES
   /*
@@ -3935,11 +3795,6 @@ class ExpenseCategoryFilterBuilder extends SearchCriteria {
     return _created_at = setField(_created_at, 'created_at', DbType.datetime);
   }
 
-  ExpenseCategoryField _isDeleted;
-  ExpenseCategoryField get isDeleted {
-    return _isDeleted = setField(_isDeleted, 'isDeleted', DbType.bool);
-  }
-
   bool _getIsDeleted;
 
   void _buildParameters() {
@@ -4065,14 +3920,6 @@ class ExpenseCategoryFilterBuilder extends SearchCriteria {
       r = await _obj._mnExpenseCategory.delete(qparams);
     }
     return r;
-  }
-
-  /// Recover List<ExpenseCategory> bulk by query
-  Future<BoolResult> recover() async {
-    _getIsDeleted = true;
-    _buildParameters();
-    print('SQFENTITIY: recover ExpenseCategory bulk invoked');
-    return _obj._mnExpenseCategory.updateBatch(qparams, {'isDeleted': 0});
   }
 
   /// using:
@@ -4338,12 +4185,6 @@ class ExpenseCategoryFields {
     return _fCreated_at = _fCreated_at ??
         SqlSyntax.setField(_fCreated_at, 'created_at', DbType.datetime);
   }
-
-  static TableField _fIsDeleted;
-  static TableField get isDeleted {
-    return _fIsDeleted = _fIsDeleted ??
-        SqlSyntax.setField(_fIsDeleted, 'isDeleted', DbType.integer);
-  }
 }
 // endregion ExpenseCategoryFields
 
@@ -4367,16 +4208,15 @@ class IncomeCategory {
       this.name,
       this.priority,
       this.icon_id,
-      this.created_at,
-      this.isDeleted}) {
+      this.created_at}) {
     _setDefaultValues();
   }
   IncomeCategory.withFields(
-      this.name, this.priority, this.icon_id, this.created_at, this.isDeleted) {
+      this.name, this.priority, this.icon_id, this.created_at) {
     _setDefaultValues();
   }
   IncomeCategory.withId(this.income_category_id, this.name, this.priority,
-      this.icon_id, this.created_at, this.isDeleted) {
+      this.icon_id, this.created_at) {
     _setDefaultValues();
   }
   IncomeCategory.fromMap(Map<String, dynamic> o,
@@ -4399,9 +4239,6 @@ class IncomeCategory {
               int.tryParse(o['created_at'].toString()))
           : DateTime.tryParse(o['created_at'].toString());
     }
-    isDeleted = o['isDeleted'] != null
-        ? o['isDeleted'] == 1 || o['isDeleted'] == true
-        : null;
 
     // RELATIONSHIPS FromMAP
     plAppIcon = o['appIcon'] != null
@@ -4415,7 +4252,6 @@ class IncomeCategory {
   int priority;
   int icon_id;
   DateTime created_at;
-  bool isDeleted;
 
   BoolResult saveResult;
   // end FIELDS (IncomeCategory)
@@ -4454,7 +4290,7 @@ class IncomeCategory {
 
 // END COLLECTIONS & VIRTUALS (IncomeCategory)
 
-  static const bool _softDeleteActivated = true;
+  static const bool _softDeleteActivated = false;
   IncomeCategoryManager __mnIncomeCategory;
 
   IncomeCategoryManager get _mnIncomeCategory {
@@ -4488,10 +4324,6 @@ class IncomeCategory {
               : created_at;
     }
 
-    if (isDeleted != null) {
-      map['isDeleted'] = forQuery ? (isDeleted ? 1 : 0) : isDeleted;
-    }
-
     return map;
   }
 
@@ -4523,10 +4355,6 @@ class IncomeCategory {
               : created_at;
     }
 
-    if (isDeleted != null) {
-      map['isDeleted'] = forQuery ? (isDeleted ? 1 : 0) : isDeleted;
-    }
-
 // COLLECTIONS (IncomeCategory)
     if (!forQuery) {
       map['Incomes'] = await getIncomes().toMapList();
@@ -4551,8 +4379,7 @@ class IncomeCategory {
       name,
       priority,
       icon_id,
-      created_at != null ? created_at.millisecondsSinceEpoch : null,
-      isDeleted
+      created_at != null ? created_at.millisecondsSinceEpoch : null
     ];
   }
 
@@ -4562,8 +4389,7 @@ class IncomeCategory {
       name,
       priority,
       icon_id,
-      created_at != null ? created_at.millisecondsSinceEpoch : null,
-      isDeleted
+      created_at != null ? created_at.millisecondsSinceEpoch : null
     ];
   }
 
@@ -4738,7 +4564,7 @@ class IncomeCategory {
   /// Returns a <List<BoolResult>>
   static Future<List<dynamic>> saveAll(
       List<IncomeCategory> incomecategories) async {
-    // final results = _mnIncomeCategory.saveAll('INSERT OR REPLACE INTO incomecategory (income_category_id,name, priority, icon_id, created_at,isDeleted)  VALUES (?,?,?,?,?,?)',incomecategories);
+    // final results = _mnIncomeCategory.saveAll('INSERT OR REPLACE INTO incomecategory (income_category_id,name, priority, icon_id, created_at)  VALUES (?,?,?,?,?)',incomecategories);
     // return results; removed in sqfentity_gen 1.3.0+6
     await DbModel().batchStart();
     for (final obj in incomecategories) {
@@ -4761,14 +4587,13 @@ class IncomeCategory {
   Future<int> upsert() async {
     try {
       if (await _mnIncomeCategory.rawInsert(
-              'INSERT OR REPLACE INTO incomecategory (income_category_id,name, priority, icon_id, created_at,isDeleted)  VALUES (?,?,?,?,?,?)',
+              'INSERT OR REPLACE INTO incomecategory (income_category_id,name, priority, icon_id, created_at)  VALUES (?,?,?,?,?)',
               [
                 income_category_id,
                 name,
                 priority,
                 icon_id,
-                created_at != null ? created_at.millisecondsSinceEpoch : null,
-                isDeleted
+                created_at != null ? created_at.millisecondsSinceEpoch : null
               ]) ==
           1) {
         saveResult = BoolResult(
@@ -4798,7 +4623,7 @@ class IncomeCategory {
   Future<BoolCommitResult> upsertAll(
       List<IncomeCategory> incomecategories) async {
     final results = await _mnIncomeCategory.rawInsertAll(
-        'INSERT OR REPLACE INTO incomecategory (income_category_id,name, priority, icon_id, created_at,isDeleted)  VALUES (?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO incomecategory (income_category_id,name, priority, icon_id, created_at)  VALUES (?,?,?,?,?)',
         incomecategories);
     return results;
   }
@@ -4821,7 +4646,7 @@ class IncomeCategory {
           errorMessage:
               'SQFENTITY ERROR: The DELETE statement conflicted with the REFERENCE RELATIONSHIP (Income.income_category_id)');
     }
-    if (!_softDeleteActivated || hardDelete || isDeleted) {
+    if (!_softDeleteActivated || hardDelete) {
       return _mnIncomeCategory.delete(QueryParams(
           whereString: 'income_category_id=?',
           whereArguments: [income_category_id]));
@@ -4831,21 +4656,6 @@ class IncomeCategory {
               whereString: 'income_category_id=?',
               whereArguments: [income_category_id]),
           {'isDeleted': 1});
-    }
-  }
-
-  /// Recover IncomeCategory>
-
-  /// <returns>BoolResult res.success=Recovered, not res.success=Can not recovered
-  Future<BoolResult> recover([bool recoverChilds = true]) async {
-    print(
-        'SQFENTITIY: recover IncomeCategory invoked (income_category_id=$income_category_id)');
-    {
-      return _mnIncomeCategory.updateBatch(
-          QueryParams(
-              whereString: 'income_category_id=?',
-              whereArguments: [income_category_id]),
-          {'isDeleted': 0});
     }
   }
 
@@ -4864,9 +4674,7 @@ class IncomeCategory {
       ..qparams.distinct = true;
   }
 
-  void _setDefaultValues() {
-    isDeleted = isDeleted ?? false;
-  }
+  void _setDefaultValues() {}
   // END METHODS
   // CUSTOM CODES
   /*
@@ -5317,11 +5125,6 @@ class IncomeCategoryFilterBuilder extends SearchCriteria {
     return _created_at = setField(_created_at, 'created_at', DbType.datetime);
   }
 
-  IncomeCategoryField _isDeleted;
-  IncomeCategoryField get isDeleted {
-    return _isDeleted = setField(_isDeleted, 'isDeleted', DbType.bool);
-  }
-
   bool _getIsDeleted;
 
   void _buildParameters() {
@@ -5447,14 +5250,6 @@ class IncomeCategoryFilterBuilder extends SearchCriteria {
       r = await _obj._mnIncomeCategory.delete(qparams);
     }
     return r;
-  }
-
-  /// Recover List<IncomeCategory> bulk by query
-  Future<BoolResult> recover() async {
-    _getIsDeleted = true;
-    _buildParameters();
-    print('SQFENTITIY: recover IncomeCategory bulk invoked');
-    return _obj._mnIncomeCategory.updateBatch(qparams, {'isDeleted': 0});
   }
 
   /// using:
@@ -5713,12 +5508,6 @@ class IncomeCategoryFields {
     return _fCreated_at = _fCreated_at ??
         SqlSyntax.setField(_fCreated_at, 'created_at', DbType.datetime);
   }
-
-  static TableField _fIsDeleted;
-  static TableField get isDeleted {
-    return _fIsDeleted = _fIsDeleted ??
-        SqlSyntax.setField(_fIsDeleted, 'isDeleted', DbType.integer);
-  }
 }
 // endregion IncomeCategoryFields
 
@@ -5744,23 +5533,15 @@ class FixedFee {
       this.payment_cycle_id,
       this.note,
       this.priority,
-      this.created_at,
-      this.isDeleted}) {
+      this.created_at}) {
     _setDefaultValues();
   }
   FixedFee.withFields(this.name, this.price, this.payment_cycle_id, this.note,
-      this.priority, this.created_at, this.isDeleted) {
+      this.priority, this.created_at) {
     _setDefaultValues();
   }
-  FixedFee.withId(
-      this.fixed_fee_id,
-      this.name,
-      this.price,
-      this.payment_cycle_id,
-      this.note,
-      this.priority,
-      this.created_at,
-      this.isDeleted) {
+  FixedFee.withId(this.fixed_fee_id, this.name, this.price,
+      this.payment_cycle_id, this.note, this.priority, this.created_at) {
     _setDefaultValues();
   }
   FixedFee.fromMap(Map<String, dynamic> o, {bool setDefaultValues = true}) {
@@ -5788,9 +5569,6 @@ class FixedFee {
               int.tryParse(o['created_at'].toString()))
           : DateTime.tryParse(o['created_at'].toString());
     }
-    isDeleted = o['isDeleted'] != null
-        ? o['isDeleted'] == 1 || o['isDeleted'] == true
-        : null;
 
     // RELATIONSHIPS FromMAP
     plPaymentCycle = o['paymentCycle'] != null
@@ -5806,7 +5584,6 @@ class FixedFee {
   String note;
   int priority;
   DateTime created_at;
-  bool isDeleted;
 
   BoolResult saveResult;
   // end FIELDS (FixedFee)
@@ -5825,7 +5602,7 @@ class FixedFee {
   }
   // END RELATIONSHIPS (FixedFee)
 
-  static const bool _softDeleteActivated = true;
+  static const bool _softDeleteActivated = false;
   FixedFeeManager __mnFixedFee;
 
   FixedFeeManager get _mnFixedFee {
@@ -5868,10 +5645,6 @@ class FixedFee {
               : created_at;
     }
 
-    if (isDeleted != null) {
-      map['isDeleted'] = forQuery ? (isDeleted ? 1 : 0) : isDeleted;
-    }
-
     return map;
   }
 
@@ -5912,10 +5685,6 @@ class FixedFee {
               : created_at;
     }
 
-    if (isDeleted != null) {
-      map['isDeleted'] = forQuery ? (isDeleted ? 1 : 0) : isDeleted;
-    }
-
     return map;
   }
 
@@ -5936,8 +5705,7 @@ class FixedFee {
       payment_cycle_id,
       note,
       priority,
-      created_at != null ? created_at.millisecondsSinceEpoch : null,
-      isDeleted
+      created_at != null ? created_at.millisecondsSinceEpoch : null
     ];
   }
 
@@ -5949,8 +5717,7 @@ class FixedFee {
       payment_cycle_id,
       note,
       priority,
-      created_at != null ? created_at.millisecondsSinceEpoch : null,
-      isDeleted
+      created_at != null ? created_at.millisecondsSinceEpoch : null
     ];
   }
 
@@ -6092,7 +5859,7 @@ class FixedFee {
   ///
   /// Returns a <List<BoolResult>>
   static Future<List<dynamic>> saveAll(List<FixedFee> fixedfees) async {
-    // final results = _mnFixedFee.saveAll('INSERT OR REPLACE INTO fixedfee (fixed_fee_id,name, price, payment_cycle_id, note, priority, created_at,isDeleted)  VALUES (?,?,?,?,?,?,?,?)',fixedfees);
+    // final results = _mnFixedFee.saveAll('INSERT OR REPLACE INTO fixedfee (fixed_fee_id,name, price, payment_cycle_id, note, priority, created_at)  VALUES (?,?,?,?,?,?,?)',fixedfees);
     // return results; removed in sqfentity_gen 1.3.0+6
     await DbModel().batchStart();
     for (final obj in fixedfees) {
@@ -6115,7 +5882,7 @@ class FixedFee {
   Future<int> upsert() async {
     try {
       if (await _mnFixedFee.rawInsert(
-              'INSERT OR REPLACE INTO fixedfee (fixed_fee_id,name, price, payment_cycle_id, note, priority, created_at,isDeleted)  VALUES (?,?,?,?,?,?,?,?)',
+              'INSERT OR REPLACE INTO fixedfee (fixed_fee_id,name, price, payment_cycle_id, note, priority, created_at)  VALUES (?,?,?,?,?,?,?)',
               [
                 fixed_fee_id,
                 name,
@@ -6123,8 +5890,7 @@ class FixedFee {
                 payment_cycle_id,
                 note,
                 priority,
-                created_at != null ? created_at.millisecondsSinceEpoch : null,
-                isDeleted
+                created_at != null ? created_at.millisecondsSinceEpoch : null
               ]) ==
           1) {
         saveResult = BoolResult(
@@ -6152,7 +5918,7 @@ class FixedFee {
   /// Returns a BoolCommitResult
   Future<BoolCommitResult> upsertAll(List<FixedFee> fixedfees) async {
     final results = await _mnFixedFee.rawInsertAll(
-        'INSERT OR REPLACE INTO fixedfee (fixed_fee_id,name, price, payment_cycle_id, note, priority, created_at,isDeleted)  VALUES (?,?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO fixedfee (fixed_fee_id,name, price, payment_cycle_id, note, priority, created_at)  VALUES (?,?,?,?,?,?,?)',
         fixedfees);
     return results;
   }
@@ -6162,7 +5928,7 @@ class FixedFee {
   /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
   Future<BoolResult> delete([bool hardDelete = false]) async {
     print('SQFENTITIY: delete FixedFee invoked (fixed_fee_id=$fixed_fee_id)');
-    if (!_softDeleteActivated || hardDelete || isDeleted) {
+    if (!_softDeleteActivated || hardDelete) {
       return _mnFixedFee.delete(QueryParams(
           whereString: 'fixed_fee_id=?', whereArguments: [fixed_fee_id]));
     } else {
@@ -6170,19 +5936,6 @@ class FixedFee {
           QueryParams(
               whereString: 'fixed_fee_id=?', whereArguments: [fixed_fee_id]),
           {'isDeleted': 1});
-    }
-  }
-
-  /// Recover FixedFee>
-
-  /// <returns>BoolResult res.success=Recovered, not res.success=Can not recovered
-  Future<BoolResult> recover([bool recoverChilds = true]) async {
-    print('SQFENTITIY: recover FixedFee invoked (fixed_fee_id=$fixed_fee_id)');
-    {
-      return _mnFixedFee.updateBatch(
-          QueryParams(
-              whereString: 'fixed_fee_id=?', whereArguments: [fixed_fee_id]),
-          {'isDeleted': 0});
     }
   }
 
@@ -6201,9 +5954,7 @@ class FixedFee {
       ..qparams.distinct = true;
   }
 
-  void _setDefaultValues() {
-    isDeleted = isDeleted ?? false;
-  }
+  void _setDefaultValues() {}
   // END METHODS
   // CUSTOM CODES
   /*
@@ -6647,11 +6398,6 @@ class FixedFeeFilterBuilder extends SearchCriteria {
     return _created_at = setField(_created_at, 'created_at', DbType.datetime);
   }
 
-  FixedFeeField _isDeleted;
-  FixedFeeField get isDeleted {
-    return _isDeleted = setField(_isDeleted, 'isDeleted', DbType.bool);
-  }
-
   bool _getIsDeleted;
 
   void _buildParameters() {
@@ -6762,14 +6508,6 @@ class FixedFeeFilterBuilder extends SearchCriteria {
       r = await _obj._mnFixedFee.delete(qparams);
     }
     return r;
-  }
-
-  /// Recover List<FixedFee> bulk by query
-  Future<BoolResult> recover() async {
-    _getIsDeleted = true;
-    _buildParameters();
-    print('SQFENTITIY: recover FixedFee bulk invoked');
-    return _obj._mnFixedFee.updateBatch(qparams, {'isDeleted': 0});
   }
 
   /// using:
@@ -7019,12 +6757,6 @@ class FixedFeeFields {
   static TableField get created_at {
     return _fCreated_at = _fCreated_at ??
         SqlSyntax.setField(_fCreated_at, 'created_at', DbType.datetime);
-  }
-
-  static TableField _fIsDeleted;
-  static TableField get isDeleted {
-    return _fIsDeleted = _fIsDeleted ??
-        SqlSyntax.setField(_fIsDeleted, 'isDeleted', DbType.integer);
   }
 }
 // endregion FixedFeeFields

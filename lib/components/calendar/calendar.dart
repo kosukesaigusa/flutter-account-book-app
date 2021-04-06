@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_account_book_app/common/datetime.dart';
 import 'package:flutter_account_book_app/common/text_style.dart';
-import 'package:flutter_account_book_app/components/calendar/calendar_model.dart';
+import 'package:flutter_account_book_app/screens/calendar_screen.dart';
 import 'package:provider/provider.dart';
 
 class CalendarWidget extends StatelessWidget {
@@ -10,27 +10,23 @@ class CalendarWidget extends StatelessWidget {
   final int month;
   final int day;
   @override
-  Widget build(BuildContext context) => ChangeNotifierProvider(
-        create: (_) => CalendarWidgetModel(year, month, day),
-        child: Consumer<CalendarWidgetModel>(
-          builder: (context, model, child) {
-            return Column(
-              children: [
-                monthHandlingRow(context, model.year, model.month),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: weekdayRow(),
-                ),
-                calendar(context, model.year, model.month, model.day),
-              ],
-            );
-          },
+  Widget build(BuildContext context) {
+    final model = Provider.of<CalendarScreenModel>(context);
+    return Column(
+      children: [
+        monthHandlingRow(context, model.year, model.month),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: weekdayRow(),
         ),
-      );
+        calendar(context, model.year, model.month, model.day),
+      ],
+    );
+  }
 
   /// カレンダー上部の年月を表示・操作するウィジェット
   Widget monthHandlingRow(BuildContext context, int year, int month) {
-    final model = Provider.of<CalendarWidgetModel>(context);
+    final model = Provider.of<CalendarScreenModel>(context);
     return Row(
       children: [
         const Expanded(child: SizedBox()),
@@ -70,7 +66,7 @@ class CalendarWidget extends StatelessWidget {
 
   /// カレンダーウィジェット
   Widget calendar(BuildContext context, int year, int month, int day) {
-    final model = Provider.of<CalendarWidgetModel>(context);
+    final model = Provider.of<CalendarScreenModel>(context);
     final weekDayOfFirstDay = DateTime(year, month, 1).weekday;
     final lastDay = getLastDay(year, month);
     final numRows = ((weekDayOfFirstDay - 1 + lastDay) / 7).ceil();

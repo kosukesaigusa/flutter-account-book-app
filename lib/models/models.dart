@@ -26,7 +26,6 @@ const expense = SqfEntityTable(
   tableName: 'expense',
   primaryKeyName: 'expense_id',
   primaryKeyType: PrimaryKeyType.integer_auto_incremental,
-  useSoftDeleting: true,
   fields: [
     SqfEntityField('note', DbType.text),
     SqfEntityFieldRelationship(
@@ -49,7 +48,6 @@ const income = SqfEntityTable(
   tableName: 'income',
   primaryKeyName: 'income_id',
   primaryKeyType: PrimaryKeyType.integer_auto_incremental,
-  useSoftDeleting: true,
   fields: [
     SqfEntityField('note', DbType.text),
     SqfEntityFieldRelationship(
@@ -70,7 +68,6 @@ const expenseCategory = SqfEntityTable(
   tableName: 'expensecategory',
   primaryKeyName: 'expense_category_id',
   primaryKeyType: PrimaryKeyType.integer_auto_incremental,
-  useSoftDeleting: true,
   fields: [
     SqfEntityField('name', DbType.text),
     SqfEntityField('budget', DbType.integer),
@@ -89,7 +86,6 @@ const incomeCategory = SqfEntityTable(
   tableName: 'incomecategory',
   primaryKeyName: 'income_category_id',
   primaryKeyType: PrimaryKeyType.integer_auto_incremental,
-  useSoftDeleting: true,
   fields: [
     SqfEntityField('name', DbType.text),
     SqfEntityField('priority', DbType.integer),
@@ -107,7 +103,6 @@ const fixedFee = SqfEntityTable(
   tableName: 'fixedfee',
   primaryKeyName: 'fixed_fee_id',
   primaryKeyType: PrimaryKeyType.integer_auto_incremental,
-  useSoftDeleting: true,
   fields: [
     SqfEntityField('name', DbType.text),
     SqfEntityField('price', DbType.integer),
@@ -127,7 +122,6 @@ const icon = SqfEntityTable(
   tableName: 'icon',
   primaryKeyName: 'icon_id',
   primaryKeyType: PrimaryKeyType.integer_auto_incremental,
-  useSoftDeleting: false,
   fields: [
     SqfEntityField('name', DbType.text),
     SqfEntityField('priority', DbType.integer),
@@ -139,7 +133,6 @@ const paymentCycle = SqfEntityTable(
   tableName: 'paymentcycle',
   primaryKeyName: 'payment_cycle_id',
   primaryKeyType: PrimaryKeyType.integer_auto_incremental,
-  useSoftDeleting: false,
   fields: [
     SqfEntityField('month', DbType.integer),
     SqfEntityField('priority', DbType.integer),

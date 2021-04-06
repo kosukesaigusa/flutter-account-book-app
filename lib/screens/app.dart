@@ -10,7 +10,11 @@ class App extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       debugShowCheckedModeBanner: true,
-      home: HomeScreen(title: 'Flutter Demo Home Page'),
+      // home: HomeScreen(title: 'Flutter Demo Home Page'),
+      routes: {
+        '/': (context) => const HomeScreen(title: 'Flutter Demo Home Page'),
+        // 'expense-add': (context) => ExpenseAddScreen(),
+      },
     );
   }
 }

@@ -10,6 +10,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
+  google_mobile_ads: ^0.12.1
   # sqfentity の自動生成コードの url が String 型のため
   # 0.13 系にはバージョンを上げられない
   # 参考：https://pub.dev/packages/http/changelog
