@@ -55,6 +55,8 @@ class ExpenseAddScreen extends StatelessWidget {
                 dividerWidget,
                 priceSection(context),
                 dividerWidget,
+                satisfactionSection(context),
+                dividerWidget,
                 Expanded(child: categorySection(context)),
                 ElevatedButton(
                   onPressed: () {},
@@ -186,34 +188,79 @@ class ExpenseAddScreen extends StatelessWidget {
     );
   }
 
-  Widget categorySection(BuildContext context) {
-    final list = List.generate(
-      100,
-      (index) => Card(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.fastfood),
-            const SizedBox(height: 8),
-            Text(
-              '食費・栄養あああああああ',
-              overflow: TextOverflow.ellipsis,
+  Widget satisfactionSection(BuildContext context) {
+    return SizedBox(
+      height: inputFormHeight,
+      child: Row(
+        children: <Widget>[
+          const SizedBox(
+            width: labelWidth,
+            child: Text('満足度'),
+          ),
+          const SizedBox(width: marginWidth2),
+          SizedBox(
+            width: inputFormWidth(context),
+            child: Slider(
+              value: 3,
+              min: 1,
+              max: 5,
+              label: '3',
+              divisions: 4,
+              inactiveColor: Colors.grey,
+              activeColor: Colors.orange,
+              onChanged: (value) {
+                // model.changeSlider(value);
+              },
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
+  }
+
+  Widget categorySection(BuildContext context) {
+    final model = Provider.of<ExpenseAddScreenModel>(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text('カテゴリー'),
         Expanded(
           child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                maxCrossAxisExtent: categoryCardWidth,
+            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: categoryCardWidth,
+            ),
+            itemCount: model.expenseCategories?.length ?? 0,
+            itemBuilder: (context, index) => InkWell(
+              onTap: () {
+                model.onExpenseCategoryTapped(
+                    model.expenseCategories[index].expense_category_id);
+              },
+              child: Card(
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color:
+                          model.expenseCategories[index].expense_category_id ==
+                                  model.expenseCategoryId
+                              ? Colors.orange
+                              : Colors.transparent,
+                    ),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.fastfood),
+                      const SizedBox(height: 8),
+                      Text(
+                        model.expenseCategories[index].name,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
               ),
-              itemCount: list.length,
-              itemBuilder: (context, index) => list[index]),
+            ),
+          ),
         ),
       ],
     );
@@ -238,8 +285,12 @@ class ExpenseAddScreenModel extends ChangeNotifier {
   String note;
   int price;
   int categoryId;
+  List<ExpenseCategory> expenseCategories;
+  List<IncomeCategory> incomeCategories;
+  int expenseCategoryId;
+  int incomeCategoryId;
 
-  void init() {
+  Future<void> init() async {
     if (actionType == ExpenseIncomeActionType.updateExpense) {
       year = expense.year;
       month = expense.month;
@@ -257,6 +308,28 @@ class ExpenseAddScreenModel extends ChangeNotifier {
       categoryId = income.income_category_id;
     }
     weekday = weekdays[getIntWeekDay(year, month, day) - 1];
+    await fetchExpenseCategory();
+    await fetchIncomeCategory();
+    notifyListeners();
+  }
+
+  Future<void> fetchExpenseCategory() async {
+    expenseCategories = await ExpenseCategory().select().toList();
+    notifyListeners();
+  }
+
+  Future<void> fetchIncomeCategory() async {
+    incomeCategories = await IncomeCategory().select().toList();
+    notifyListeners();
+  }
+
+  void onExpenseCategoryTapped(int id) {
+    expenseCategoryId = id;
+    notifyListeners();
+  }
+
+  void onIncomeCategoryTapped(int id) {
+    incomeCategoryId = id;
     notifyListeners();
   }
 

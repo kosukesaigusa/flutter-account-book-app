@@ -38,6 +38,7 @@ class FixedFeeScreen extends StatelessWidget {
           ),
         ),
         floatingActionButton: FloatingActionButton(
+          heroTag: 'fixedfee-screen-fab',
           onPressed: () async {
             // await insertFixedFees();
           },

@@ -76,6 +76,7 @@ class CategoryScreen extends StatelessWidget {
             ),
           ),
           floatingActionButton: FloatingActionButton(
+            heroTag: 'category-screen-fab',
             onPressed: () async {
               // await insertExpenseCategories();
               // await insertIncomeCategories();

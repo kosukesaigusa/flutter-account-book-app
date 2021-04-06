@@ -53,6 +53,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
               ],
             ),
             floatingActionButton: FloatingActionButton(
+              heroTag: 'calendar-screen-fab',
               onPressed: () async {
                 // await insertFixedFees();
                 await Navigator.push<void>(
