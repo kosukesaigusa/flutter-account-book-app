@@ -315,11 +315,17 @@ class ExpenseAddScreenModel extends ChangeNotifier {
 
   Future<void> fetchExpenseCategory() async {
     expenseCategories = await ExpenseCategory().select().toList();
+    if (expenseCategories.isNotEmpty) {
+      expenseCategoryId = expenseCategories[0].expense_category_id;
+    }
     notifyListeners();
   }
 
   Future<void> fetchIncomeCategory() async {
     incomeCategories = await IncomeCategory().select().toList();
+    if (incomeCategories.isNotEmpty) {
+      incomeCategoryId = incomeCategories[0].income_category_id;
+    }
     notifyListeners();
   }
 
